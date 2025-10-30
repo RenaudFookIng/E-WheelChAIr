@@ -1,0 +1,13 @@
+Metadata-Version: 2.1
+Name: sabertooth-controller
+Version: 0.0.0
+Summary: Package for controlling the Sabertooth motor driver
+Home-page: UNKNOWN
+Maintainer: renaud
+Maintainer-email: renaud@todo.todo
+License: Apache License 2.0
+Platform: UNKNOWN
+Provides-Extra: test
+
+UNKNOWN
+
