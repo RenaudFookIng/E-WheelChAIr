@@ -1,0 +1,3 @@
+[console_scripts]
+arduino_reader = arduino_interface.arduino_reader:main
+

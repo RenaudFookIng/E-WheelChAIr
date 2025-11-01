@@ -1,0 +1,3 @@
+source;share/sabertooth_controller/hook/pythonpath.ps1
+source;share/sabertooth_controller/hook/pythonpath.dsv
+source;share/sabertooth_controller/hook/pythonpath.sh

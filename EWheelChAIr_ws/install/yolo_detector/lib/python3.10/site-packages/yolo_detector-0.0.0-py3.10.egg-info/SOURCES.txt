@@ -1,0 +1,16 @@
+package.xml
+setup.cfg
+setup.py
+../../build/yolo_detector/yolo_detector.egg-info/PKG-INFO
+../../build/yolo_detector/yolo_detector.egg-info/SOURCES.txt
+../../build/yolo_detector/yolo_detector.egg-info/dependency_links.txt
+../../build/yolo_detector/yolo_detector.egg-info/entry_points.txt
+../../build/yolo_detector/yolo_detector.egg-info/requires.txt
+../../build/yolo_detector/yolo_detector.egg-info/top_level.txt
+../../build/yolo_detector/yolo_detector.egg-info/zip-safe
+resource/yolo_detector
+test/test_copyright.py
+test/test_flake8.py
+test/test_pep257.py
+yolo_detector/__init__.py
+yolo_detector/yolo_node.py
