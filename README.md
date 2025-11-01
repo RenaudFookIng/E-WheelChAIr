@@ -1,16 +1,16 @@
 # E-WheelChAIr
 
 E-WheelChAIr/
-├── ros_ws/                  # Ton workspace ROS actuel
-├── 3d_models/               # Nouveau dossier pour la 3D
-│   ├── camera_ultrasound/   # Boîtier pour caméras et ultrasons
-│   │   ├── camera_housing.f3d (ou .stl, .step)
-│   │   ├── README.md        # Description, dimensions, logiciel utilisé
+├── ros_ws/                  # Workspace ROS2
+├── 3d_models/               # CAO 3D
+│   ├── camera_ultrasound/   # Boxes for cameras and US
+│   │   ├── camera_housing (ou .stl, .step)
+│   │   ├── README.md        # Description, dimensions
 │   │   └── images/          # Rendus 3D ou photos
 │   ├── joystick_mount/      # Support pour joystick
-│   │   ├── joystick_base.f3d
+│   │   ├── joystick_base
 │   │   ├── README.md
 │   │   └── images/
-│   └── README.md            # Documentation globale 3D
-├── docs/                    # Documentation générale du projet
-└── README.md                # Mise à jour pour inclure la partie 3D
+│   └── README.md            # Documentation for 3D parts
+├── docs/                    # Project Documentation 
+└── README.md                # Updates
