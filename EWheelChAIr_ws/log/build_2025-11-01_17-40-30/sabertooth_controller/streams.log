@@ -1,0 +1,39 @@
+[2.302s] Invoking command in '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/src/sabertooth_controller': PYTHONPATH=/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/build/sabertooth_controller/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/sabertooth_controller/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/sabertooth_controller build --build-base /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/build/sabertooth_controller/build install --record /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/build/sabertooth_controller/install.log --single-version-externally-managed install_data
+[2.570s] running egg_info
+[2.571s] creating ../../build/sabertooth_controller/sabertooth_controller.egg-info
+[2.571s] writing ../../build/sabertooth_controller/sabertooth_controller.egg-info/PKG-INFO
+[2.572s] writing dependency_links to ../../build/sabertooth_controller/sabertooth_controller.egg-info/dependency_links.txt
+[2.572s] writing entry points to ../../build/sabertooth_controller/sabertooth_controller.egg-info/entry_points.txt
+[2.573s] writing requirements to ../../build/sabertooth_controller/sabertooth_controller.egg-info/requires.txt
+[2.573s] writing top-level names to ../../build/sabertooth_controller/sabertooth_controller.egg-info/top_level.txt
+[2.574s] writing manifest file '../../build/sabertooth_controller/sabertooth_controller.egg-info/SOURCES.txt'
+[2.577s] reading manifest file '../../build/sabertooth_controller/sabertooth_controller.egg-info/SOURCES.txt'
+[2.580s] writing manifest file '../../build/sabertooth_controller/sabertooth_controller.egg-info/SOURCES.txt'
+[2.580s] running build
+[2.580s] running build_py
+[2.581s] creating /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/build/sabertooth_controller/build
+[2.581s] creating /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/build/sabertooth_controller/build/lib
+[2.581s] creating /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/build/sabertooth_controller/build/lib/sabertooth_controller
+[2.581s] copying sabertooth_controller/sabertooth_node.py -> /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/build/sabertooth_controller/build/lib/sabertooth_controller
+[2.605s] copying sabertooth_controller/__init__.py -> /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/build/sabertooth_controller/build/lib/sabertooth_controller
+[2.607s] running install
+[2.608s] running install_lib
+[2.612s] creating /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/sabertooth_controller/lib/python3.10/site-packages/sabertooth_controller
+[2.614s] copying /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/build/sabertooth_controller/build/lib/sabertooth_controller/sabertooth_node.py -> /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/sabertooth_controller/lib/python3.10/site-packages/sabertooth_controller
+[2.618s] copying /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/build/sabertooth_controller/build/lib/sabertooth_controller/__init__.py -> /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/sabertooth_controller/lib/python3.10/site-packages/sabertooth_controller
+[2.623s] byte-compiling /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/sabertooth_controller/lib/python3.10/site-packages/sabertooth_controller/sabertooth_node.py to sabertooth_node.cpython-310.pyc
+[2.629s] byte-compiling /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/sabertooth_controller/lib/python3.10/site-packages/sabertooth_controller/__init__.py to __init__.cpython-310.pyc
+[2.632s] running install_data
+[2.634s] creating /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/sabertooth_controller/share
+[2.634s] creating /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/sabertooth_controller/share/ament_index
+[2.635s] creating /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/sabertooth_controller/share/ament_index/resource_index
+[2.636s] creating /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/sabertooth_controller/share/ament_index/resource_index/packages
+[2.636s] copying resource/sabertooth_controller -> /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/sabertooth_controller/share/ament_index/resource_index/packages
+[2.638s] creating /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/sabertooth_controller/share/sabertooth_controller
+[2.638s] copying package.xml -> /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/sabertooth_controller/share/sabertooth_controller
+[2.641s] running install_egg_info
+[2.646s] Copying ../../build/sabertooth_controller/sabertooth_controller.egg-info to /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/sabertooth_controller/lib/python3.10/site-packages/sabertooth_controller-0.0.0-py3.10.egg-info
+[2.663s] running install_scripts
+[2.684s] Installing sabertooth_controller script to /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/sabertooth_controller/lib/sabertooth_controller
+[2.685s] writing list of installed files to '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/build/sabertooth_controller/install.log'
+[2.711s] Invoked command in '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/src/sabertooth_controller' returned '0': PYTHONPATH=/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/build/sabertooth_controller/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/sabertooth_controller/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/sabertooth_controller build --build-base /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/build/sabertooth_controller/build install --record /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/build/sabertooth_controller/install.log --single-version-externally-managed install_data

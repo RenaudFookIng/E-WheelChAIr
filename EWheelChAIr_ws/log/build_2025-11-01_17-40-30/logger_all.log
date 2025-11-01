@@ -1,0 +1,284 @@
+[1.274s] DEBUG:colcon:Command line arguments: ['/usr/bin/colcon', 'build']
+[1.275s] DEBUG:colcon:Parsed command line arguments: Namespace(log_base=None, log_level=None, verb_name='build', build_base='build', install_base='install', merge_install=False, symlink_install=False, test_result_base=None, continue_on_error=False, executor='parallel', parallel_workers=12, event_handlers=None, ignore_user_meta=False, metas=['./colcon.meta'], base_paths=['.'], packages_ignore=None, packages_ignore_regex=None, paths=None, packages_up_to=None, packages_up_to_regex=None, packages_above=None, packages_above_and_dependencies=None, packages_above_depth=None, packages_select_by_dep=None, packages_skip_by_dep=None, packages_skip_up_to=None, packages_select_build_failed=False, packages_skip_build_finished=False, packages_select_test_failures=False, packages_skip_test_passed=False, packages_select=None, packages_skip=None, packages_select_regex=None, packages_skip_regex=None, packages_start=None, packages_end=None, allow_overriding=[], cmake_args=None, cmake_target=None, cmake_target_skip_unavailable=False, cmake_clean_cache=False, cmake_clean_first=False, cmake_force_configure=False, ament_cmake_args=None, catkin_cmake_args=None, catkin_skip_building_tests=False, mixin_files=None, mixin=None, verb_parser=<colcon_mixin.mixin.mixin_argument.MixinArgumentDecorator object at 0x752e0ab6b280>, verb_extension=<colcon_core.verb.build.BuildVerb object at 0x752e0ab6ad70>, main=<bound method BuildVerb.main of <colcon_core.verb.build.BuildVerb object at 0x752e0ab6ad70>>, mixin_verb=('build',))
+[3.369s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) check parameters
+[3.369s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) check parameters
+[3.369s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) check parameters
+[3.369s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) check parameters
+[3.369s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) discover
+[3.369s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) discover
+[3.369s] INFO:colcon.colcon_core.package_discovery:Crawling recursively for packages in '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws'
+[3.370s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ignore', 'ignore_ament_install']
+[3.370s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore'
+[3.370s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore_ament_install'
+[3.370s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_pkg']
+[3.370s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_pkg'
+[3.370s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_meta']
+[3.370s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_meta'
+[3.370s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ros']
+[3.370s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ros'
+[3.437s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['cmake', 'python']
+[3.437s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'cmake'
+[3.437s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python'
+[3.437s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['python_setup_py']
+[3.437s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python_setup_py'
+[3.438s] Level 1:colcon.colcon_core.package_identification:_identify(arduino) by extensions ['ignore', 'ignore_ament_install']
+[3.438s] Level 1:colcon.colcon_core.package_identification:_identify(arduino) by extension 'ignore'
+[3.438s] Level 1:colcon.colcon_core.package_identification:_identify(arduino) by extension 'ignore_ament_install'
+[3.438s] Level 1:colcon.colcon_core.package_identification:_identify(arduino) by extensions ['colcon_pkg']
+[3.439s] Level 1:colcon.colcon_core.package_identification:_identify(arduino) by extension 'colcon_pkg'
+[3.439s] Level 1:colcon.colcon_core.package_identification:_identify(arduino) by extensions ['colcon_meta']
+[3.439s] Level 1:colcon.colcon_core.package_identification:_identify(arduino) by extension 'colcon_meta'
+[3.439s] Level 1:colcon.colcon_core.package_identification:_identify(arduino) by extensions ['ros']
+[3.439s] Level 1:colcon.colcon_core.package_identification:_identify(arduino) by extension 'ros'
+[3.440s] Level 1:colcon.colcon_core.package_identification:_identify(arduino) by extensions ['cmake', 'python']
+[3.440s] Level 1:colcon.colcon_core.package_identification:_identify(arduino) by extension 'cmake'
+[3.440s] Level 1:colcon.colcon_core.package_identification:_identify(arduino) by extension 'python'
+[3.440s] Level 1:colcon.colcon_core.package_identification:_identify(arduino) by extensions ['python_setup_py']
+[3.440s] Level 1:colcon.colcon_core.package_identification:_identify(arduino) by extension 'python_setup_py'
+[3.440s] Level 1:colcon.colcon_core.package_identification:_identify(arduino/joystick_ultrasons) by extensions ['ignore', 'ignore_ament_install']
+[3.441s] Level 1:colcon.colcon_core.package_identification:_identify(arduino/joystick_ultrasons) by extension 'ignore'
+[3.441s] Level 1:colcon.colcon_core.package_identification:_identify(arduino/joystick_ultrasons) by extension 'ignore_ament_install'
+[3.441s] Level 1:colcon.colcon_core.package_identification:_identify(arduino/joystick_ultrasons) by extensions ['colcon_pkg']
+[3.441s] Level 1:colcon.colcon_core.package_identification:_identify(arduino/joystick_ultrasons) by extension 'colcon_pkg'
+[3.441s] Level 1:colcon.colcon_core.package_identification:_identify(arduino/joystick_ultrasons) by extensions ['colcon_meta']
+[3.441s] Level 1:colcon.colcon_core.package_identification:_identify(arduino/joystick_ultrasons) by extension 'colcon_meta'
+[3.442s] Level 1:colcon.colcon_core.package_identification:_identify(arduino/joystick_ultrasons) by extensions ['ros']
+[3.442s] Level 1:colcon.colcon_core.package_identification:_identify(arduino/joystick_ultrasons) by extension 'ros'
+[3.442s] Level 1:colcon.colcon_core.package_identification:_identify(arduino/joystick_ultrasons) by extensions ['cmake', 'python']
+[3.442s] Level 1:colcon.colcon_core.package_identification:_identify(arduino/joystick_ultrasons) by extension 'cmake'
+[3.442s] Level 1:colcon.colcon_core.package_identification:_identify(arduino/joystick_ultrasons) by extension 'python'
+[3.443s] Level 1:colcon.colcon_core.package_identification:_identify(arduino/joystick_ultrasons) by extensions ['python_setup_py']
+[3.443s] Level 1:colcon.colcon_core.package_identification:_identify(arduino/joystick_ultrasons) by extension 'python_setup_py'
+[3.443s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extensions ['ignore', 'ignore_ament_install']
+[3.443s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extension 'ignore'
+[3.443s] Level 1:colcon.colcon_core.package_identification:_identify(build) ignored
+[3.444s] Level 1:colcon.colcon_core.package_identification:_identify(docs~) by extensions ['ignore', 'ignore_ament_install']
+[3.444s] Level 1:colcon.colcon_core.package_identification:_identify(docs~) by extension 'ignore'
+[3.444s] Level 1:colcon.colcon_core.package_identification:_identify(docs~) by extension 'ignore_ament_install'
+[3.444s] Level 1:colcon.colcon_core.package_identification:_identify(docs~) by extensions ['colcon_pkg']
+[3.445s] Level 1:colcon.colcon_core.package_identification:_identify(docs~) by extension 'colcon_pkg'
+[3.445s] Level 1:colcon.colcon_core.package_identification:_identify(docs~) by extensions ['colcon_meta']
+[3.445s] Level 1:colcon.colcon_core.package_identification:_identify(docs~) by extension 'colcon_meta'
+[3.445s] Level 1:colcon.colcon_core.package_identification:_identify(docs~) by extensions ['ros']
+[3.445s] Level 1:colcon.colcon_core.package_identification:_identify(docs~) by extension 'ros'
+[3.445s] Level 1:colcon.colcon_core.package_identification:_identify(docs~) by extensions ['cmake', 'python']
+[3.445s] Level 1:colcon.colcon_core.package_identification:_identify(docs~) by extension 'cmake'
+[3.445s] Level 1:colcon.colcon_core.package_identification:_identify(docs~) by extension 'python'
+[3.446s] Level 1:colcon.colcon_core.package_identification:_identify(docs~) by extensions ['python_setup_py']
+[3.446s] Level 1:colcon.colcon_core.package_identification:_identify(docs~) by extension 'python_setup_py'
+[3.446s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extensions ['ignore', 'ignore_ament_install']
+[3.446s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extension 'ignore'
+[3.446s] Level 1:colcon.colcon_core.package_identification:_identify(install) ignored
+[3.446s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extensions ['ignore', 'ignore_ament_install']
+[3.447s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extension 'ignore'
+[3.447s] Level 1:colcon.colcon_core.package_identification:_identify(log) ignored
+[3.447s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['ignore', 'ignore_ament_install']
+[3.447s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ignore'
+[3.447s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ignore_ament_install'
+[3.447s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['colcon_pkg']
+[3.447s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'colcon_pkg'
+[3.447s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['colcon_meta']
+[3.447s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'colcon_meta'
+[3.447s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['ros']
+[3.448s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ros'
+[3.448s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['cmake', 'python']
+[3.448s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'cmake'
+[3.448s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'python'
+[3.448s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['python_setup_py']
+[3.448s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'python_setup_py'
+[3.448s] Level 1:colcon.colcon_core.package_identification:_identify(src/arduino_interface) by extensions ['ignore', 'ignore_ament_install']
+[3.448s] Level 1:colcon.colcon_core.package_identification:_identify(src/arduino_interface) by extension 'ignore'
+[3.449s] Level 1:colcon.colcon_core.package_identification:_identify(src/arduino_interface) by extension 'ignore_ament_install'
+[3.449s] Level 1:colcon.colcon_core.package_identification:_identify(src/arduino_interface) by extensions ['colcon_pkg']
+[3.449s] Level 1:colcon.colcon_core.package_identification:_identify(src/arduino_interface) by extension 'colcon_pkg'
+[3.449s] Level 1:colcon.colcon_core.package_identification:_identify(src/arduino_interface) by extensions ['colcon_meta']
+[3.449s] Level 1:colcon.colcon_core.package_identification:_identify(src/arduino_interface) by extension 'colcon_meta'
+[3.449s] Level 1:colcon.colcon_core.package_identification:_identify(src/arduino_interface) by extensions ['ros']
+[3.449s] Level 1:colcon.colcon_core.package_identification:_identify(src/arduino_interface) by extension 'ros'
+[3.569s] DEBUG:colcon.colcon_core.package_identification:Package 'src/arduino_interface' with type 'ros.ament_python' and name 'arduino_interface'
+[3.571s] Level 1:colcon.colcon_core.package_identification:_identify(src/launch) by extensions ['ignore', 'ignore_ament_install']
+[3.571s] Level 1:colcon.colcon_core.package_identification:_identify(src/launch) by extension 'ignore'
+[3.572s] Level 1:colcon.colcon_core.package_identification:_identify(src/launch) by extension 'ignore_ament_install'
+[3.572s] Level 1:colcon.colcon_core.package_identification:_identify(src/launch) by extensions ['colcon_pkg']
+[3.573s] Level 1:colcon.colcon_core.package_identification:_identify(src/launch) by extension 'colcon_pkg'
+[3.573s] Level 1:colcon.colcon_core.package_identification:_identify(src/launch) by extensions ['colcon_meta']
+[3.573s] Level 1:colcon.colcon_core.package_identification:_identify(src/launch) by extension 'colcon_meta'
+[3.574s] Level 1:colcon.colcon_core.package_identification:_identify(src/launch) by extensions ['ros']
+[3.574s] Level 1:colcon.colcon_core.package_identification:_identify(src/launch) by extension 'ros'
+[3.576s] Level 1:colcon.colcon_core.package_identification:_identify(src/launch) by extensions ['cmake', 'python']
+[3.576s] Level 1:colcon.colcon_core.package_identification:_identify(src/launch) by extension 'cmake'
+[3.577s] Level 1:colcon.colcon_core.package_identification:_identify(src/launch) by extension 'python'
+[3.577s] Level 1:colcon.colcon_core.package_identification:_identify(src/launch) by extensions ['python_setup_py']
+[3.577s] Level 1:colcon.colcon_core.package_identification:_identify(src/launch) by extension 'python_setup_py'
+[3.578s] Level 1:colcon.colcon_core.package_identification:_identify(src/sabertooth_controller) by extensions ['ignore', 'ignore_ament_install']
+[3.579s] Level 1:colcon.colcon_core.package_identification:_identify(src/sabertooth_controller) by extension 'ignore'
+[3.579s] Level 1:colcon.colcon_core.package_identification:_identify(src/sabertooth_controller) by extension 'ignore_ament_install'
+[3.580s] Level 1:colcon.colcon_core.package_identification:_identify(src/sabertooth_controller) by extensions ['colcon_pkg']
+[3.580s] Level 1:colcon.colcon_core.package_identification:_identify(src/sabertooth_controller) by extension 'colcon_pkg'
+[3.580s] Level 1:colcon.colcon_core.package_identification:_identify(src/sabertooth_controller) by extensions ['colcon_meta']
+[3.580s] Level 1:colcon.colcon_core.package_identification:_identify(src/sabertooth_controller) by extension 'colcon_meta'
+[3.581s] Level 1:colcon.colcon_core.package_identification:_identify(src/sabertooth_controller) by extensions ['ros']
+[3.581s] Level 1:colcon.colcon_core.package_identification:_identify(src/sabertooth_controller) by extension 'ros'
+[3.608s] DEBUG:colcon.colcon_core.package_identification:Failed to parse potential ROS package manifest in'src/sabertooth_controller': Error(s) in package 'src/sabertooth_controller/package.xml':
+The manifest contains invalid XML:
+mismatched tag: line 10, column 17
+[3.608s] Level 1:colcon.colcon_core.package_identification:_identify(src/sabertooth_controller) by extensions ['cmake', 'python']
+[3.609s] Level 1:colcon.colcon_core.package_identification:_identify(src/sabertooth_controller) by extension 'cmake'
+[3.609s] Level 1:colcon.colcon_core.package_identification:_identify(src/sabertooth_controller) by extension 'python'
+[3.610s] DEBUG:colcon.colcon_core.package_identification:Python package in 'src/sabertooth_controller' passes arguments to the setup() function which requires a different identification extension than 'python'
+[3.610s] Level 1:colcon.colcon_core.package_identification:_identify(src/sabertooth_controller) by extensions ['python_setup_py']
+[3.610s] Level 1:colcon.colcon_core.package_identification:_identify(src/sabertooth_controller) by extension 'python_setup_py'
+[3.973s] DEBUG:colcon.colcon_core.package_identification:Package 'src/sabertooth_controller' with type 'python' and name 'sabertooth_controller'
+[3.974s] Level 1:colcon.colcon_core.package_identification:_identify(src/yolo_detector) by extensions ['ignore', 'ignore_ament_install']
+[3.974s] Level 1:colcon.colcon_core.package_identification:_identify(src/yolo_detector) by extension 'ignore'
+[3.974s] Level 1:colcon.colcon_core.package_identification:_identify(src/yolo_detector) by extension 'ignore_ament_install'
+[3.974s] Level 1:colcon.colcon_core.package_identification:_identify(src/yolo_detector) by extensions ['colcon_pkg']
+[3.974s] Level 1:colcon.colcon_core.package_identification:_identify(src/yolo_detector) by extension 'colcon_pkg'
+[3.974s] Level 1:colcon.colcon_core.package_identification:_identify(src/yolo_detector) by extensions ['colcon_meta']
+[3.975s] Level 1:colcon.colcon_core.package_identification:_identify(src/yolo_detector) by extension 'colcon_meta'
+[3.975s] Level 1:colcon.colcon_core.package_identification:_identify(src/yolo_detector) by extensions ['ros']
+[3.975s] Level 1:colcon.colcon_core.package_identification:_identify(src/yolo_detector) by extension 'ros'
+[3.977s] DEBUG:colcon.colcon_core.package_identification:Package 'src/yolo_detector' with type 'ros.ament_python' and name 'yolo_detector'
+[3.977s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) using defaults
+[3.977s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) discover
+[3.977s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) using defaults
+[3.977s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) discover
+[3.977s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) using defaults
+[4.010s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) check parameters
+[4.011s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) discover
+[4.026s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 344 installed packages in /opt/ros/humble
+[4.034s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) using defaults
+[4.152s] Level 5:colcon.colcon_core.verb:set package 'arduino_interface' build argument 'cmake_args' from command line to 'None'
+[4.152s] Level 5:colcon.colcon_core.verb:set package 'arduino_interface' build argument 'cmake_target' from command line to 'None'
+[4.152s] Level 5:colcon.colcon_core.verb:set package 'arduino_interface' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[4.152s] Level 5:colcon.colcon_core.verb:set package 'arduino_interface' build argument 'cmake_clean_cache' from command line to 'False'
+[4.152s] Level 5:colcon.colcon_core.verb:set package 'arduino_interface' build argument 'cmake_clean_first' from command line to 'False'
+[4.153s] Level 5:colcon.colcon_core.verb:set package 'arduino_interface' build argument 'cmake_force_configure' from command line to 'False'
+[4.153s] Level 5:colcon.colcon_core.verb:set package 'arduino_interface' build argument 'ament_cmake_args' from command line to 'None'
+[4.153s] Level 5:colcon.colcon_core.verb:set package 'arduino_interface' build argument 'catkin_cmake_args' from command line to 'None'
+[4.153s] Level 5:colcon.colcon_core.verb:set package 'arduino_interface' build argument 'catkin_skip_building_tests' from command line to 'False'
+[4.153s] DEBUG:colcon.colcon_core.verb:Building package 'arduino_interface' with the following arguments: {'ament_cmake_args': None, 'build_base': '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/build/arduino_interface', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/arduino_interface', 'merge_install': False, 'path': '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/src/arduino_interface', 'symlink_install': False, 'test_result_base': None}
+[4.153s] Level 5:colcon.colcon_core.verb:set package 'sabertooth_controller' build argument 'cmake_args' from command line to 'None'
+[4.153s] Level 5:colcon.colcon_core.verb:set package 'sabertooth_controller' build argument 'cmake_target' from command line to 'None'
+[4.153s] Level 5:colcon.colcon_core.verb:set package 'sabertooth_controller' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[4.153s] Level 5:colcon.colcon_core.verb:set package 'sabertooth_controller' build argument 'cmake_clean_cache' from command line to 'False'
+[4.153s] Level 5:colcon.colcon_core.verb:set package 'sabertooth_controller' build argument 'cmake_clean_first' from command line to 'False'
+[4.153s] Level 5:colcon.colcon_core.verb:set package 'sabertooth_controller' build argument 'cmake_force_configure' from command line to 'False'
+[4.154s] Level 5:colcon.colcon_core.verb:set package 'sabertooth_controller' build argument 'ament_cmake_args' from command line to 'None'
+[4.154s] Level 5:colcon.colcon_core.verb:set package 'sabertooth_controller' build argument 'catkin_cmake_args' from command line to 'None'
+[4.154s] Level 5:colcon.colcon_core.verb:set package 'sabertooth_controller' build argument 'catkin_skip_building_tests' from command line to 'False'
+[4.154s] DEBUG:colcon.colcon_core.verb:Building package 'sabertooth_controller' with the following arguments: {'ament_cmake_args': None, 'build_base': '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/build/sabertooth_controller', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/sabertooth_controller', 'merge_install': False, 'path': '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/src/sabertooth_controller', 'symlink_install': False, 'test_result_base': None}
+[4.154s] Level 5:colcon.colcon_core.verb:set package 'yolo_detector' build argument 'cmake_args' from command line to 'None'
+[4.154s] Level 5:colcon.colcon_core.verb:set package 'yolo_detector' build argument 'cmake_target' from command line to 'None'
+[4.154s] Level 5:colcon.colcon_core.verb:set package 'yolo_detector' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[4.154s] Level 5:colcon.colcon_core.verb:set package 'yolo_detector' build argument 'cmake_clean_cache' from command line to 'False'
+[4.154s] Level 5:colcon.colcon_core.verb:set package 'yolo_detector' build argument 'cmake_clean_first' from command line to 'False'
+[4.154s] Level 5:colcon.colcon_core.verb:set package 'yolo_detector' build argument 'cmake_force_configure' from command line to 'False'
+[4.154s] Level 5:colcon.colcon_core.verb:set package 'yolo_detector' build argument 'ament_cmake_args' from command line to 'None'
+[4.154s] Level 5:colcon.colcon_core.verb:set package 'yolo_detector' build argument 'catkin_cmake_args' from command line to 'None'
+[4.154s] Level 5:colcon.colcon_core.verb:set package 'yolo_detector' build argument 'catkin_skip_building_tests' from command line to 'False'
+[4.154s] DEBUG:colcon.colcon_core.verb:Building package 'yolo_detector' with the following arguments: {'ament_cmake_args': None, 'build_base': '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/build/yolo_detector', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/yolo_detector', 'merge_install': False, 'path': '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/src/yolo_detector', 'symlink_install': False, 'test_result_base': None}
+[4.155s] INFO:colcon.colcon_core.executor:Executing jobs using 'parallel' executor
+[4.155s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete
+[4.187s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/src/arduino_interface' with build type 'ament_python'
+[4.188s] Level 1:colcon.colcon_core.shell:create_environment_hook('arduino_interface', 'ament_prefix_path')
+[4.245s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_core.shell.bat': Not used on non-Windows systems
+[4.246s] INFO:colcon.colcon_core.shell:Creating environment hook '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/arduino_interface/share/arduino_interface/hook/ament_prefix_path.ps1'
+[4.289s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/arduino_interface/share/arduino_interface/hook/ament_prefix_path.dsv'
+[4.337s] INFO:colcon.colcon_core.shell:Creating environment hook '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/arduino_interface/share/arduino_interface/hook/ament_prefix_path.sh'
+[4.342s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[4.343s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[4.354s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/src/sabertooth_controller'
+[4.355s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[4.356s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[4.367s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/src/yolo_detector' with build type 'ament_python'
+[4.368s] Level 1:colcon.colcon_core.shell:create_environment_hook('yolo_detector', 'ament_prefix_path')
+[4.369s] INFO:colcon.colcon_core.shell:Creating environment hook '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/yolo_detector/share/yolo_detector/hook/ament_prefix_path.ps1'
+[4.397s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/yolo_detector/share/yolo_detector/hook/ament_prefix_path.dsv'
+[4.401s] INFO:colcon.colcon_core.shell:Creating environment hook '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/yolo_detector/share/yolo_detector/hook/ament_prefix_path.sh'
+[4.404s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[4.404s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[4.713s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/src/arduino_interface'
+[4.713s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[4.713s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[5.222s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/src/yolo_detector'
+[5.222s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[5.223s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[6.657s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/src/sabertooth_controller': PYTHONPATH=/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/build/sabertooth_controller/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/sabertooth_controller/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/sabertooth_controller build --build-base /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/build/sabertooth_controller/build install --record /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/build/sabertooth_controller/install.log --single-version-externally-managed install_data
+[6.660s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/src/yolo_detector': PYTHONPATH=/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/build/yolo_detector/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/yolo_detector/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/yolo_detector build --build-base /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/build/yolo_detector/build install --record /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/build/yolo_detector/install.log --single-version-externally-managed install_data
+[6.664s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/src/arduino_interface': PYTHONPATH=/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/build/arduino_interface/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/arduino_interface/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/arduino_interface build --build-base /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/build/arduino_interface/build install --record /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/build/arduino_interface/install.log --single-version-externally-managed install_data
+[7.067s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/src/sabertooth_controller' returned '0': PYTHONPATH=/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/build/sabertooth_controller/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/sabertooth_controller/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/sabertooth_controller build --build-base /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/build/sabertooth_controller/build install --record /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/build/sabertooth_controller/install.log --single-version-externally-managed install_data
+[7.158s] Level 1:colcon.colcon_core.environment:checking '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/sabertooth_controller' for CMake module files
+[7.166s] Level 1:colcon.colcon_core.environment:checking '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/sabertooth_controller' for CMake config files
+[7.177s] Level 1:colcon.colcon_core.environment:checking '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/sabertooth_controller/lib'
+[7.178s] Level 1:colcon.colcon_core.environment:checking '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/sabertooth_controller/bin'
+[7.179s] Level 1:colcon.colcon_core.environment:checking '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/sabertooth_controller/lib/pkgconfig/sabertooth_controller.pc'
+[7.180s] Level 1:colcon.colcon_core.environment:checking '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/sabertooth_controller/lib/python3.10/site-packages'
+[7.181s] Level 1:colcon.colcon_core.shell:create_environment_hook('sabertooth_controller', 'pythonpath')
+[7.183s] INFO:colcon.colcon_core.shell:Creating environment hook '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/sabertooth_controller/share/sabertooth_controller/hook/pythonpath.ps1'
+[7.186s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/sabertooth_controller/share/sabertooth_controller/hook/pythonpath.dsv'
+[7.189s] INFO:colcon.colcon_core.shell:Creating environment hook '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/sabertooth_controller/share/sabertooth_controller/hook/pythonpath.sh'
+[7.193s] Level 1:colcon.colcon_core.environment:checking '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/sabertooth_controller/bin'
+[7.194s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(sabertooth_controller)
+[7.195s] INFO:colcon.colcon_core.shell:Creating package script '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/sabertooth_controller/share/sabertooth_controller/package.ps1'
+[7.200s] INFO:colcon.colcon_core.shell:Creating package descriptor '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/sabertooth_controller/share/sabertooth_controller/package.dsv'
+[7.204s] INFO:colcon.colcon_core.shell:Creating package script '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/sabertooth_controller/share/sabertooth_controller/package.sh'
+[7.207s] INFO:colcon.colcon_core.shell:Creating package script '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/sabertooth_controller/share/sabertooth_controller/package.bash'
+[7.241s] INFO:colcon.colcon_core.shell:Creating package script '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/sabertooth_controller/share/sabertooth_controller/package.zsh'
+[7.266s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/sabertooth_controller/share/colcon-core/packages/sabertooth_controller)
+[7.271s] Level 1:colcon.colcon_core.environment:checking '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/arduino_interface' for CMake module files
+[7.275s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/src/arduino_interface' returned '0': PYTHONPATH=/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/build/arduino_interface/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/arduino_interface/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/arduino_interface build --build-base /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/build/arduino_interface/build install --record /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/build/arduino_interface/install.log --single-version-externally-managed install_data
+[7.280s] Level 1:colcon.colcon_core.environment:checking '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/arduino_interface' for CMake config files
+[7.293s] Level 1:colcon.colcon_core.environment:checking '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/arduino_interface/lib'
+[7.294s] Level 1:colcon.colcon_core.environment:checking '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/arduino_interface/bin'
+[7.294s] Level 1:colcon.colcon_core.environment:checking '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/arduino_interface/lib/pkgconfig/arduino_interface.pc'
+[7.295s] Level 1:colcon.colcon_core.environment:checking '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/arduino_interface/lib/python3.10/site-packages'
+[7.296s] Level 1:colcon.colcon_core.shell:create_environment_hook('arduino_interface', 'pythonpath')
+[7.297s] INFO:colcon.colcon_core.shell:Creating environment hook '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/arduino_interface/share/arduino_interface/hook/pythonpath.ps1'
+[7.300s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/arduino_interface/share/arduino_interface/hook/pythonpath.dsv'
+[7.303s] INFO:colcon.colcon_core.shell:Creating environment hook '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/arduino_interface/share/arduino_interface/hook/pythonpath.sh'
+[7.307s] Level 1:colcon.colcon_core.environment:checking '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/arduino_interface/bin'
+[7.308s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(arduino_interface)
+[7.310s] INFO:colcon.colcon_core.shell:Creating package script '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/arduino_interface/share/arduino_interface/package.ps1'
+[7.313s] INFO:colcon.colcon_core.shell:Creating package descriptor '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/arduino_interface/share/arduino_interface/package.dsv'
+[7.316s] INFO:colcon.colcon_core.shell:Creating package script '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/arduino_interface/share/arduino_interface/package.sh'
+[7.319s] INFO:colcon.colcon_core.shell:Creating package script '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/arduino_interface/share/arduino_interface/package.bash'
+[7.322s] INFO:colcon.colcon_core.shell:Creating package script '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/arduino_interface/share/arduino_interface/package.zsh'
+[7.325s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/arduino_interface/share/colcon-core/packages/arduino_interface)
+[7.329s] Level 1:colcon.colcon_core.environment:checking '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/yolo_detector' for CMake module files
+[7.334s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/src/yolo_detector' returned '0': PYTHONPATH=/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/build/yolo_detector/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/yolo_detector/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/yolo_detector build --build-base /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/build/yolo_detector/build install --record /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/build/yolo_detector/install.log --single-version-externally-managed install_data
+[7.339s] Level 1:colcon.colcon_core.environment:checking '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/yolo_detector' for CMake config files
+[7.346s] Level 1:colcon.colcon_core.environment:checking '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/yolo_detector/lib'
+[7.347s] Level 1:colcon.colcon_core.environment:checking '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/yolo_detector/bin'
+[7.347s] Level 1:colcon.colcon_core.environment:checking '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/yolo_detector/lib/pkgconfig/yolo_detector.pc'
+[7.348s] Level 1:colcon.colcon_core.environment:checking '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/yolo_detector/lib/python3.10/site-packages'
+[7.348s] Level 1:colcon.colcon_core.shell:create_environment_hook('yolo_detector', 'pythonpath')
+[7.348s] INFO:colcon.colcon_core.shell:Creating environment hook '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/yolo_detector/share/yolo_detector/hook/pythonpath.ps1'
+[7.350s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/yolo_detector/share/yolo_detector/hook/pythonpath.dsv'
+[7.351s] INFO:colcon.colcon_core.shell:Creating environment hook '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/yolo_detector/share/yolo_detector/hook/pythonpath.sh'
+[7.353s] Level 1:colcon.colcon_core.environment:checking '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/yolo_detector/bin'
+[7.353s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(yolo_detector)
+[7.354s] INFO:colcon.colcon_core.shell:Creating package script '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/yolo_detector/share/yolo_detector/package.ps1'
+[7.355s] INFO:colcon.colcon_core.shell:Creating package descriptor '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/yolo_detector/share/yolo_detector/package.dsv'
+[7.357s] INFO:colcon.colcon_core.shell:Creating package script '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/yolo_detector/share/yolo_detector/package.sh'
+[7.358s] INFO:colcon.colcon_core.shell:Creating package script '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/yolo_detector/share/yolo_detector/package.bash'
+[7.359s] INFO:colcon.colcon_core.shell:Creating package script '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/yolo_detector/share/yolo_detector/package.zsh'
+[7.360s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/yolo_detector/share/colcon-core/packages/yolo_detector)
+[7.361s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:closing loop
+[7.361s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:loop closed
+[7.361s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete finished with '0'
+[7.362s] DEBUG:colcon.colcon_core.event_reactor:joining thread
+[7.398s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.terminal_notifier': Not used on non-Darwin systems
+[7.398s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.win32': Not used on non-Windows systems
+[7.399s] INFO:colcon.colcon_notification.desktop_notification:Sending desktop notification using 'notify2'
+[7.419s] DEBUG:colcon.colcon_core.event_reactor:joined thread
+[7.419s] INFO:colcon.colcon_core.shell:Creating prefix script '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/local_setup.ps1'
+[7.422s] INFO:colcon.colcon_core.shell:Creating prefix util module '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/_local_setup_util_ps1.py'
+[7.425s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/setup.ps1'
+[7.427s] INFO:colcon.colcon_core.shell:Creating prefix script '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/local_setup.sh'
+[7.429s] INFO:colcon.colcon_core.shell:Creating prefix util module '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/_local_setup_util_sh.py'
+[7.430s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/setup.sh'
+[7.432s] INFO:colcon.colcon_core.shell:Creating prefix script '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/local_setup.bash'
+[7.434s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/setup.bash'
+[7.435s] INFO:colcon.colcon_core.shell:Creating prefix script '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/local_setup.zsh'
+[7.437s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/setup.zsh'

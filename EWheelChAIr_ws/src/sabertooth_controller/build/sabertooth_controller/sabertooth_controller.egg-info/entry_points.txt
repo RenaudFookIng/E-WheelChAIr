@@ -1,0 +1,3 @@
+[console_scripts]
+sabertooth_controller = sabertooth_controller.sabertooth_node:main
+

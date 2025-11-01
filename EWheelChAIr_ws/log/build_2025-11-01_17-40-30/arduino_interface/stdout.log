@@ -1,0 +1,35 @@
+running egg_info
+creating ../../build/arduino_interface/arduino_interface.egg-info
+writing ../../build/arduino_interface/arduino_interface.egg-info/PKG-INFO
+writing dependency_links to ../../build/arduino_interface/arduino_interface.egg-info/dependency_links.txt
+writing entry points to ../../build/arduino_interface/arduino_interface.egg-info/entry_points.txt
+writing requirements to ../../build/arduino_interface/arduino_interface.egg-info/requires.txt
+writing top-level names to ../../build/arduino_interface/arduino_interface.egg-info/top_level.txt
+writing manifest file '../../build/arduino_interface/arduino_interface.egg-info/SOURCES.txt'
+reading manifest file '../../build/arduino_interface/arduino_interface.egg-info/SOURCES.txt'
+writing manifest file '../../build/arduino_interface/arduino_interface.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/build/arduino_interface/build
+creating /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/build/arduino_interface/build/lib
+creating /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/build/arduino_interface/build/lib/arduino_interface
+copying arduino_interface/arduino_reader.py -> /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/build/arduino_interface/build/lib/arduino_interface
+copying arduino_interface/__init__.py -> /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/build/arduino_interface/build/lib/arduino_interface
+running install
+running install_lib
+creating /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/arduino_interface/lib/python3.10/site-packages/arduino_interface
+copying /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/build/arduino_interface/build/lib/arduino_interface/arduino_reader.py -> /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/arduino_interface/lib/python3.10/site-packages/arduino_interface
+copying /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/build/arduino_interface/build/lib/arduino_interface/__init__.py -> /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/arduino_interface/lib/python3.10/site-packages/arduino_interface
+byte-compiling /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/arduino_interface/lib/python3.10/site-packages/arduino_interface/arduino_reader.py to arduino_reader.cpython-310.pyc
+byte-compiling /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/arduino_interface/lib/python3.10/site-packages/arduino_interface/__init__.py to __init__.cpython-310.pyc
+running install_data
+creating /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/arduino_interface/share/ament_index
+creating /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/arduino_interface/share/ament_index/resource_index
+creating /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/arduino_interface/share/ament_index/resource_index/packages
+copying resource/arduino_interface -> /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/arduino_interface/share/ament_index/resource_index/packages
+copying package.xml -> /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/arduino_interface/share/arduino_interface
+running install_egg_info
+Copying ../../build/arduino_interface/arduino_interface.egg-info to /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/arduino_interface/lib/python3.10/site-packages/arduino_interface-0.0.0-py3.10.egg-info
+running install_scripts
+Installing arduino_reader script to /media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/install/arduino_interface/lib/arduino_interface
+writing list of installed files to '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/EWheelChAIr_ws/build/arduino_interface/install.log'
