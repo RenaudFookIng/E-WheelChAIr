@@ -82,7 +82,7 @@ ros2 launch e_wheelchair_bringup system.launch.py
 ## 3D Models
 - **Location**: [`3d_models/`](3d_models/)
 - **Formats**: STL and STEP files for 3D printing and simulation.
-- **Tools**: Designed in FreeCAD 0.20+.
+- **Tools**: Designed in OnShape.
 - **Note**: Use `git lfs pull` after cloning to retrieve 3D files.
 
 ---
