@@ -15,13 +15,16 @@ setup(
     zip_safe=True,
     maintainer='renaud',
     maintainer_email='renaud@todo.todo',
-    description='Package for controlling the Sabertooth motor driver and real-time visualization of motor data',
+    description='Package for controlling the Sabertooth motor driver',
     license='Apache License 2.0',
-    tests_require=['pytest'],
+    extras_require={
+        'test': [
+            'pytest',
+        ],
+    },
     entry_points={
         'console_scripts': [
-            'motor_speed_calculator = sabertooth_controller.motor_speed_calculator:main',
-            'real_time_plot = sabertooth_controller.real_time_plot:main',
+            'sabertooth_controller = sabertooth_controller.sabertooth_node:main',
         ],
     },
 )
