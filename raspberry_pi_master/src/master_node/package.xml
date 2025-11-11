@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>master_node</name>
+  <version>0.1.0</version>
+  <description>Nœud maître pour E-WheelChAIr</description>
+  <maintainer email="renaud.janet@proton.me">Renaud JANET</maintainer>
+  <license>Apache 2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <depend>rclcpp</depend>
+  <depend>custom_msgs</depend>
+  <depend>geometry_msgs</depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
