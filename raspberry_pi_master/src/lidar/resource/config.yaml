@@ -1,0 +1,5 @@
+lidar:
+  frame_id: "laser_link"
+  port: "/dev/ttyUSB0"  # À adapter selon le port utilisé
+  baudrate: 115200      # À adapter selon le modèle de LIDAR
+  scan_mode: "Standard"

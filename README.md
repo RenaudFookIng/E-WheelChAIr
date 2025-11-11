@@ -29,19 +29,42 @@ E-WheelChAIr/
 |
 ├── docs/                 # Documentation
 |
-├── image_processing/     # image processing (Yolo and Depth Anything)
-│   ├── config/
-│   ├── launch/
-│   └── src/
-|       └── yolo_detector/
-|           ├── resource/
-|           ├── test/
-|           └── yolo_detector/
-|           |   ├── __init__.py
-|           |   └── yolo_node.py
-|           ├── package.xml
-|           ├── setup.cfg
-|           └── setup.py
+├── image_processing/
+|   ├── config/
+|   │   ├── depth_camera_params.yaml
+|   │   └── wide_camera_params.yaml
+|   ├── launch/
+|   │   ├── depth_camera.launch.py
+|   │   └── wide_cameras.launch.py
+|   ├── src/
+|   │   ├── depth_camera_driver/    # Pour la depth camera (ex: RealSense)
+|   │   │   ├── __init__.py
+|   │   │   ├── depth_camera_node.py
+|   │   │   ├── package.xml
+|   │   │   ├── setup.cfg
+|   │   │   └── setup.py
+|   │   ├── wide_camera_driver/     # Pour les caméras Fit0892
+|   │   │   ├── __init__.py
+|   │   │   ├── wide_camera_node.py
+|   │   │   ├── package.xml
+|   │   │   ├── setup.cfg
+|   │   │   └── setup.py
+|   │   ├── depth_processing/       # Traitement pour la depth camera
+|   │   │   ├── __init__.py
+|   │   │   ├── depth_processing_node.py
+|   │   │   ├── package.xml
+|   │   │   ├── setup.cfg
+|   │   │   └── setup.py
+|   │   └── wide_processing/        # Traitement pour les caméras grand angle (YOLO + Depth Anything)
+|   │       ├── resource/           # Modèles YOLO/Depth Anything
+|   │       ├── __init__.py
+|   │       ├── wide_processing_node.py
+|   │       ├── package.xml
+|   │       ├── setup.cfg
+|   │       └── setup.py
+|   ├── package.xml
+|   ├── setup.cfg
+|   └── setup.py
 |
 ├── raspberry_pi_master/
 │   ├── config/
@@ -49,8 +72,10 @@ E-WheelChAIr/
 │   └── src/
 |       ├── custom_msgs/
 |       │   ├── msg/
-|       |   |   ├── ArduinoData.msg
-|       |   |   └── Yolodetector.msg
+|       |   |   ├── EmergencyData.msg
+|       |   |   ├── Joystick.msg
+|       |   |   ├── UltrasonicArray.msg
+|       |   |   └── ObstacleDetection.msg
 |       │   ├── CMakeLists.txt
 |       │   └── package.xml
 |       │ 
