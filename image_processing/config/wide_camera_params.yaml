@@ -1,0 +1,13 @@
+wide_cameras:
+  - camera_name: "wide_camera_1"
+    video_device: "/dev/video0"  # À adapter selon le port USB
+    image_width: 1280
+    image_height: 720
+    pixel_format: "yuyv"        # Format par défaut pour Fit0892
+    framerate: 30
+  - camera_name: "wide_camera_2"
+    video_device: "/dev/video1"  # À adapter selon le port USB
+    image_width: 1280
+    image_height: 720
+    pixel_format: "yuyv"
+    framerate: 30
