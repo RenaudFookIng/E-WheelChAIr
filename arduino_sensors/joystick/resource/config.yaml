@@ -1,0 +1,3 @@
+arduino:
+  port: "/dev/ttyACM1"  # À adapter selon le port du joystick (peut être différent de l'Arduino des ultrasons)
+  baudrate: 9600
