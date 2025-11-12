@@ -172,7 +172,7 @@ E-WheelChAIr/
 ### 1. Clone the Repository
 ```bash
 git clone https://github.com/RenaudFookIng/E-WheelChAIr.git
-cd E-WheelChAIr
+cd E-WheelChAIr_ws
 ```
 
 ### 2. Build the ROS Workspace
