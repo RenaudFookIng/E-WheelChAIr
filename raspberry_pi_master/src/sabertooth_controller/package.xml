@@ -1,16 +1,18 @@
 <?xml version="1.0"?>
 <package format="3">
   <name>sabertooth_controller</name>
-  <version>0.1.0</version>
-  <description>Contrôleur pour le Sabertooth</description>
-  <maintainer email="renaud.janet@proton.me">Renaud JANET</maintainer>
-  <license>Apache 2.0</license>
+  <version>0.0.1</version>
+  <description>ROS 2 package for controlling Sabertooth motor driver via serial port</description>
+
+  <maintainer email="renaud.janet@proton.me">Renaud Janet</maintainer>
+  <license>Apache License 2.0</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
+
   <depend>rclcpp</depend>
   <depend>geometry_msgs</depend>
+  <depend>serial_driver</depend>
 
   <export>
-    <build_type>ament_cmake</build_type>
   </export>
 </package>
