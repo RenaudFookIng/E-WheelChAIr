@@ -10,7 +10,7 @@
 E-WheelChAIr is an open-source project designed to enhance autonomy and accessibility for electric wheelchairs. It integrates:
 - A **ROS2-based architecture** for real-time control and sensor fusion.
 - **3D-printed mechanical parts** (sensor mounts, joystick adapters).
-- **Modular design** for easy customization and collaboration with partners like the University of Milan.
+- **Modular design** for easy customization and collaboration with partners like Sorbonne University.
 
 ---
 
