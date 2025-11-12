@@ -89,60 +89,61 @@ E-WheelChAIr/
 │   ├── config/
 │   ├── launch/
 │   └── src/
-|       ├── custom_msgs/
-|       │   ├── msg/
-|       |   |   ├── EmergencyData.msg
-|       |   |   ├── Joystick.msg
-|       |   |   ├── UltrasonicArray.msg
-|       |   |   └── ObstacleDetection.msg
-|       │   ├── CMakeLists.txt
-|       │   └── package.xml
-|       │
-|       ├── lidar
-|       │   ├── launch/
-|       |   |   └── lidar.launch.py
-|       │   ├── lidar/
-|       |   │   └── __init__.py
-|       │   ├── resource/
-|       |   │   └── config.yaml
-|       │   ├── test/
-|       │   ├──setup.py
-|       │   └──package.xml
-|       │
-|       ├── master_node
-|       │   ├── master_node/
-|       |   │   ├── __init__.py
-|       |   │   └── master_node.py
-|       │   ├── setup.py
-|       │   ├── setup.cfg
-|       │   ├── CMakeLists.txt
-|       │   └── package.xml
-|       │
-│       ├── motor_speed_calculator/
-|       │   ├── motor_speed_calculator/
-│       │   │   ├── __init__.py
-|       │   |   └── motor_speed_calculator.py
-|       │   ├── package.xml
-|       │   ├── setup.py
-|       |   └── CMakeLists.txt
-|       |
-│       ├── visualization/
-|       │   ├── visualization/
-│       │   │   ├── __init__.py
-|       │   |   └── real_time_plot_node.py
-|       │   ├── package.xml
-|       │   ├── setup.py
-|       |   └── CMakeLists.txt
-|       |
-|       └── sabertooth_controller
-|           ├── include/sabertooth_controller/
-│           │   └── sabertooth_controller.hh
-|           ├── src/
-│           │   └── sabertooth_controller.cc
-|           ├── CMakeLists.txt
-|           └── package.xml
-|
+|       
 ├── src/
+|   ├── custom_msgs/
+|   │   ├── msg/
+|   |   |   ├── EmergencyData.msg
+|   |   |   ├── Joystick.msg
+|   |   |   ├── UltrasonicArray.msg
+|   |   |   └── ObstacleDetection.msg
+|   |   ├── CMakeLists.txt
+|   |   └── package.xml
+|   |
+|   ├── lidar
+|   │   ├── launch/
+|   |   |   └── lidar.launch.py
+|   │   ├── lidar/
+|   |   │   └── __init__.py
+|   │   ├── resource/
+|   |   │   └── config.yaml
+|   │   ├── test/
+|   │   ├──setup.py
+|   │   └──package.xml
+|   │
+|   ├── master_node
+|   │   ├── master_node/
+|   |   │   ├── __init__.py
+|   |   │   └── master_node.py
+|   │   ├── setup.py
+|   │   ├── setup.cfg
+|   │   ├── CMakeLists.txt
+|   │   └── package.xml
+|   │
+|   ├── motor_speed_calculator/
+|   │   ├── motor_speed_calculator/
+|   │   │   ├── __init__.py
+|   │   |   └── motor_speed_calculator.py
+|   │   ├── package.xml
+|   │   ├── setup.py
+|   |   └── CMakeLists.txt
+|   |
+|   ├── visualization/
+|   │   ├── visualization/
+|   │   │   ├── __init__.py
+|   │   |   └── real_time_plot_node.py
+|   │   ├── package.xml
+|   │   ├── setup.py
+|   |   └── CMakeLists.txt
+|   |
+|   └── sabertooth_controller
+|       ├── include/sabertooth_controller/
+│       │   └── sabertooth_controller.hh
+|       ├── src/
+│       │   └── sabertooth_controller.cc
+|       ├── CMakeLists.txt
+|       └── package.xml
+|
 ├── utils/
 ├── docs/                 # Documentation 
 ├── .gitignore
