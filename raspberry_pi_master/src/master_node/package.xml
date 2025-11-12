@@ -2,16 +2,14 @@
 <package format="3">
   <name>master_node</name>
   <version>0.1.0</version>
-  <description>Nœud maître pour E-WheelChAIr</description>
-  <maintainer email="renaud.janet@proton.me">Renaud JANET</maintainer>
-  <license>Apache 2.0</license>
+  <description>Central ROS2 node for E-WheelChAIr to merge all sensor data and control motors</description>
 
-  <buildtool_depend>ament_cmake</buildtool_depend>
-  <depend>rclcpp</depend>
-  <depend>custom_msgs</depend>
+  <maintainer email="renaud.janet@etu.sorbonne-universite.fr">Renaud Janet</maintainer>
+  <license>Apache-2.0</license>
+
+  <depend>rclpy</depend>
   <depend>geometry_msgs</depend>
+  <depend>custom_msgs</depend>
 
-  <export>
-    <build_type>ament_cmake</build_type>
-  </export>
+  <buildtool_depend>ament_python</buildtool_depend>
 </package>

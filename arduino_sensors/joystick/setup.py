@@ -1,16 +1,18 @@
 from setuptools import setup, find_packages
+import os
 
 package_name = 'joystick'
+
+# Préparer la liste des fichiers à inclure
+data_files = [
+    ('share/' + package_name, ['package.xml']),
+]
 
 setup(
     name=package_name,
     version='0.1.0',
     packages=find_packages(exclude=['test']),
-    data_files=[
-        ('share/ament_index/resource_index/packages', ['resource/' + package_name]),
-        ('share/' + package_name, ['package.xml']),
-        ('share/' + package_name + '/resource/', ['resource/config.yaml']),
-    ],
+    data_files=data_files,
     install_requires=['setuptools', 'pyserial'],
     zip_safe=True,
     maintainer='Renaud JANET',

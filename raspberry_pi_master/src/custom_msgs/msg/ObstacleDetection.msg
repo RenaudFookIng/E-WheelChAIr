@@ -1,5 +1,5 @@
 int32 id
-string class
+string obstacle_class
 float32 confidence
 int32[] bbox  # [x, y, width, height]
 float32 relative_distance

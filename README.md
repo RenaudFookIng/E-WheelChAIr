@@ -38,29 +38,32 @@ E-WheelChAIr/
 |   │   └── wide_cameras.launch.py
 |   ├── src/
 |   │   ├── depth_camera_driver/    # Pour la depth camera (ex: RealSense)
-|   │   │   ├── __init__.py
-|   │   │   ├── depth_camera_node.py
+|   │   │   ├── depth_camera_driver
+|   │   │   |   ├── __init__.py
+|   │   │   |   └── depth_camera_node.py
 |   │   │   ├── package.xml
-|   │   │   ├── setup.cfg
 |   │   │   └── setup.py
+|   │   │
 |   │   ├── wide_camera_driver/     # Pour les caméras Fit0892
-|   │   │   ├── __init__.py
-|   │   │   ├── wide_camera_node.py
+|   │   │   ├── wide_camera_driver
+|   │   │   |   ├── __init__.py
+|   │   │   |   └── wide_camera_node.py
 |   │   │   ├── package.xml
-|   │   │   ├── setup.cfg
 |   │   │   └── setup.py
+|   │   │
 |   │   ├── depth_processing/       # Traitement pour la depth camera
-|   │   │   ├── __init__.py
-|   │   │   ├── depth_processing_node.py
+|   │   │   ├── depth_processing
+|   │   │   |   ├── __init__.py
+|   │   │   |   └── depth_processing_node.py
 |   │   │   ├── package.xml
-|   │   │   ├── setup.cfg
 |   │   │   └── setup.py
+|   │   │
 |   │   └── wide_processing/        # Traitement pour les caméras grand angle (YOLO + Depth Anything)
 |   │       ├── resource/           # Modèles YOLO/Depth Anything
-|   │       ├── __init__.py
-|   │       ├── wide_processing_node.py
+|   │       ├── wide_processing
+|   │       |   ├── __init__.py
+|   │       |   └── wide_processing_node.py
 |   │       ├── package.xml
-|   │       ├── setup.cfg
 |   │       └── setup.py
 |   ├── package.xml
 |   ├── setup.cfg
@@ -86,7 +89,25 @@ E-WheelChAIr/
 |       |   │   └── masterNode.cc
 |       │   ├──CMakeLists.txt
 |       │   └──package.xml
-|       │ 
+|       │
+│       ├── motor_speed_calculator/
+|       │   ├── motor_speed_calculator/
+│       │   │   ├── __init__.py
+|       │   |   └── motor_speed_calculator.py
+|       │   ├── package.xml
+|       │   ├── setup.py
+|       │   ├── setup.cfg
+|       |   └── CMakeLists.txt
+|       |
+│       ├── visualization/
+|       │   ├── visualization/
+│       │   │   ├── __init__.py
+|       │   |   └── real_time_plot_node.py
+|       │   ├── package.xml
+|       │   ├── setup.py
+|       │   ├── setup.cfg
+|       |   └── CMakeLists.txt
+|       |
 |       └── sabertooth_controller
 |           ├── include/sabertooth_controller/
 │           │   └── sabertooth_controller.hh
@@ -95,22 +116,7 @@ E-WheelChAIr/
 |           ├── CMakeLists.txt
 |           └── package.xml
 |
-├── utils/
-│   ├── motor_speed_calculator/
-|   │   ├── motor_speed_calculator/
-│   │   │   ├── __init__.py
-|   │   |   └── motor_speed_calculator.py
-|   │   ├── package.xml
-|   │   ├── setup.cfg
-|   |   └── setup.py
-|   |
-│   └── real_time_plot/
-|       ├── real_time_plot/
-|       │   ├── __init__.py
-|       |   └── real_time_plot.py
-|       ├── package.xml
-|       ├── setup.cfg
-|       └── setup.py
+├── utils/    
 |
 ├── .gitignore
 ├── LICENSE               # Apache 2.0 License

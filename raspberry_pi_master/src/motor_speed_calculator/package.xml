@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>motor_speed_calculator</name>
+  <version>0.1.0</version>
+  <description>Calculates motor speed from voltage and publishes to ROS2 topics</description>
+  <maintainer email="renaud.janet@proton.me">Renaud JANET</maintainer>
+  <license>Apache 2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <depend>rclpy</depend>
+  <depend>std_msgs</depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>

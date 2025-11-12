@@ -1,19 +1,12 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.8)
 project(master_node)
 
 find_package(ament_cmake REQUIRED)
-find_package(rclcpp REQUIRED)
-find_package(custom_msgs REQUIRED)
-find_package(geometry_msgs REQUIRED)
+find_package(rclpy REQUIRED)
 
-include_directories(include)
-
-add_executable(master_node src/master_node.cpp)
-ament_target_dependencies(master_node rclcpp custom_msgs geometry_msgs)
-
-install(TARGETS master_node
-  DESTINATION lib/${PROJECT_NAME}
+install(
+  DIRECTORY master_node
+  DESTINATION lib/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/site-packages/
 )
 
-ament_export_dependencies(rclcpp custom_msgs geometry_msgs)
 ament_package()
