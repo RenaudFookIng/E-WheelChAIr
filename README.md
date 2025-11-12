@@ -25,9 +25,24 @@ E-WheelChAIr/
 |
 ├── arduino_sensors/      # codes arduino
 │   ├── joystick/
+│   │   ├── joystick/
+│   │   |   ├── __init__.py
+│   │   |   └── wide_camera_node.py
+│   │   ├── test/
+│   │   |   └── test_joystick_node.py
+│   │   ├── package.xml
+│   │   └── setup.py
+│   │
 │   └── ultrasonic/
-|
-├── docs/                 # Documentation
+│       ├── ultrasonic/
+│       |   ├── __init__.py
+│       |   └── ultrasonic_node.py
+│       ├── resource/
+│       |   └── config.yaml
+│       ├── test/
+│       |   └── test_ultrasonic_node.py
+│       ├── package.xml
+│       └── setup.py
 |
 ├── image_processing/
 |   ├── config/
@@ -65,6 +80,7 @@ E-WheelChAIr/
 |   │       |   └── wide_processing_node.py
 |   │       ├── package.xml
 |   │       └── setup.py
+|   │
 |   ├── package.xml
 |   ├── setup.cfg
 |   └── setup.py
@@ -81,14 +97,26 @@ E-WheelChAIr/
 |       |   |   └── ObstacleDetection.msg
 |       │   ├── CMakeLists.txt
 |       │   └── package.xml
-|       │ 
-|       ├── master_node
-|       │   ├── include/master_node/
-|       |   |   └── masterNode.hh
-|       │   ├── src/
-|       |   │   └── masterNode.cc
-|       │   ├──CMakeLists.txt
+|       │
+|       ├── lidar
+|       │   ├── launch/
+|       |   |   └── lidar.launch.py
+|       │   ├── lidar/
+|       |   │   └── __init__.py
+|       │   ├── resource/
+|       |   │   └── config.yaml
+|       │   ├── test/
+|       │   ├──setup.py
 |       │   └──package.xml
+|       │
+|       ├── master_node
+|       │   ├── master_node/
+|       |   │   ├── __init__.py
+|       |   │   └── master_node.py
+|       │   ├── setup.py
+|       │   ├── setup.cfg
+|       │   ├── CMakeLists.txt
+|       │   └── package.xml
 |       │
 │       ├── motor_speed_calculator/
 |       │   ├── motor_speed_calculator/
@@ -96,7 +124,6 @@ E-WheelChAIr/
 |       │   |   └── motor_speed_calculator.py
 |       │   ├── package.xml
 |       │   ├── setup.py
-|       │   ├── setup.cfg
 |       |   └── CMakeLists.txt
 |       |
 │       ├── visualization/
@@ -105,7 +132,6 @@ E-WheelChAIr/
 |       │   |   └── real_time_plot_node.py
 |       │   ├── package.xml
 |       │   ├── setup.py
-|       │   ├── setup.cfg
 |       |   └── CMakeLists.txt
 |       |
 |       └── sabertooth_controller
@@ -116,8 +142,9 @@ E-WheelChAIr/
 |           ├── CMakeLists.txt
 |           └── package.xml
 |
-├── utils/    
-|
+├── src/
+├── utils/
+├── docs/                 # Documentation 
 ├── .gitignore
 ├── LICENSE               # Apache 2.0 License
 └── README.md             # This file
