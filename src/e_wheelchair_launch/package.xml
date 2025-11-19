@@ -1,16 +1,16 @@
 <?xml version="1.0"?>
-<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>e_wheelchair_launch</name>
-  <version>0.0.0</version>
-  <description>Launch files for E-WheelChAIr</description>
-  <maintainer email="votre@email.com">Votre Nom</maintainer>
-  <license>Apache License 2.0</license>
+  <version>0.1.0</version>
+  <description>Launch file for all E-WheelChAIr nodes</description>
+  <maintainer email="renaud.janet@proton.me">Renaud JANET</maintainer>
+  <license>Apache 2.0</license>
 
-  <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>ament_python</buildtool_depend>
 
-  <exec_depend>launch</exec_depend>
+  <depend>rclpy</depend>
 
   <export>
+    <build_type>ament_python</build_type>
   </export>
 </package>

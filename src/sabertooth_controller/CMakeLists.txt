@@ -1,33 +1,4 @@
-cmake_minimum_required(VERSION 3.8)
-project(sabertooth_controller)
-
-# Utiliser C++17 minimum
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-# Dépendances ROS2
-find_package(ament_cmake REQUIRED)
-find_package(rclcpp REQUIRED)
-find_package(geometry_msgs REQUIRED)
-find_package(serial_driver REQUIRED)
-
-# Include
-include_directories(include)
-
-# Exécutable
-add_executable(sabertooth_controller_node src/sabertooth_controller.cpp)
-
-# Dépendances
-ament_target_dependencies(sabertooth_controller_node
-  rclcpp
-  geometry_msgs
-  serial_driver
-)
-
-# Installation
-install(TARGETS sabertooth_controller_node
-  DESTINATION lib/${PROJECT_NAME})
-
-# Export
-ament_export_dependencies(rclcpp geometry_msgs serial_driver)
-ament_package()
+renaud@renaud-Blade-15-Mid-2019-Base:/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr$ ros2 launch e_wheelchair_launch ewheelchair_all.launch.py
+[INFO] [launch]: All log files can be found below /home/renaud/.ros/log/2025-11-12-23-23-25-500993-renaud-Blade-15-Mid-2019-Base-90547
+[INFO] [launch]: Default logging verbosity is set to INFO
+[ERROR] [launch]: Caught exception in launch (see debug for traceback): executable 'sabertooth_controller_node' not found on the libexec directory '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/install/sabertooth_controller/lib/sabertooth_controller' 

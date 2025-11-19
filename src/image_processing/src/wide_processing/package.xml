@@ -5,12 +5,20 @@
   <description>Traitement des images des caméras grand angle (YOLO + Depth Anything)</description>
   <maintainer email="renaud.janet@proton.me">Renaud JANET</maintainer>
   <license>Apache 2.0</license>
-  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <buildtool_depend>ament_python</buildtool_depend>
+
   <depend>rclpy</depend>
   <depend>sensor_msgs</depend>
   <depend>custom_msgs</depend>
   <depend>cv_bridge</depend>
   <depend>vision_msgs</depend>
+
+  <!-- Dépendances Python supplémentaires -->
+  <exec_depend>torch</exec_depend>
+  <exec_depend>onnxruntime</exec_depend>
+  <exec_depend>opencv-python</exec_depend>
+
   <export>
     <build_type>ament_python</build_type>
   </export>
