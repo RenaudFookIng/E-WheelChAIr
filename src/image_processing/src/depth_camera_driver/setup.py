@@ -7,8 +7,9 @@ setup(
     version='0.1.0',
     packages=[package_name],
     data_files=[
-         ('share/' + package_name, ['package.xml']),
+        ('share/' + package_name, ['package.xml']),
     ],
+
     install_requires=['setuptools', 'rclpy', 'std_msgs'],
     zip_safe=True,
     maintainer='Renaud JANET',

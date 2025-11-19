@@ -1,6 +1,6 @@
 from setuptools import setup
 
-package_name = 'wide_camera_driver'
+package_name = 'depth_processing'
 
 setup(
     name=package_name,
@@ -9,15 +9,16 @@ setup(
     data_files=[
         ('share/' + package_name, ['package.xml']),
     ],
-    install_requires=['setuptools', 'rclpy', 'std_msgs'],
+
+    install_requires=['setuptools','rclpy', 'std_msgs', 'numpy'],
     zip_safe=True,
     maintainer='Renaud JANET',
     maintainer_email='renaud.janet@proton.me',
-    description='Driver pour les caméras Fit0892 grand angle',
+    description='Traitement des images de la depth camera',
     license='Apache 2.0',
     entry_points={
         'console_scripts': [
-            'wide_camera_node = wide_camera_driver.wide_camera_node:main',
+            'depth_processing_node = depth_processing.depth_processing_node:main',
         ],
     },
 )

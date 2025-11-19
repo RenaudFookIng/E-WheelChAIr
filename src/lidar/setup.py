@@ -8,8 +8,6 @@ setup(
     packages=[package_name],
     data_files=[
         ('share/' + package_name, ['package.xml']),
-        ('share/' + package_name + '/resource/', ['resource/config.yaml']),
-        ('share/' + package_name + '/launch/', ['launch/lidar.launch.py']),
     ],
     install_requires=['setuptools', 'rclpy', 'std_msgs'],
     zip_safe=True,
