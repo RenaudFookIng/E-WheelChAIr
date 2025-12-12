@@ -1,7 +1,8 @@
 import rclpy
 from rclpy.node import Node
 
-from custom_msgs.msg import UltrasonicArray, Joystick, EmergencyData, ObstacleDetection
+# Utiliser les messages Python au lieu des messages ROS2 C++
+from custom_msgs_py import UltrasonicArray, Joystick, EmergencyData, ObstacleDetection
 from geometry_msgs.msg import Twist
 
 class MasterNode(Node):
@@ -12,6 +13,8 @@ class MasterNode(Node):
         self.motor_pub = self.create_publisher(Twist, '/cmd_vel', 10)
 
         # --- Subscribers ---
+        # Note: Ces abonnements utiliseront des adaptateurs pour convertir
+        # les messages ROS2 standards en nos classes Python
         self.create_subscription(Joystick, '/joystick_data', self.joystick_callback, 10)
         self.create_subscription(UltrasonicArray, '/ultrasonic_data', self.ultrasonic_callback, 10)
         self.create_subscription(EmergencyData, '/emergency_data', self.emergency_callback, 10)

@@ -124,6 +124,19 @@ E-WheelChAIr/
 - Joystick or alternative control input device.
 
 ### Software
+
+#### For Raspberry Pi 3 (Python-only version):
+- **ROS2 Humble** (recommended for Raspberry Pi 3)
+- **Python 3.8+**
+- **Required packages:**
+  ```bash
+  sudo apt install python3-colcon-common-extensions \
+                   ros-humble-rclpy \
+                   ros-humble-geometry-msgs \
+                   python3-pyserial
+  ```
+
+#### For Development (Full version):
 - ROS2 Humble (or Foxy).
 - colcon (build tool for ROS2).
 - FreeCAD 0.20+ (for 3D modeling).
@@ -136,31 +149,57 @@ E-WheelChAIr/
 ### 1. Clone the Repository
 ```bash
 git clone https://github.com/RenaudFookIng/E-WheelChAIr.git
-cd E-WheelChAIr_ws
+cd E-WheelChAIr
 ```
 
 ### 2. Build the ROS Workspace
+
+#### For Raspberry Pi 3 (Python-only):
 ```bash
-cd EWheelChAIr_ws
+# Build only the Python packages needed for Raspberry Pi 3
+colcon build --packages-select sabertooth_controller_py custom_msgs_py master_node motor_speed_calculator e_wheelchair_launch visualization
+source install/setup.bash
+```
+
+#### For Full Development:
+```bash
+# Build all packages (including C++ ones)
 colcon build --symlink-install
 source install/setup.bash
 ```
 
 ### 3. Launch the System
+
+#### For Raspberry Pi 3 (Python-only version):
 ```bash
-ros2 launch e_wheelchair_bringup system.launch.py
+ros2 launch e_wheelchair_launch ewheelchair_python.launch.py
 ```
-*(Replace `e_wheelchair_bringup` with your actual launch package name.)*
+
+#### For development with full features:
+```bash
+ros2 launch e_wheelchair_launch ewheelchair_all.launch.py
+```
+
+**Note:** The Python-only version avoids C++ dependencies and is specifically designed for Raspberry Pi 3 compatibility.
 
 ---
 
 ## ROS Packages
 
+### Original Packages (C++ - Problematic for Raspberry Pi 3)
 | Package               | Description                                  |
 |-----------------------|----------------------------------------------|
-| `e_wheelchair_control` | Low-level motor control and safety logic     |
-| `e_wheelchair_sensors` | Driver for camera and ultrasonic sensor fusion |
-| `e_wheelchair_msgs`    | Custom ROS message definitions               |
+| `sabertooth_controller` | C++ motor controller (replaced by Python version) |
+| `custom_msgs`          | C++ custom messages (replaced by Python interface) |
+
+### New Python-Only Packages (Raspberry Pi 3 Compatible)
+| Package                     | Description                                  |
+|-----------------------------|----------------------------------------------|
+| `sabertooth_controller_py`  | Python motor controller using pyserial       |
+| `custom_msgs_py`            | Python interface for custom messages         |
+| `master_node`               | Central control node (updated for Python)    |
+| `motor_speed_calculator`    | Motor speed calculation                     |
+| `e_wheelchair_launch`       | Launch files including Python-only version   |
 
 ---
 
@@ -180,6 +219,25 @@ mdp : ewheelchair
 - **Note**: Use `git lfs pull` after cloning to retrieve 3D files.
 
 ---
+
+## Raspberry Pi 3 Specific Notes
+
+### Python-Only Architecture
+This project now includes a **Python-only version** specifically designed for Raspberry Pi 3 compatibility:
+
+- **✅ No C++ dependencies** - All motor control and message handling in Python
+- **✅ Reduced memory footprint** - Python is more memory-efficient than C++ on Raspberry Pi 3
+- **✅ Easier debugging** - Python stack traces and logging
+- **✅ Faster iteration** - No compilation needed for Python changes
+
+### Performance Considerations
+- The Python version uses `pyserial` instead of `serial_driver` for motor control
+- Message processing is handled by Python classes instead of ROS2 C++ messages
+- All safety features (emergency stop, obstacle detection) are preserved
+
+### Known Limitations
+- Some advanced features (RealSense camera, LiDAR) may require additional optimization
+- For best performance, use ROS2 Humble with its Python optimizations
 
 ## Collaboration
 - **University of Milan**: Partner for accessibility validation.
