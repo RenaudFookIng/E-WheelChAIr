@@ -1,0 +1,29 @@
+# E-WheelChAIr - Python Dependencies
+# This file lists all Python packages required for the Raspberry Pi 3 version
+
+# Core ROS2 Python packages
+rclpy==2.3.0
+std-msgs==0.1.0
+geometry-msgs==0.1.0
+
+# Motor control
+pyserial==3.5
+
+# Visualization and plotting
+matplotlib==3.5.2
+numpy==1.22.4
+
+# Image processing (optional for Raspberry Pi 3)
+opencv-python==4.5.5.64
+Pillow==9.2.0
+
+# Development and testing
+pytest==7.1.3
+black==22.8.0
+flake8==5.0.4
+
+# ROS2 build tools
+colcon-common-extensions==0.3.0
+
+# Note: ROS2 Humble packages should be installed via apt:
+# sudo apt install python3-colcon-common-extensions ros-humble-rclpy ros-humble-geometry-msgs

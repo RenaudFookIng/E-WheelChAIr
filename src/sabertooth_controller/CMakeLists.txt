@@ -1,4 +1,0 @@
-renaud@renaud-Blade-15-Mid-2019-Base:/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr$ ros2 launch e_wheelchair_launch ewheelchair_all.launch.py
-[INFO] [launch]: All log files can be found below /home/renaud/.ros/log/2025-11-12-23-23-25-500993-renaud-Blade-15-Mid-2019-Base-90547
-[INFO] [launch]: Default logging verbosity is set to INFO
-[ERROR] [launch]: Caught exception in launch (see debug for traceback): executable 'sabertooth_controller_node' not found on the libexec directory '/media/renaud/Blade 15 HDD/M2_Cours/Designing/E-WheelChAIr/install/sabertooth_controller/lib/sabertooth_controller' 

@@ -43,75 +43,55 @@ E-WheelChAIr/
 │   └── utils
 |
 ├── src
-|   ├── custom_msgs
-|   │   ├── CMakeLists.txt
-|   │   ├── msg
-|   │   │   ├── EmergencyData.msg
-|   │   │   ├── Joystick.msg
-|   │   │   ├── ObstacleDetection.msg
-|   │   │   └── UltrasonicArray.msg
-|   │   └── package.xml
+|   ├── custom_msgs_py          # Python message interfaces
+|   │   ├── custom_msgs_py
+|   │   │   ├── __init__.py
+|   │   │   ├── emergency_data_msg.py
+|   │   │   ├── joystick_msg.py
+|   │   │   ├── obstacle_detection_msg.py
+|   │   │   └── ultrasonic_array_msg.py
+|   │   ├── package.xml
+|   │   ├── resource
+|   │   └── setup.py
 |   ├── e_wheelchair_launch
 |   │   ├── e_wheelchair_launch
 |   |   │   ├── __init__.py
 |   |   │   └── launch
-|   |   │       └── ewheelchair_all.launch.py
+|   |   │       ├── ewheelchair_all.launch.py
+|   |   │       └── ewheelchair_python.launch.py
 |   │   ├── package.xml
 |   │   └── setup.py
-|   ├── image_processing
-|   │   ├── config
-|   │   │   ├── camera_info.yaml
-|   │   │   ├── depth_camera_params.yaml
-|   │   │   └── wide_camera_params.yaml
-|   │   ├── launch
-|   │   │   ├── depth_camera.launch.py
-|   │   │   └── wide_cameras.launch.py
-|   │   └── src
-|   │       ├── depth_camera_driver
-|   │       ├── depth_processing
-|   │       ├── wide_camera_driver
-|   │       └── wide_processing
-|   ├── lidar
-|   │   ├── launch
-|   │   │   └── lidar.launch.py
-|   │   ├── lidar
-|   │   │   └── __init__.py
-|   │   ├── package.xml
-|   │   ├── resource
-|   │   ├── setup.py
-|   │   └── test
-|   ├── master_node
-|   │   ├── CMakeLists.txt
+|   ├── master_node              # Central control (Python)
 |   │   ├── master_node
 |   │   │   ├── __init__.py
 |   │   │   └── master_node.py
+|   │   ├── CMakeLists.txt
 |   │   ├── package.xml
 |   │   ├── setup.cfg
 |   │   └── setup.py
-|   ├── motor_speed_calculator
-|   │   ├── CMakeLists.txt
+|   ├── motor_speed_calculator   # Motor speed calculation (Python)
 |   │   ├── motor_speed_calculator
 |   │   │   ├── __init__.py
 |   │   │   └── motor_speed_calculator.py
+|   │   ├── CMakeLists.txt
 |   │   ├── package.xml
 |   │   └── setup.py
-|   ├── sabertooth_controller
-|   │   ├── CMakeLists.txt
-|   │   ├── include
-|   │   │   └── sabertooth_controller
+|   ├── sabertooth_controller_py # Motor controller (Python)
+|   │   ├── sabertooth_controller_py
+|   │   │   └── sabertooth_controller.py
 |   │   ├── package.xml
-|   │   └── src
-|   │       └── sabertooth_controller.cpp
-|   └── visualization
+|   │   └── setup.py
+|   └── visualization            # Real-time plotting (Python)
+|       ├── visualization
+|       │   ├── __init__.py
+|       │   └── real_time_plot.py
 |       ├── CMakeLists.txt
 |       ├── package.xml
-|       ├── setup.py
-|       └── visualization
-|           ├── __init__.py
-|           └── real_time_plot.py|
+|       └── setup.py
 |
 ├── LICENSE
-└── README.md
+├── README.md
+└── requirements.txt           # Python dependencies
 ```
 
 ---
@@ -122,19 +102,27 @@ E-WheelChAIr/
 - Electric wheelchair with Sabertooth 2x32A motor driver (or equivalent).
 - Sensors: Intel Realsense (depth camera), HC-SR04 (ultrasonic), Arduino (I/O interface).
 - Joystick or alternative control input device.
+- **Raspberry Pi 3** (or equivalent) running Raspberry Pi OS 64-bit.
 
 ### Software
 
 #### For Raspberry Pi 3 (Python-only version):
 - **ROS2 Humble** (recommended for Raspberry Pi 3)
 - **Python 3.8+**
-- **Required packages:**
+- **Required system packages:**
   ```bash
-  sudo apt install python3-colcon-common-extensions \
-                   ros-humble-rclpy \
-                   ros-humble-geometry-msgs \
-                   python3-pyserial
+  sudo apt update
+  sudo apt install -y python3-pip python3-colcon-common-extensions \
+                     ros-humble-rclpy ros-humble-geometry-msgs \
+                     python3-pyserial python3-matplotlib \
+                     python3-numpy python3-opencv
   ```
+
+#### Python Dependencies:
+Install the required Python packages using pip:
+```bash
+pip install -r requirements.txt
+```
 
 #### For Development (Full version):
 - ROS2 Humble (or Foxy).
@@ -152,7 +140,12 @@ git clone https://github.com/RenaudFookIng/E-WheelChAIr.git
 cd E-WheelChAIr
 ```
 
-### 2. Build the ROS Workspace
+### 2. Install Python Dependencies
+```bash
+pip install -r requirements.txt
+```
+
+### 3. Build the ROS Workspace
 
 #### For Raspberry Pi 3 (Python-only):
 ```bash
@@ -186,20 +179,24 @@ ros2 launch e_wheelchair_launch ewheelchair_all.launch.py
 
 ## ROS Packages
 
-### Original Packages (C++ - Problematic for Raspberry Pi 3)
-| Package               | Description                                  |
-|-----------------------|----------------------------------------------|
-| `sabertooth_controller` | C++ motor controller (replaced by Python version) |
-| `custom_msgs`          | C++ custom messages (replaced by Python interface) |
+### Python-Only Packages (Raspberry Pi 3 Compatible)
 
-### New Python-Only Packages (Raspberry Pi 3 Compatible)
-| Package                     | Description                                  |
-|-----------------------------|----------------------------------------------|
-| `sabertooth_controller_py`  | Python motor controller using pyserial       |
-| `custom_msgs_py`            | Python interface for custom messages         |
-| `master_node`               | Central control node (updated for Python)    |
-| `motor_speed_calculator`    | Motor speed calculation                     |
-| `e_wheelchair_launch`       | Launch files including Python-only version   |
+This project is now **100% Python** and fully compatible with Raspberry Pi 3:
+
+| Package                     | Description                                  | Status          |
+|-----------------------------|----------------------------------------------|-----------------|
+| `sabertooth_controller_py`  | Python motor controller using pyserial       | ✅ Active       |
+| `custom_msgs_py`            | Python interface for custom messages         | ✅ Active       |
+| `master_node`               | Central control node (Python)                | ✅ Active       |
+| `motor_speed_calculator`    | Motor speed calculation (Python)             | ✅ Active       |
+| `e_wheelchair_launch`       | Launch files including Python-only version   | ✅ Active       |
+| `visualization`             | Real-time plotting and monitoring            | ✅ Active       |
+
+### Key Features:
+- **No C++ dependencies** - All packages are pure Python
+- **Raspberry Pi 3 optimized** - Reduced memory footprint
+- **Easy debugging** - Full Python stack traces and logging
+- **Fast development** - No compilation required for changes
 
 ---
 
@@ -223,21 +220,80 @@ mdp : ewheelchair
 ## Raspberry Pi 3 Specific Notes
 
 ### Python-Only Architecture
-This project now includes a **Python-only version** specifically designed for Raspberry Pi 3 compatibility:
+This project is now **100% Python** and specifically designed for Raspberry Pi 3 compatibility:
 
 - **✅ No C++ dependencies** - All motor control and message handling in Python
-- **✅ Reduced memory footprint** - Python is more memory-efficient than C++ on Raspberry Pi 3
-- **✅ Easier debugging** - Python stack traces and logging
-- **✅ Faster iteration** - No compilation needed for Python changes
+- **✅ Reduced memory footprint** - Optimized for Raspberry Pi 3's 1GB RAM
+- **✅ Easier debugging** - Full Python stack traces and logging
+- **✅ Faster iteration** - No compilation needed for changes
+- **✅ Better compatibility** - Works with Raspberry Pi OS 64-bit
 
 ### Performance Considerations
-- The Python version uses `pyserial` instead of `serial_driver` for motor control
-- Message processing is handled by Python classes instead of ROS2 C++ messages
+- The Python version uses `pyserial` for motor control (Sabertooth 2x32A)
+- Message processing uses Python classes with ROS2 rclpy
 - All safety features (emergency stop, obstacle detection) are preserved
+- Real-time plotting uses matplotlib for visualization
 
 ### Known Limitations
-- Some advanced features (RealSense camera, LiDAR) may require additional optimization
-- For best performance, use ROS2 Humble with its Python optimizations
+- Advanced features (RealSense camera, LiDAR) are optional and can be disabled
+- For best performance, use ROS2 Humble with Python 3.8+
+- Memory usage is optimized but monitor with `htop` during operation
+
+### Memory Optimization Tips
+```bash
+# Monitor memory usage
+htop
+
+# Kill unnecessary processes
+sudo systemctl stop unnecessary-service
+
+# Use lightweight desktop environment
+sudo apt install lxde
+```
+
+## Python Dependencies
+
+All Python dependencies are listed in the [`requirements.txt`](requirements.txt) file:
+
+```bash
+# Install all dependencies
+pip install -r requirements.txt
+
+# For development with specific versions
+pip install -r requirements.txt --upgrade
+```
+
+### Main Dependencies:
+- **ROS2 Python packages**: `rclpy`, `std-msgs`, `geometry-msgs`
+- **Motor control**: `pyserial` for Sabertooth communication
+- **Visualization**: `matplotlib`, `numpy` for real-time plotting
+- **Image processing**: `opencv-python`, `Pillow` (optional)
+- **Development**: `pytest`, `black`, `flake8`
+
+### Running Tests
+
+To run the test suite:
+```bash
+# Install test dependencies
+pip install -r requirements.txt
+
+# Run tests
+pytest src/ -v
+
+# Run with coverage
+pytest src/ --cov=.
+```
+
+### Code Quality
+
+Use the included tools for code quality:
+```bash
+# Format code with black
+black src/
+
+# Check code style with flake8
+flake8 src/
+```
 
 ## Collaboration
 - **University of Milan**: Partner for accessibility validation.

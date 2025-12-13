@@ -1,21 +1,16 @@
 cmake_minimum_required(VERSION 3.8)
-project(sabertooth_controller)
+project(visualization)
 
-# Trouver les dépendances
+# Trouver les dépendances ROS2
 find_package(ament_cmake REQUIRED)
-find_package(rclcpp REQUIRED)
-find_package(serial_driver REQUIRED)
+find_package(rclpy REQUIRED)
 
-# Ajouter l'exécutable
-add_executable(sabertooth_node src/sabertooth_controller.cc)
+# Installer le module Python
+install(
+  DIRECTORY
+    visualization
+  DESTINATION lib/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/site-packages/
+)
 
-# Lier les bibliothèques
-ament_target_dependencies(sabertooth_node rclcpp serial_driver)
-
-# Installer
-install(TARGETS sabertooth_node DESTINATION lib/${PROJECT_NAME})
-
-# Exporter les dépendances
-ament_export_dependencies(rclcpp serial_driver)
-
+# Déclarer le package ROS2
 ament_package()
