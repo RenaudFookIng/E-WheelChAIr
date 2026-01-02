@@ -1,55 +1,97 @@
 from launch import LaunchDescription
 from launch_ros.actions import Node
-from launch.actions import ExecuteProcess
-from launch.substitutions import FindExecutable
+from launch.actions import DeclareLaunchArgument
+from launch.substitutions import LaunchConfiguration
+from ament_index_python.packages import get_package_share_directory
+import os
 
 def generate_launch_description():
+    """
+    Launch file for complete E-WheelChAIr system
+    """
     return LaunchDescription([
-        # Sabertooth Controller
-        Node(
-            package='sabertooth_controller',
-            executable='sabertooth_controller_node',
-            name='sabertooth_controller',
-            output='screen'
+        # Launch arguments
+        DeclareLaunchArgument(
+            'use_sim_time',
+            default_value='false',
+            description='Use simulation (Gazebo) clock if true'
         ),
-
-        # Motor Speed Calculator
+        
+        # Teleop Joystick Node
         Node(
-            package='motor_speed_calculator',
-            executable='motor_speed_calculator_node',
-            name='motor_speed_calculator',
-            output='screen'
+            package='teleop_joystick',
+            executable='teleop_joystick_node',
+            name='teleop_joystick',
+            output='screen',
+            parameters=[
+                os.path.join(
+                    get_package_share_directory('teleop_joystick'),
+                    'config',
+                    'joystick_config.yaml'
+                )
+            ]
         ),
-
-        # Depth Camera Driver
+        
+        # Servo Controller Node
         Node(
-            package='depth_camera_driver',
-            executable='depth_camera_node',
-            name='depth_camera_driver',
-            output='screen'
+            package='servo_controller',
+            executable='servo_controller_node',
+            name='servo_controller',
+            output='screen',
+            parameters=[
+                os.path.join(
+                    get_package_share_directory('servo_controller'),
+                    'config',
+                    'servo_config.yaml'
+                )
+            ]
         ),
-
-        # Wide Camera Driver
+        
+        # Master Node (fusion sensorielle et contrôle)
         Node(
-            package='wide_camera_driver',
-            executable='wide_camera_node',
-            name='wide_camera_driver',
-            output='screen'
+            package='master_node',
+            executable='master_node',
+            name='master_node',
+            output='screen',
+            parameters=[
+                os.path.join(
+                    get_package_share_directory('master_node'),
+                    'config',
+                    'master_config.yaml'
+                )
+            ]
         ),
-
-        # Lidar
+        
+        # LiDAR Node
         Node(
             package='lidar',
             executable='lidar_node',
             name='lidar',
             output='screen'
         ),
-
-        # Visualization
+        
+        # Image Processing Nodes (commented out by default - uncomment when needed)
+        # Node(
+        #     package='image_processing',
+        #     executable='depth_camera_driver',
+        #     name='depth_camera_driver',
+        #     output='screen'
+        # ),
+        # Node(
+        #     package='image_processing',
+        #     executable='wide_camera_driver',
+        #     name='wide_camera_driver',
+        #     output='screen'
+        # ),
+        
+        # Visualization Node
         Node(
             package='visualization',
-            executable='visualization_node',
+            executable='real_time_plot',
             name='visualization',
             output='screen'
-        ),
+        )
     ])
+
+if __name__ == '__main__':
+    generate_launch_description()

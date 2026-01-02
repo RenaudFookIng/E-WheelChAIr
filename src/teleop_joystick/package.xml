@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>e_wheelchair_launch</name>
+  <name>teleop_joystick</name>
   <version>0.1.0</version>
   <description>
-    Launch files for E-WheelChAIr project.
-    Provides launch configurations for the complete system.
+    Teleop Joystick Node for E-WheelChAIr project.
+    Reads data from Arduino joystick and publishes ROS messages.
   </description>
   
   <maintainer email="renaud.janet@etu.sorbonne-universite.fr">Renaud JANET</maintainer>
@@ -14,14 +14,10 @@
   <buildtool_depend>ament_cmake</buildtool_depend>
   <buildtool_depend>ament_python</buildtool_depend>
   
-  <depend>launch</depend>
-  <depend>launch_ros</depend>
-  <depend>teleop_joystick</depend>
-  <depend>servo_controller</depend>
-  <depend>master_node</depend>
-  <depend>lidar</depend>
-  <depend>image_processing</depend>
-  <depend>visualization</depend>
+  <depend>rclpy</depend>
+  <depend>custom_msgs</depend>
+  <depend>python3-pyserial</depend>
+  <depend>python3-yaml</depend>
   
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
