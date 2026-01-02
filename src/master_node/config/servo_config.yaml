@@ -1,0 +1,13 @@
+# Configuration pour la communication avec le servo controller
+servo_controller:
+  port: "/dev/ttyACM1"  # Port série pour le servo controller (différent du joystick)
+  baudrate: 115200
+  timeout: 1
+
+# Paramètres de sécurité pour les servos
+safety:
+  min_angle: 0
+  max_angle: 180
+  neutral_x: 90
+  neutral_y: 90
+  emergency_timeout: 0.5  # Temps avant retour à position neutre en cas d'urgence

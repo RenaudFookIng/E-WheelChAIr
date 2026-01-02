@@ -31,6 +31,16 @@ E-WheelChAIr/
 │       │   ├── package.xml
 │       │   ├── setup.py
 │       │   └── test
+│       ├── servo_controller  # NOUVEAU: Contrôle des servos MG996
+│       │   ├── servo_controller
+│       │   │   ├── __init__.py
+│       │   │   └── servo_controller_node.py
+│       │   ├── resource
+│       │   │   └── config.yaml
+│       │   ├── servo_controller.ino  # Sketch Arduino
+│       │   ├── package.xml
+│       │   ├── setup.py
+│       │   └── test
 │       └── ultrasonic
 │           ├── package.xml
 │           ├── resource
@@ -80,7 +90,7 @@ E-WheelChAIr/
 |   │   ├── resource
 |   │   ├── setup.py
 |   │   └── test
-|   ├── master_node
+|   ├── master_node  # MODIFIÉ: Gestion des servos au lieu des moteurs
 |   │   ├── CMakeLists.txt
 |   │   ├── master_node
 |   │   │   ├── __init__.py
@@ -88,21 +98,7 @@ E-WheelChAIr/
 |   │   ├── package.xml
 |   │   ├── setup.cfg
 |   │   └── setup.py
-|   ├── motor_speed_calculator
-|   │   ├── CMakeLists.txt
-|   │   ├── motor_speed_calculator
-|   │   │   ├── __init__.py
-|   │   │   └── motor_speed_calculator.py
-|   │   ├── package.xml
-|   │   └── setup.py
-|   ├── sabertooth_controller
-|   │   ├── CMakeLists.txt
-|   │   ├── include
-|   │   │   └── sabertooth_controller
-|   │   ├── package.xml
-|   │   └── src
-|   │       └── sabertooth_controller.cpp
-|   └── visualization
+|   └── visualization  # MODIFIÉ: Suppression des graphiques de vitesse
 |       ├── CMakeLists.txt
 |       ├── package.xml
 |       ├── setup.py
@@ -119,7 +115,7 @@ E-WheelChAIr/
 ## Prerequisites
 
 ### Hardware
-- Electric wheelchair with Sabertooth 2x32A motor driver (or equivalent).
+- Electric wheelchair with servo-controlled joystick (using Miuzei MG996 servos).
 - Sensors: Intel Realsense (depth camera), HC-SR04 (ultrasonic), Arduino (I/O interface).
 - Joystick or alternative control input device.
 
@@ -158,9 +154,10 @@ ros2 launch e_wheelchair_bringup system.launch.py
 
 | Package               | Description                                  |
 |-----------------------|----------------------------------------------|
-| `e_wheelchair_control` | Low-level motor control and safety logic     |
+| `master_node`          | Main control node for servo-controlled joystick |
+| `servo_controller`     | Controls Miuzei MG996 servos via Arduino     |
 | `e_wheelchair_sensors` | Driver for camera and ultrasonic sensor fusion |
-| `e_wheelchair_msgs`    | Custom ROS message definitions               |
+| `custom_msgs`          | Custom ROS message definitions               |
 
 ---
 
@@ -180,6 +177,21 @@ mdp : ewheelchair
 - **Note**: Use `git lfs pull` after cloning to retrieve 3D files.
 
 ---
+
+## Recent Changes
+
+### Version 0.2.0 (Current)
+- **Major Architecture Change**: Replaced Sabertooth motor controller with Miuzei MG996 servo-based joystick control
+- **New Package**: `servo_controller` for Arduino-based servo management
+- **Updated**: `master_node` now publishes joystick commands instead of motor commands
+- **Updated**: `visualization` package removed motor speed plotting
+- **Removed**: `sabertooth_controller` and `motor_speed_calculator` packages
+- **Improved**: Safety features with neutral position on emergency stop
+
+### Version 0.1.0
+- Initial release with Sabertooth motor controller
+- Basic sensor integration (ultrasonic, camera)
+- ROS2 Humble compatibility
 
 ## Collaboration
 - **University of Milan**: Partner for accessibility validation.

@@ -1,0 +1,29 @@
+# Configuration pour le servo controller - Version USB Directe
+servo:
+  port: "/dev/ttyACM1"          # Port USB pour l'Arduino servo controller
+  baudrate: 115200              # Vitesse de communication USB
+  
+  # Paramètres standard (pour compatibilité)
+  neutral_x: 90                 # Position neutre standard pour l'axe X
+  neutral_y: 90                 # Position neutre standard pour l'axe Y
+  min_angle: 0                  # Angle minimum standard
+  max_angle: 180                # Angle maximum standard
+  
+  # Paramètres personnalisés pour le mapping Arduino
+  custom_neutral_x: 90          # Position neutre personnalisée pour l'axe X
+  custom_neutral_y: 85          # Position neutre personnalisée pour l'axe Y (85°)
+  amplitude: 15                 # Amplitude limitée à ±15°
+  use_custom_mapping: true      # Activer le mapping personnalisé
+  
+  # Paramètres USB
+  usb_timeout: 1.0              # Timeout pour la communication USB (secondes)
+  response_wait: 0.1            # Temps d'attente pour la réponse Arduino
+  
+safety:
+  emergency_timeout: 0.5        # Délai avant retour à position neutre
+  max_speed: 180                # Vitesse maximale (degrés/seconde)
+  acceleration: 90              # Accélération (degrés/seconde²)
+  
+  # Gestion des erreurs USB
+  max_retries: 3                # Nombre maximal de tentatives de reconnexion
+  retry_delay: 1.0             # Délai entre les tentatives (secondes)

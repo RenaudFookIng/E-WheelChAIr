@@ -1,0 +1,92 @@
+Configuration du raspberry en Hotspot avec connexion possible via ethernet pour mise a jour
+
+hostapd
+sudo nano /etc/hostapd/hostapd.conf
+/etc/hostapd/hostapd.conf
+interface=wlan0
+driver=nl80211
+ssid=E-Wheelchair
+hw_mode=g
+channel=6
+macaddr_acl=0
+auth_algs=1
+ignore_broadcast_ssid=0
+wpa=2
+wpa_passphrase=EWheelChair2025
+wpa_key_mgmt=WPA-PSK
+wpa_pairwise=TKIP
+rsn_pairwise=CCMP
+
+ctrl+O
+enter
+crtl+X
+
+
+sudo nano /etc/default/hostapd
+
+/etc/default/hostapd
+DAEMON_CONF="/etc/hostapd/hostapd.conf"
+
+ctrl+O
+enter
+crtl+X
+
+sudo systemctl unmask hostapd
+sudo systemctl enable hostapd
+sudo systemctl start hostapd
+
+
+dnsmasq
+sudo mv /etc/dnsmasq.conf /etc/dnsmasq.conf.orig
+/etc/dnsmasq.conf
+interface=wlan0
+dhcp-range=192.168.10.2,192.168.10.20,255.255.255.0,24h
+domain-needed
+bogus-priv
+bind-interfaces
+ctrl+O
+enter
+crtl+X
+
+sudo systemctl restart dnsmasq  
+sudo systemctl enable dnsmasq
+
+sudo nano /etc/netplan/01-hotspot-ewheelchair.yaml
+netplan
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    eth0:  # Interface Ethernet (câble vers la box)
+      dhcp4: true
+      optional: true  # Ne bloque pas le démarrage si non connecté
+      nameservers:
+        addresses: [8.8.8.8, 8.8.4.4]
+
+    wlan0:  # Interface Wi-Fi (hotspot)
+      dhcp4: no
+      addresses: [192.168.10.1/24]
+      nameservers:
+        addresses: [8.8.8.8, 8.8.4.4]
+ctrl+O
+enter
+crtl+X
+
+sudo netplan generate
+sudo netplan apply
+Attention un fichier de configuration initial a pu etre fait si c'est le cas il faut le supprimer ou le deplacer
+
+sudo mv /etc/netplan/<nom-du-fichier>.yaml /etc/netplan/<nom-du-fichier>.yaml.bak
+
+si vous avez ce message : ** (generate:4222): WARNING **: 15:55:43.100: Permissions for /etc/netplan/01-hotspot-ewheelchair.yaml are too open. Netplan configuration should NOT be accessible by others.
+faire :
+sudo chmod 600 /etc/netplan/01-hotspot-ewheelchair.yaml
+
+sudo reboot
+
+Se connecter au Hotspot "E-Wheelchair"
+mot de passe : EWheelChair2025
+
+Dans le terminal de son ordinateur : 
+ssh ewheelchair@192.168.10.1
+mdp : ewheelchair

@@ -1,3 +1,0 @@
-arduino:
-  port: "/dev/ttyACM0"  # À adapter selon ton port Arduino
-  baudrate: 9600        # Doit correspondre au baudrate de l'Arduino

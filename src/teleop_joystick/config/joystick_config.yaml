@@ -1,0 +1,18 @@
+# Configuration pour le joystick Arduino
+arduino:
+  port: "/dev/ttyACM0"          # Port série pour l'Arduino joystick
+  baudrate: 115200              # Vitesse de communication
+  timeout: 1                   # Timeout pour la lecture série
+
+# Paramètres de calibration du joystick
+calibration:
+  x_min: -1.0                  # Valeur minimale pour l'axe X
+  x_max: 1.0                   # Valeur maximale pour l'axe X
+  y_min: -1.0                  # Valeur minimale pour l'axe Y
+  y_max: 1.0                   # Valeur maximale pour l'axe Y
+  deadzone: 0.1                # Zone morte pour éviter les micro-mouvements
+
+# Paramètres de filtrage
+filtering:
+  moving_average_window: 5     # Fenêtre pour le lissage des valeurs
+  max_acceleration: 2.0        # Accélération maximale (pour éviter les mouvements brusques)
