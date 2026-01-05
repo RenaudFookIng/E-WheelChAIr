@@ -51,11 +51,23 @@ def test_arduino_connection():
         ser.write(b"STATUS\n")
         time.sleep(0.5)
         
-        response = ser.readline().decode('utf-8').strip()
-        if response.startswith("STATUS,"):
-            print(f"✅ Status received: {response}")
-        else:
-            print(f"❌ Unexpected response: {response}")
+        # Read multiple responses to handle periodic sensor data
+        start_time = time.time()
+        status_received = False
+        
+        while time.time() - start_time < 2:  # Wait up to 2 seconds
+            if ser.in_waiting > 0:
+                response = ser.readline().decode('utf-8').strip()
+                if response.startswith("STATUS,"):
+                    status_received = True
+                    print(f"✅ Status received: {response}")
+                    break
+                # Ignore sensor data responses
+                elif response.startswith("JOYSTICK,") or response.startswith("ULTRASONIC,"):
+                    continue
+        
+        if not status_received:
+            print(f"❌ STATUS response not received")
             return False
         
         # Test 2: Send NEUTRAL command
@@ -63,11 +75,24 @@ def test_arduino_connection():
         ser.write(b"NEUTRAL\n")
         time.sleep(0.5)
         
-        response = ser.readline().decode('utf-8').strip()
-        if response == "NEUTRAL_OK":
+        # Read multiple responses to handle periodic sensor data
+        start_time = time.time()
+        neutral_ok_received = False
+        
+        while time.time() - start_time < 2:  # Wait up to 2 seconds
+            if ser.in_waiting > 0:
+                response = ser.readline().decode('utf-8').strip()
+                if response == "NEUTRAL_OK":
+                    neutral_ok_received = True
+                    break
+                # Ignore sensor data responses
+                elif response.startswith("JOYSTICK,") or response.startswith("ULTRASONIC,"):
+                    continue
+        
+        if neutral_ok_received:
             print("✅ Servos moved to neutral position")
         else:
-            print(f"❌ Unexpected response: {response}")
+            print(f"❌ NEUTRAL_OK response not received")
             return False
         
         # Test 3: Send servo command
@@ -75,11 +100,23 @@ def test_arduino_connection():
         ser.write(b"SERVO,90,85\n")  # Neutral position
         time.sleep(0.5)
         
-        response = ser.readline().decode('utf-8').strip()
-        if response.startswith("SERVO_OK,"):
-            print(f"✅ Servo command executed: {response}")
-        else:
-            print(f"❌ Unexpected response: {response}")
+        # Read multiple responses to handle periodic sensor data
+        start_time = time.time()
+        servo_ok_received = False
+        
+        while time.time() - start_time < 2:  # Wait up to 2 seconds
+            if ser.in_waiting > 0:
+                response = ser.readline().decode('utf-8').strip()
+                if response.startswith("SERVO_OK,"):
+                    servo_ok_received = True
+                    print(f"✅ Servo command executed: {response}")
+                    break
+                # Ignore sensor data responses
+                elif response.startswith("JOYSTICK,") or response.startswith("ULTRASONIC,"):
+                    continue
+        
+        if not servo_ok_received:
+            print(f"❌ SERVO_OK response not received")
             return False
         
         # Test 4: Read sensor data

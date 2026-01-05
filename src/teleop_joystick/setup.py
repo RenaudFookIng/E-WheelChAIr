@@ -1,5 +1,6 @@
 from setuptools import setup
 import os
+from glob import glob
 
 package_name = 'teleop_joystick'
 
@@ -13,6 +14,8 @@ setup(
         ('share/' + package_name, ['package.xml']),
         (os.path.join('share', package_name, 'config'), 
             ['config/joystick_config.yaml']),
+        (os.path.join('share', package_name, 'launch'), 
+            glob(os.path.join('launch', '*.launch.py'))),
     ],
     install_requires=['setuptools'],
     zip_safe=True,

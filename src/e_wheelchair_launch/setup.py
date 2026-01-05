@@ -1,4 +1,6 @@
 from setuptools import setup
+from glob import glob
+import os
 
 package_name = 'e_wheelchair_launch'
 
@@ -11,7 +13,7 @@ setup(
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
         ('share/' + package_name + '/launch',
-            ['launch/ewheelchair_all.launch.py']),
+            glob(os.path.join(package_name, 'launch', '*.launch.py'))),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
