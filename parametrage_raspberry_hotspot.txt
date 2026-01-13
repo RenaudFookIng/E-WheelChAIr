@@ -2,7 +2,8 @@ Configuration du raspberry en Hotspot avec connexion possible via ethernet pour 
 
 hostapd
 sudo nano /etc/hostapd/hostapd.conf
-/etc/hostapd/hostapd.conf
+
+fichier : /etc/hostapd/hostapd.conf
 interface=wlan0
 driver=nl80211
 ssid=E-Wheelchair
@@ -24,7 +25,8 @@ crtl+X
 
 sudo nano /etc/default/hostapd
 
-/etc/default/hostapd
+fichier : /etc/default/hostapd
+
 DAEMON_CONF="/etc/hostapd/hostapd.conf"
 
 ctrl+O
@@ -38,7 +40,10 @@ sudo systemctl start hostapd
 
 dnsmasq
 sudo mv /etc/dnsmasq.conf /etc/dnsmasq.conf.orig
-/etc/dnsmasq.conf
+sudo nano /etc/dnsmasq.conf
+
+fichier : /etc/dnsmasq.conf
+
 interface=wlan0
 dhcp-range=192.168.10.2,192.168.10.20,255.255.255.0,24h
 domain-needed
@@ -51,8 +56,9 @@ crtl+X
 sudo systemctl restart dnsmasq  
 sudo systemctl enable dnsmasq
 
+
 sudo nano /etc/netplan/01-hotspot-ewheelchair.yaml
-netplan
+
 network:
   version: 2
   renderer: networkd
