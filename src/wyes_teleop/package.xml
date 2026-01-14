@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>wyes_teleop</name>
+  <version>0.0.0</version>
+  <description>ROS2 node to send direction intents from Wyes glasses to master_node.</description>
+  <maintainer email="renaud.janet@proton.me">Renaud JANET</maintainer>
+  <license>Apache 2.0</license>
+
+  <buildtool_depend>ament_python</buildtool_depend>
+  <depend>rclpy</depend>
+  <depend>custom_msgs</depend>  <!-- Dépendance vers custom_msgs pour WyesIntent -->
+
+  <test_depend>pytest</test_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>

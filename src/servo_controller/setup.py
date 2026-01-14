@@ -14,7 +14,7 @@ setup(
         (os.path.join('share', package_name, 'config'), 
             ['config/servo_config.yaml']),
     ],
-    install_requires=['setuptools'],
+    install_requires=['setuptools', 'pyserial', 'PyYAML'],  # On garde PyYAML et PySerial
     zip_safe=True,
     maintainer='Renaud JANET',
     maintainer_email='renaud.janet@etu.sorbonne-universite.fr',

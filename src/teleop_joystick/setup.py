@@ -17,7 +17,7 @@ setup(
         (os.path.join('share', package_name, 'launch'), 
             glob(os.path.join('launch', '*.launch.py'))),
     ],
-    install_requires=['setuptools'],
+    install_requires=['setuptools', 'pyserial', 'PyYAML'],
     zip_safe=True,
     maintainer='Renaud JANET',
     maintainer_email='renaud.janet@etu.sorbonne-universite.fr',

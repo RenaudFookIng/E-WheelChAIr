@@ -12,26 +12,25 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/Joystick.msg"
   "msg/EmergencyData.msg"
   "msg/ObstacleDetection.msg"
+  "msg/WyesIntent.msg"
+  "msg/ServoCommand.msg"
+  DEPENDENCIES builtin_interfaces
 )
 
 # Dependencies for message generation
 set(dependencies
-rclcpp  
-std_msgs
+  rosidl_default_runtime
+  builtin_interfaces
 )
 
 # Installation
 install(
-  DIRECTORY
-   msg
+  DIRECTORY msg
   DESTINATION share/${PROJECT_NAME}
 )
 
-# Runtime dependencies
-ament_export_dependencies(rosidl_default_runtime)
-
 # Export dependencies for packages that use custom_msgs
-ament_export_dependencies(include)
+ament_export_dependencies(${dependencies})
 
 # Finalization of the ament package
 ament_package()

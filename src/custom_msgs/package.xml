@@ -6,22 +6,15 @@
   <maintainer email="renaud.janet@proton.me">Renaud JANET</maintainer>
   <license>Apache 2.0</license>
 
-  <!-- Dependencies for constructing messages -->
   <buildtool_depend>ament_cmake</buildtool_depend>
-  <build_depend>rosidl_default_generator</build_depend>
-  <build_depend>rosidl_default_runtime</build_depend>
-
-
-  <!-- Dependencies for execution -->
+  <build_depend>rosidl_default_generators</build_depend>
   <exec_depend>rosidl_default_runtime</exec_depend>
-  <exec_depend>rclcpp</exec_depend>
-  <exec_depend>std_msgs</exec_depend>
+  <build_depend>builtin_interfaces</build_depend>
 
-  <!-- Groups for ROS2 interfaces-->
+
   <member_of_group>rosidl_interface_packages</member_of_group>
 
   <export>
     <build_type>ament_cmake</build_type>
   </export>
-
 </package>

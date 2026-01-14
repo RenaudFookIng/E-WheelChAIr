@@ -7,9 +7,18 @@
   <maintainer email="renaud.janet@etu.sorbonne-universite.fr">Renaud Janet</maintainer>
   <license>Apache-2.0</license>
 
+  <buildtool_depend>ament_python</buildtool_depend>
+
   <depend>rclpy</depend>
   <depend>geometry_msgs</depend>
   <depend>custom_msgs</depend>
+  <depend>pyserial</depend>
+  <depend>PyYAML</depend>
 
-  <buildtool_depend>ament_python</buildtool_depend>
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
 </package>
