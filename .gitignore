@@ -47,3 +47,4 @@ __pycache__/
 *.swp
 *.bak
 *.orig
+.DS_Store
