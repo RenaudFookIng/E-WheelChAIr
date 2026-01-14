@@ -1,7 +1,0 @@
-depth_camera:
-  width: 640
-  height: 480
-  fps: 30
-  device_id: 0
-  enable_depth: True
-  enable_color: True
