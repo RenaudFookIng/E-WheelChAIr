@@ -81,15 +81,6 @@ E-WheelChAIr/
 |   │       ├── depth_processing
 |   │       ├── wide_camera_driver
 |   │       └── wide_processing
-|   ├── lidar
-|   │   ├── launch
-|   │   │   └── lidar.launch.py
-|   │   ├── lidar
-|   │   │   └── __init__.py
-|   │   ├── package.xml
-|   │   ├── resource
-|   │   ├── setup.py
-|   │   └── test
 |   ├── master_node  # MODIFIÉ: Gestion des servos au lieu des moteurs
 |   │   ├── CMakeLists.txt
 |   │   ├── master_node
@@ -98,13 +89,33 @@ E-WheelChAIr/
 |   │   ├── package.xml
 |   │   ├── setup.cfg
 |   │   └── setup.py
-|   └── visualization  # MODIFIÉ: Suppression des graphiques de vitesse
-|       ├── CMakeLists.txt
+|   ├── teleop_joystick
+|   │   ├── config
+|   │   │   └── joystick_config
+|   │   ├── launch
+|   │   │   └── teleop_joystick.launch.py
+|   │   ├── resource
+|   │   │   └── teleop_joystick
+|   │   ├── teleop_joystick
+|   │   │   ├── __init__.py
+|   │   │   └── teleop_joystick_node.py
+|   │   ├── CMakeLists.txt
+|   │   ├── package.xml
+|   │   ├── setup.cfg
+|   │   └── setup.py
+|   └── wyes_teleop
+|       ├── setup.cfg
 |       ├── package.xml
 |       ├── setup.py
-|       └── visualization
+|       ├── resource
+|       │   └── wyes_teleop
+|       ├── test
+|       │   ├── test_copyright.py
+|       │   ├── test_flake8.py
+|       │   └── test_pep257.py
+|       └── wyes_teleop
 |           ├── __init__.py
-|           └── real_time_plot.py|
+|           └── wyes_teleop_node.py
 |
 ├── LICENSE
 └── README.md

@@ -10,14 +10,10 @@
   
   <maintainer email="renaud.janet@etu.sorbonne-universite.fr">Renaud JANET</maintainer>
   <license>Apache License 2.0</license>
-  
-  <buildtool_depend>ament_cmake</buildtool_depend>
+
   <buildtool_depend>ament_python</buildtool_depend>
-  
   <depend>rclpy</depend>
   <depend>custom_msgs</depend>
-  <depend>python3-pyserial</depend>
-  <depend>python3-yaml</depend>
   
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
