@@ -56,10 +56,14 @@ E-WheelChAIr/
 |   ├── custom_msgs
 |   │   ├── CMakeLists.txt
 |   │   ├── msg
+|   │   │   ├── DetectedObject.msg
+|   │   │   ├── DetectedObjectArray.msg
 |   │   │   ├── EmergencyData.msg
 |   │   │   ├── Joystick.msg
 |   │   │   ├── ObstacleDetection.msg
-|   │   │   └── UltrasonicArray.msg
+|   │   │   ├── ServoCommand.msg
+|   │   │   ├── UltrasonicArray.msg
+|   │   │   └── WyesIntent.msg
 |   │   └── package.xml
 |   ├── e_wheelchair_launch
 |   │   ├── e_wheelchair_launch
@@ -94,17 +98,29 @@ E-WheelChAIr/
 |   │   ├── package.xml
 |   │   ├── setup.cfg
 |   │   └── setup.py
-|   ├── teleop_joystick
-|   │   ├── config
-|   │   │   └── joystick_config
-|   │   ├── launch
-|   │   │   └── teleop_joystick.launch.py
-|   │   ├── resource
-|   │   │   └── teleop_joystick
-|   │   ├── teleop_joystick
+|   ├── arduino_data_receiver
+|   │   ├── arduino_data_receiver
 |   │   │   ├── __init__.py
-|   │   │   └── teleop_joystick_node.py
-|   │   ├── CMakeLists.txt
+|   │   │   └── arduino_data_receiver_node.py
+|   │   ├── resource
+|   │   │   └── arduino_data_receiver
+|   │   ├── test
+|   │   │   ├── test_copyright.py
+|   │   │   ├── test_flake8.py
+|   │   │   └── test_pep257.py
+|   │   ├── package.xml
+|   │   ├── setup.cfg
+|   │   └── setup.py
+|   ├── servo_controller
+|   │   ├── config
+|   │   │   └── servo_config.yaml
+|   │   ├── launch
+|   │   │   └── servo_controller.launch.py
+|   │   ├── resource
+|   │   │   └── servo_controller
+|   │   ├── servo_controller
+|   │   │   ├── __init__.py
+|   │   │   └── servo_controller_node.py
 |   │   ├── package.xml
 |   │   ├── setup.cfg
 |   │   └── setup.py
@@ -160,9 +176,8 @@ source install/setup.bash
 
 ### 3. Launch the System
 ```bash
-ros2 launch e_wheelchair_bringup system.launch.py
+ros2 launch e_wheelchair_launch ewheelchair_all.launch.py
 ```
-*(Replace `e_wheelchair_bringup` with your actual launch package name.)*
 
 ---
 
@@ -172,8 +187,12 @@ ros2 launch e_wheelchair_bringup system.launch.py
 |-----------------------|----------------------------------------------|
 | `master_node`          | Main control node for servo-controlled joystick |
 | `servo_controller`     | Controls Miuzei MG996 servos via Arduino     |
-| `e_wheelchair_sensors` | Driver for camera and ultrasonic sensor fusion |
+| `arduino_data_receiver` | Receives data from Arduino sensors       |
+| `depth_processing`     | Processes depth camera data                  |
+| `wide_processing`      | Processes wide-angle camera data             |
+| `wyes_teleop`          | Keyboard-based teleoperation interface        |
 | `custom_msgs`          | Custom ROS message definitions               |
+| `e_wheelchair_launch`  | Launch files for the complete system         |
 
 ---
 
