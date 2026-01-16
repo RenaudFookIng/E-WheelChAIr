@@ -1,18 +1,17 @@
 <?xml version="1.0"?>
 <package format="3">
-  <name>wide_processing</name>
+  <name>arduino_data_receiver</name>
   <version>0.1.0</version>
-  <description>USB receiver node for wide camera obstacle detection</description>
+  <description>Central Arduino USB receiver for joystick and ultrasonic data</description>
 
   <maintainer email="renaud.janet@proton.me">Renaud JANET</maintainer>
   <license>Apache 2.0</license>
 
-  <!-- Build system -->
   <buildtool_depend>ament_python</buildtool_depend>
 
-  <!-- Runtime dependencies -->
   <exec_depend>rclpy</exec_depend>
-  <exec_depend>custom_msgs</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
   <exec_depend>python3-serial</exec_depend>
 
   <export>

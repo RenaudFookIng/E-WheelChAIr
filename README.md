@@ -31,7 +31,7 @@ E-WheelChAIr/
 │       │   ├── package.xml
 │       │   ├── setup.py
 │       │   └── test
-│       ├── servo_controller  # NOUVEAU: Contrôle des servos MG996
+│       ├── servo_controller  # NOUVEAU: Contrôle des servos MZ996
 │       │   ├── servo_controller
 │       │   │   ├── __init__.py
 │       │   │   └── servo_controller_node.py
@@ -68,21 +68,26 @@ E-WheelChAIr/
 |   |   │       └── ewheelchair_all.launch.py
 |   │   ├── package.xml
 |   │   └── setup.py
-|   ├── image_processing
-|   │   ├── config
-|   │   │   ├── camera_info.yaml
-|   │   │   ├── depth_camera_params.yaml
-|   │   │   └── wide_camera_params.yaml
-|   │   ├── launch
-|   │   │   ├── depth_camera.launch.py
-|   │   │   └── wide_cameras.launch.py
-|   │   └── src
-|   │       ├── depth_camera_driver
-|   │       ├── depth_processing
-|   │       ├── wide_camera_driver
-|   │       └── wide_processing
+|   ├── wide_processing 
+|   │   ├── resource
+|   │   ├── test
+|   │   ├── wide_processing
+|   │   │   ├── __init__.py
+|   │   │   └── wide_processing_node.py
+|   │   ├── package.xml
+|   │   ├── setup.cfg
+|   │   └── setup.py
+|   ├── depth_processing
+|   │   ├── resource
+|   │   ├── test
+|   │   ├── depth_processing
+|   │   │   ├── __init__.py
+|   │   │   └── depth_processing_node.py
+|   │   ├── package.xml
+|   │   ├── setup.cfg
+|   │   └── setup.py
 |   ├── master_node  # MODIFIÉ: Gestion des servos au lieu des moteurs
-|   │   ├── CMakeLists.txt
+|   │   ├── config
 |   │   ├── master_node
 |   │   │   ├── __init__.py
 |   │   │   └── master_node.py

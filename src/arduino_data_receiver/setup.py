@@ -1,6 +1,6 @@
 from setuptools import setup
 
-package_name = 'depth_processing'
+package_name = 'arduino_data_receiver'
 
 setup(
     name=package_name,
@@ -18,12 +18,12 @@ setup(
     zip_safe=True,
     maintainer='Renaud JANET',
     maintainer_email='renaud.janet@proton.me',
-    description='Depth camera USB receiver node for obstacle detection',
+    description='Central Arduino USB data receiver for E-WheelChAIr',
     license='Apache 2.0',
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'depth_processing_node = depth_processing.depth_processing_node:main',
+            'arduino_data_receiver_node = arduino_data_receiver.arduino_data_receiver_node:main',
         ],
     },
 )
