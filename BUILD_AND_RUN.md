@@ -42,13 +42,13 @@ ros2 launch e_wheelchair_launch ewheelchair_all.launch.py
 
 ### 2. Launch servo controller only
 ```bash
-ros2 launch servo_controller servo_controller.launch.py \
+ros2 launch e_wheelchair_launch servo_controller.launch.py \
     arduino_servo_port:=/dev/ttyACM1
 ```
 
 ### 3. Launch wide camera processing
 ```bash
-ros2 launch wide_processing wide_camera.launch.py
+ros2 launch e_wheelchair_launch wide_camera.launch.py
 ```
 
 ## 🔍 Troubleshooting

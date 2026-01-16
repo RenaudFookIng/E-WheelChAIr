@@ -8,6 +8,8 @@ This guide explains the different launch file options available in the E-WheelCh
 
 **File:** `src/e_wheelchair_launch/e_wheelchair_launch/launch/ewheelchair_all.launch.py`
 
+**Centralized Location:** All launch files are now located in the `e_wheelchair_launch` package for easier management.
+
 **Description:** Launches the complete E-WheelChAIr system including all sensors and processing nodes.
 
 **Usage:**
@@ -25,7 +27,7 @@ ros2 launch e_wheelchair_launch ewheelchair_all.launch.py
 
 ### 2. Servo Controller Launch
 
-**File:** `src/servo_controller/launch/servo_controller.launch.py`
+**File:** `src/e_wheelchair_launch/e_wheelchair_launch/launch/servo_controller.launch.py`
 
 **Description:** Launches the servo controller node for direct servo control.
 
@@ -40,7 +42,7 @@ ros2 launch servo_controller servo_controller.launch.py \
 
 ### 3. Wide Camera Processing Launch
 
-**File:** `src/wide_processing/launch/wide_camera.launch.py`
+**File:** `src/e_wheelchair_launch/e_wheelchair_launch/launch/wide_camera.launch.py`
 
 **Description:** Launches the wide-angle camera processing node.
 
@@ -86,13 +88,13 @@ ros2 launch wide_processing wide_camera.launch.py
 
 | Argument | Default | Description | Applicable Launch Files |
 |----------|---------|-------------|------------------------|
-| `arduino_servo_port` | `/dev/ttyACM1` | Servo controller Arduino port | servo_controller.launch.py |
+| `arduino_servo_port` | `/dev/ttyACM1` | Servo controller Arduino port | e_wheelchair_launch/servo_controller.launch.py |
 | `use_sim_time` | `false` | Use simulation time | All |
 
 ### Example: Custom Port Configuration
 
 ```bash
-ros2 launch servo_controller servo_controller.launch.py \
+ros2 launch e_wheelchair_launch servo_controller.launch.py \
     arduino_servo_port:=/dev/ttyUSB1
 ```
 
@@ -102,10 +104,10 @@ ros2 launch servo_controller servo_controller.launch.py \
 
 ```bash
 # Terminal 1: Launch servo controller
-ros2 launch servo_controller servo_controller.launch.py
+ros2 launch e_wheelchair_launch servo_controller.launch.py
 
 # Terminal 2: Launch master node
-ros2 launch master_node master_node.launch.py
+ros2 launch e_wheelchair_launch ewheelchair_all.launch.py
 ```
 
 **Use case:** Advanced control with safety logic from master node
@@ -114,10 +116,10 @@ ros2 launch master_node master_node.launch.py
 
 ```bash
 # Terminal 1: Launch wide camera processing
-ros2 launch wide_processing wide_camera.launch.py
+ros2 launch e_wheelchair_launch wide_camera.launch.py
 
 # Terminal 2: Launch master node
-ros2 launch master_node master_node.launch.py
+ros2 launch e_wheelchair_launch ewheelchair_all.launch.py
 ```
 
 **Use case:** Visual processing with master control
@@ -125,8 +127,12 @@ ros2 launch master_node master_node.launch.py
 ### Pattern 3: Complete System with Customization
 
 ```bash
-# Launch complete system with custom ports
+# Launch complete system
 ros2 launch e_wheelchair_launch ewheelchair_all.launch.py
+
+# Or launch individual components
+ros2 launch e_wheelchair_launch servo_controller.launch.py
+ros2 launch e_wheelchair_launch wide_camera.launch.py
 ```
 
 **Use case:** Full system with all components
