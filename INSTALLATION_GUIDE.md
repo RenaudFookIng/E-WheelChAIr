@@ -167,10 +167,12 @@ ls /dev/ttyACM*
 ros2 launch e_wheelchair_launch ewheelchair_all.launch.py
 ```
 
+**Note:** Tous les fichiers de lancement sont maintenant centralisés dans le package `e_wheelchair_launch` pour une gestion plus facile.
+
 ### 2. Vérifier les nodes
 ```bash
 ros2 node list
-# Doit afficher :
+# Doit afficher (selon le launch file utilisé) :
 # /master_node
 # /servo_controller
 # /arduino_data_receiver

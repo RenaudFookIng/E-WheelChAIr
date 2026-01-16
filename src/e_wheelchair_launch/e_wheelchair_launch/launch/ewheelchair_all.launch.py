@@ -17,19 +17,12 @@ def generate_launch_description():
             description='Use simulation (Gazebo) clock if true'
         ),
         
-        # Teleop Joystick Node
+        # Wyes Teleop Node
         Node(
-            package='teleop_joystick',
-            executable='teleop_joystick_node',
-            name='teleop_joystick',
-            output='screen',
-            parameters=[
-                os.path.join(
-                    get_package_share_directory('teleop_joystick'),
-                    'config',
-                    'joystick_config.yaml'
-                )
-            ]
+            package='wyes_teleop',
+            executable='wyes_teleop_node',
+            name='wyes_teleop',
+            output='screen'
         ),
         
         # Servo Controller Node
@@ -62,35 +55,52 @@ def generate_launch_description():
             ]
         ),
         
-        # LiDAR Node
+        # Arduino Data Receiver Node
         Node(
-            package='lidar',
-            executable='lidar_node',
-            name='lidar',
-            output='screen'
+            package='arduino_data_receiver',
+            executable='arduino_data_receiver_node',
+            name='arduino_data_receiver',
+            output='screen',
+            parameters=[
+                os.path.join(
+                    get_package_share_directory('arduino_data_receiver'),
+                    'resource',
+                    'arduino_data_receiver'
+                )
+            ]
         ),
         
-        # Image Processing Nodes (commented out by default - uncomment when needed)
-        # Node(
-        #     package='image_processing',
-        #     executable='depth_camera_driver',
-        #     name='depth_camera_driver',
-        #     output='screen'
-        # ),
-        # Node(
-        #     package='image_processing',
-        #     executable='wide_camera_driver',
-        #     name='wide_camera_driver',
-        #     output='screen'
-        # ),
-        
-        # Visualization Node
+        # Depth Processing Node
         Node(
-            package='visualization',
-            executable='real_time_plot',
-            name='visualization',
-            output='screen'
-        )
+            package='depth_processing',
+            executable='depth_processing_node',
+            name='depth_processing',
+            output='screen',
+            parameters=[
+                os.path.join(
+                    get_package_share_directory('depth_processing'),
+                    'resource',
+                    'depth_processing'
+                )
+            ]
+        ),
+
+        # Wide Processing Node
+        Node(
+            package='wide_processing',
+            executable='wide_processing_node',
+            name='wide_processing',
+            output='screen',
+            parameters=[
+                os.path.join(
+                    get_package_share_directory('wide_processing'),
+                    'resource',
+                    'wide_processing'
+                )
+            ]
+        ),
+        
+
     ])
 
 if __name__ == '__main__':
