@@ -35,11 +35,9 @@ colcon build --symlink-install --packages-select teleop_joystick servo_controlle
 
 ## 🚀 Run Instructions
 
-### 1. Launch teleoperation system
+### 1. Launch complete system
 ```bash
-ros2 launch teleop_joystick teleop_minimal.launch.py \
-    arduino_joystick_port:=/dev/ttyACM0 \
-    arduino_servo_port:=/dev/ttyACM1
+ros2 launch e_wheelchair_launch ewheelchair_all.launch.py
 ```
 
 ### 2. Launch servo controller only
@@ -48,11 +46,9 @@ ros2 launch servo_controller servo_controller.launch.py \
     arduino_servo_port:=/dev/ttyACM1
 ```
 
-### 3. Launch full system with visualization
+### 3. Launch wide camera processing
 ```bash
-ros2 launch teleop_joystick teleop_joystick.launch.py \
-    arduino_joystick_port:=/dev/ttyACM0 \
-    arduino_servo_port:=/dev/ttyACM1
+ros2 launch wide_processing wide_camera.launch.py
 ```
 
 ## 🔍 Troubleshooting
@@ -62,12 +58,12 @@ If you get errors about missing packages:
 
 1. Verify the package exists:
 ```bash
-ros2 pkg list | grep teleop_joystick
+ros2 pkg list | grep servo_controller
 ```
 
 2. Rebuild the package:
 ```bash
-colcon build --symlink-install --packages-select teleop_joystick
+colcon build --symlink-install --packages-select servo_controller wide_processing
 ```
 
 3. Source the setup file:
@@ -89,49 +85,56 @@ If you get errors about missing executables:
 
 1. Verify the executable exists:
 ```bash
-ls -la install/teleop_joystick/lib/teleop_joystick/
+ls -la install/servo_controller/lib/servo_controller/
 ```
 
 2. Check the setup.py file:
 ```bash
-cat src/teleop_joystick/setup.py
+cat src/servo_controller/setup.py
 ```
 
 3. Rebuild the package:
 ```bash
-colcon build --symlink-install --packages-select teleop_joystick
+colcon build --symlink-install --packages-select servo_controller
 ```
 
 ## 📊 Package Structure
-
-### teleop_joystick
-- `teleop_joystick_node.py`: Main node for joystick teleoperation
-- `launch/teleop_minimal.launch.py`: Minimal launch file
-- `launch/teleop_joystick.launch.py`: Full launch file with visualization
-- `config/joystick_config.yaml`: Configuration file
 
 ### servo_controller
 - `servo_controller_node.py`: Main node for servo control
 - `launch/servo_controller.launch.py`: Launch file for servo controller
 - `config/servo_config.yaml`: Configuration file
 
+### wide_processing
+- `wide_processing_node.py`: Main node for wide camera processing
+- `launch/wide_camera.launch.py`: Launch file for wide camera processing
+
+### arduino_data_receiver
+- `arduino_data_receiver_node.py`: Main node for receiving Arduino sensor data
+
+### wyes_teleop
+- `wyes_teleop_node.py`: Main node for keyboard-based teleoperation
+
 ## 🔌 ROS2 Topics
 
 ### Published Topics
-- `/joystick_data`: Joystick position data
+- `/arduino_data`: Arduino sensor data
 - `/servo_commands`: Servo command messages
-- `/servo_status`: Servo status feedback
-- `/ultrasonic_data`: Ultrasonic sensor data
+- `/camera_data`: Camera processing data
+- `/wyes_intent`: Teleoperation intentions
+- `/depth_data`: Depth sensor data
 
 ### Subscribed Topics
 - `/servo_commands`: Servo command messages
-- `/joystick_input`: Joystick input data
+- `/arduino_data`: Arduino sensor data
+- `/wyes_intent`: Teleoperation intentions
 
 ## 📈 Performance Notes
 
 - Update rate: 20Hz (50ms per cycle)
 - Servo amplitude: ±15° (strict limit for safety)
-- Neutral positions: X=90°, Y=85°
+- Neutral positions: X=90°, Y=90°
+- Camera processing rate: 15Hz
 
 ## 🎓 Best Practices
 
@@ -146,7 +149,15 @@ source install/setup.bash
 
 4. Check permissions on serial ports
 
-5. Monitor system resources during operation
+5. Verify Arduino connections
+
+Ensure Arduino devices are properly connected and detected:
+```bash
+ls /dev/ttyACM*
+dmesg | grep tty
+```
+
+6. Monitor system resources during operation
 
 ## 📚 Additional Resources
 

@@ -105,12 +105,11 @@ newgrp dialout
 
 ### 2. Branchements
 ```
-[Joystick PS2] → [Arduino Uno] (A0, A1, D2)
-[Arduino Uno] → [Raspberry Pi] (USB - /dev/ttyACM0)
-[Raspberry Pi] → [Arduino Mega] (USB - /dev/ttyACM1)
-[Arduino Mega] → [Servo X] (D10)
-[Arduino Mega] → [Servo Y] (D9)
+[Arduino] → [Raspberry Pi] (USB - /dev/ttyACM0)
+[Raspberry Pi] → [Servo Controller] (USB - /dev/ttyACM1)
+[Servo Controller] → [Servos MG996R] (D9, D10)
 [Servos] → [Joystick Fauteuil] (Mécanique)
+[Sensors] → [Arduino] (Analog/Digital pins)
 ```
 
 ## 🚀 Compilation et Installation
@@ -148,7 +147,7 @@ ls install/teleop_joystick/lib/teleop_joystick/
 ### 1. Configurer les ports série
 Éditer les fichiers de configuration :
 - `src/servo_controller/config/servo_config.yaml` (port: "/dev/ttyACM1")
-- `src/teleop_joystick/config/joystick_config.yaml` (port: "/dev/ttyACM0")
+- `src/arduino_data_receiver/config/arduino_config.yaml` (port: "/dev/ttyACM0")
 
 **Trouver les ports** :
 ```bash
@@ -156,12 +155,10 @@ ls /dev/ttyACM*
 ```
 
 ### 2. Télécharger le code Arduino
-1. Ouvrir `hardware/arduino/joystick/joystick.ino` dans l'IDE Arduino
-2. Sélectionner la carte (Arduino Uno)
+1. Ouvrir `hardware/arduino/ewheelchair_controller/ewheelchair_controller.ino` dans l'IDE Arduino
+2. Sélectionner la carte appropriée (Arduino Uno/Mega)
 3. Sélectionner le port (/dev/ttyACM0 ou COMx)
 4. Télécharger (Upload)
-
-5. Répéter pour `hardware/arduino/servo_controller/servo_controller_ros.ino` (Arduino Mega, /dev/ttyACM1)
 
 ## 🎯 Lancement du Système
 
@@ -176,21 +173,25 @@ ros2 node list
 # Doit afficher :
 # /master_node
 # /servo_controller
-# /teleop_joystick
-# /lidar
-# /visualization
+# /arduino_data_receiver
+# /wyes_teleop
+# /depth_processing
+# /wide_processing
 ```
 
 ### 3. Monitorer les topics
 ```bash
-# Données du joystick
-ros2 topic echo /joystick_data
+# Données des capteurs Arduino
+ros2 topic echo /arduino_data
 
 # Commandes des servos
 ros2 topic echo /servo_commands
 
-# Statut des servos
-ros2 topic echo /servo_status
+# Données de profondeur
+ros2 topic echo /depth_data
+
+# Intentions de téléopération
+ros2 topic echo /wyes_intent
 ```
 
 ## 🐛 Dépannage

@@ -16,55 +16,49 @@ ros2 launch e_wheelchair_launch ewheelchair_all.launch.py
 ```
 
 **Nodes launched:**
-- Teleop Joystick Node
+- Wyes Teleop Node (keyboard control)
 - Servo Controller Node
 - Master Node (sensor fusion and control)
-- LiDAR Node
-- Visualization Node
-- (Optional) Camera Nodes
+- Arduino Data Receiver Node
+- Depth Processing Node
+- Wide Processing Node
 
-### 2. Teleoperation System Launch (Full)
+### 2. Servo Controller Launch
 
-**File:** `src/teleop_joystick/launch/teleop_joystick.launch.py`
+**File:** `src/servo_controller/launch/servo_controller.launch.py`
 
-**Description:** Launches the teleoperation system with visualization for monitoring.
+**Description:** Launches the servo controller node for direct servo control.
 
 **Usage:**
 ```bash
-ros2 launch teleop_joystick teleop_joystick.launch.py \
-    arduino_joystick_port:=/dev/ttyACM0 \
+ros2 launch servo_controller servo_controller.launch.py \
     arduino_servo_port:=/dev/ttyACM1
 ```
 
 **Nodes launched:**
-- Teleop Joystick Node
 - Servo Controller Node
-- Visualization Node
 
-### 3. Teleoperation System Launch (Minimal)
+### 3. Wide Camera Processing Launch
 
-**File:** `src/teleop_joystick/launch/teleop_minimal.launch.py`
+**File:** `src/wide_processing/launch/wide_camera.launch.py`
 
-**Description:** Launches only the essential teleoperation nodes (recommended for normal use).
+**Description:** Launches the wide-angle camera processing node.
 
 **Usage:**
 ```bash
-ros2 launch teleop_joystick teleop_minimal.launch.py \
-    arduino_joystick_port:=/dev/ttyACM0 \
-    arduino_servo_port:=/dev/ttyACM1
+ros2 launch wide_processing wide_camera.launch.py
 ```
 
 **Nodes launched:**
-- Teleop Joystick Node
-- Servo Controller Node
+- Wide Processing Node
 
 ## Launch File Comparison
 
 | Launch File | Scope | Nodes | Best For |
 |-------------|-------|-------|----------|
-| `ewheelchair_all.launch.py` | Complete system | 5-7 nodes | Full system testing, integration
-| `teleop_joystick.launch.py` | Teleoperation + Viz | 3 nodes | Development, monitoring
-| `teleop_minimal.launch.py` | Teleoperation only | 2 nodes | Normal operation, production
+| `ewheelchair_all.launch.py` | Complete system | 6 nodes | Full system testing, integration
+| `servo_controller.launch.py` | Servo control | 1 node | Direct servo testing
+| `wide_camera.launch.py` | Camera processing | 1 node | Visual processing
 
 ## When to Use Each Launch File
 
@@ -74,18 +68,17 @@ ros2 launch teleop_joystick teleop_minimal.launch.py \
 - Running full system demonstrations
 - Need master node for advanced control logic
 
-### Use `teleop_joystick.launch.py` when:
-- Developing teleoperation features
-- Need visualization for debugging
-- Testing joystick and servo behavior
-- Monitoring system performance
+### Use `servo_controller.launch.py` when:
+- Developing servo control features
+- Testing servo behavior directly
+- Debugging servo movements
+- Calibrating servo positions
 
-### Use `teleop_minimal.launch.py` when:
-- Normal daily operation
-- Production use
-- Resource-constrained environments
-- Need minimal system overhead
-- Focused teleoperation testing
+### Use `wide_camera.launch.py` when:
+- Testing camera processing
+- Debugging visual algorithms
+- Developing computer vision features
+- Monitoring camera data
 
 ## Command Line Arguments
 
@@ -93,25 +86,23 @@ ros2 launch teleop_joystick teleop_minimal.launch.py \
 
 | Argument | Default | Description | Applicable Launch Files |
 |----------|---------|-------------|------------------------|
-| `arduino_joystick_port` | `/dev/ttyACM0` | Joystick Arduino port | teleop_*.launch.py |
-| `arduino_servo_port` | `/dev/ttyACM1` | Servo controller Arduino port | teleop_*.launch.py |
+| `arduino_servo_port` | `/dev/ttyACM1` | Servo controller Arduino port | servo_controller.launch.py |
 | `use_sim_time` | `false` | Use simulation time | All |
 
 ### Example: Custom Port Configuration
 
 ```bash
-ros2 launch teleop_joystick teleop_minimal.launch.py \
-    arduino_joystick_port:=/dev/ttyUSB0 \
+ros2 launch servo_controller servo_controller.launch.py \
     arduino_servo_port:=/dev/ttyUSB1
 ```
 
 ## Integration Patterns
 
-### Pattern 1: Teleoperation + Master Node
+### Pattern 1: Servo Control + Master Node
 
 ```bash
-# Terminal 1: Launch teleoperation
-ros2 launch teleop_joystick teleop_minimal.launch.py
+# Terminal 1: Launch servo controller
+ros2 launch servo_controller servo_controller.launch.py
 
 # Terminal 2: Launch master node
 ros2 launch master_node master_node.launch.py
@@ -119,40 +110,26 @@ ros2 launch master_node master_node.launch.py
 
 **Use case:** Advanced control with safety logic from master node
 
-### Pattern 2: Teleoperation + LiDAR
+### Pattern 2: Camera Processing + Master Node
 
 ```bash
-# Terminal 1: Launch teleoperation
-ros2 launch teleop_joystick teleop_minimal.launch.py
+# Terminal 1: Launch wide camera processing
+ros2 launch wide_processing wide_camera.launch.py
 
-# Terminal 2: Launch LiDAR
-ros2 launch lidar lidar.launch.py
+# Terminal 2: Launch master node
+ros2 launch master_node master_node.launch.py
 ```
 
-**Use case:** Obstacle detection with teleoperation
+**Use case:** Visual processing with master control
 
-### Pattern 3: Teleoperation + Cameras
-
-```bash
-# Terminal 1: Launch teleoperation
-ros2 launch teleop_joystick teleop_minimal.launch.py
-
-# Terminal 2: Launch cameras
-ros2 launch image_processing wide_cameras.launch.py
-```
-
-**Use case:** Visual assistance with teleoperation
-
-### Pattern 4: Complete System with Customization
+### Pattern 3: Complete System with Customization
 
 ```bash
 # Launch complete system with custom ports
-ros2 launch e_wheelchair_launch ewheelchair_all.launch.py \
-    arduino_joystick_port:=/dev/ttyUSB0 \
-    arduino_servo_port:=/dev/ttyUSB1
+ros2 launch e_wheelchair_launch ewheelchair_all.launch.py
 ```
 
-**Use case:** Full system with non-standard port configuration
+**Use case:** Full system with all components
 
 ## Monitoring and Debugging
 
@@ -165,21 +142,26 @@ ros2 node list
 ### Monitor Specific Topics
 
 ```bash
-# Joystick data
-ros2 topic echo /joystick_data
+# Arduino sensor data
+ros2 topic echo /arduino_data
 
 # Servo commands
 ros2 topic echo /servo_commands
 
-# Servo status
-ros2 topic echo /servo_status
+# Camera data
+ros2 topic echo /camera_data
+
+# Wyes teleop intentions
+ros2 topic echo /wyes_intent
 ```
 
 ### View Node Information
 
 ```bash
-ros2 node info /teleop_joystick
+ros2 node info /wyes_teleop
 ros2 node info /servo_controller
+ros2 node info /arduino_data_receiver
+ros2 node info /wide_processing
 ```
 
 ## Troubleshooting
@@ -193,7 +175,7 @@ cd ~/E-WheelChAIr
 source install/setup.bash
 
 # Verify package is built
-colcon build --packages-select e_wheelchair_launch
+colcon build --packages-select e_wheelchair_launch servo_controller wide_processing
 ```
 
 ### Issue: Port already in use
@@ -214,19 +196,22 @@ sudo kill -9 <PID>
 # Install missing ROS2 packages
 sudo apt install ros-humble-<missing-package>
 
+# Install Python dependencies
+pip3 install pyserial pyyaml
+
 # Rebuild workspace
 colcon build
 ```
 
 ## Best Practices
 
-### 1. Start with Minimal Configuration
+### 1. Start with Complete System
 
-Begin with `teleop_minimal.launch.py` and add components gradually.
+Begin with `ewheelchair_all.launch.py` for full functionality.
 
 ### 2. Use Launch Arguments
 
-Always specify Arduino ports explicitly to avoid conflicts.
+Specify Arduino ports explicitly when needed.
 
 ### 3. Monitor System Health
 
@@ -280,11 +265,11 @@ Keep track of custom port mappings and parameters.
 ### 1. Feature Development
 
 ```bash
-# Use teleop_joystick.launch.py for development
-ros2 launch teleop_joystick teleop_joystick.launch.py
+# Use servo_controller.launch.py for servo development
+ros2 launch servo_controller servo_controller.launch.py
 
 # Make code changes
-# Test in real-time with visualization
+# Test servo movements directly
 ```
 
 ### 2. Integration Testing
@@ -299,8 +284,8 @@ ros2 launch e_wheelchair_launch ewheelchair_all.launch.py
 ### 3. Production Deployment
 
 ```bash
-# Use minimal launch for production
-ros2 launch teleop_joystick teleop_minimal.launch.py
+# Use complete system for production
+ros2 launch e_wheelchair_launch ewheelchair_all.launch.py
 
 # Monitor system performance
 ```
@@ -309,9 +294,9 @@ ros2 launch teleop_joystick teleop_minimal.launch.py
 
 ### Configuration Files
 
-- **Joystick:** `src/teleop_joystick/config/joystick_config.yaml`
 - **Servo:** `src/servo_controller/config/servo_config.yaml`
 - **Master:** `src/master_node/config/master_config.yaml`
+- **Arduino:** `src/arduino_data_receiver/config/arduino_config.yaml`
 
 ### Version Control
 
@@ -330,6 +315,7 @@ git commit -m "Update configuration for production"
 3. **Automatic port detection**
 4. **Health monitoring launch file**
 5. **Remote control launch options**
+6. **Individual launch files for each component**
 
 ### Contribution Guidelines
 
@@ -351,8 +337,8 @@ For issues with launch files:
 
 The E-WheelChAIr project provides flexible launch options to suit different needs:
 
-- **Complete system** for full functionality
-- **Teleoperation + visualization** for development
-- **Minimal teleoperation** for production use
+- **Complete system** for full functionality with all sensors and processing
+- **Servo controller** for direct servo testing and development
+- **Camera processing** for visual data analysis
 
 Choose the appropriate launch file based on your current needs and system requirements.
