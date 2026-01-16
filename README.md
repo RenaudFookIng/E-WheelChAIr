@@ -15,6 +15,9 @@ E-WheelChAIr is an open-source project designed to enhance autonomy and accessib
 ---
 
 ## Project Structure
+
+**Note:** All ROS launch files are centralized in the `e_wheelchair_launch` package for easier management and management.
+
 ```
 E-WheelChAIr/
 ├── hardware
@@ -69,7 +72,9 @@ E-WheelChAIr/
 |   │   ├── e_wheelchair_launch
 |   |   │   ├── __init__.py
 |   |   │   └── launch
-|   |   │       └── ewheelchair_all.launch.py
+|   |   │       ├── ewheelchair_all.launch.py      # Complete system launch
+|   |   │       ├── servo_controller.launch.py     # Servo control launch
+|   |   │       └── wide_camera.launch.py         # Camera processing launch
 |   │   ├── package.xml
 |   │   └── setup.py
 |   ├── wide_processing 
@@ -114,8 +119,6 @@ E-WheelChAIr/
 |   ├── servo_controller
 |   │   ├── config
 |   │   │   └── servo_config.yaml
-|   │   ├── launch
-|   │   │   └── servo_controller.launch.py
 |   │   ├── resource
 |   │   │   └── servo_controller
 |   │   ├── servo_controller
@@ -180,6 +183,23 @@ ros2 launch e_wheelchair_launch ewheelchair_all.launch.py
 ```
 
 ---
+
+## ROS Launch Files Centralization
+
+All ROS launch files have been centralized in the `e_wheelchair_launch` package to provide:
+
+- **Simplified Management**: Single location for all launch configurations
+- **Easier Maintenance**: No duplication across packages
+- **Consistent Structure**: Uniform approach to system launching
+- **Better Organization**: Clear separation between nodes and launch configurations
+
+### Available Launch Files
+
+| Launch File | Description | Components Launched |
+|-------------|-------------|---------------------|
+| `ewheelchair_all.launch.py` | Complete system with all sensors and processing | 6 nodes |
+| `servo_controller.launch.py` | Direct servo control interface | 1 node |
+| `wide_camera.launch.py` | Wide-angle camera processing | 1 node |
 
 ## ROS Packages
 
