@@ -58,6 +58,7 @@ E-WheelChAIr/
 ├── src
 |   ├── custom_msgs
 |   │   ├── CMakeLists.txt
+|   │   ├── resource
 |   │   ├── msg
 |   │   │   ├── ControlCommand.msg
 |   │   │   ├── DetectedObject.msg

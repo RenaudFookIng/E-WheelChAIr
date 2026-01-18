@@ -21,7 +21,8 @@ import threading
 # ===============================
 #        MESSAGES CUSTOM
 # ===============================
-from custom_msgs.msg import Joystick, UltrasonicArray
+from custom_msgs.msg import UltrasonicArray, Joystick, ServoCommand, EmergencyData
+
 
 class ArduinoDataReceiverNode(Node):
     def __init__(self):
@@ -29,13 +30,13 @@ class ArduinoDataReceiverNode(Node):
 
         # Publishers
         self.joystick_pub = self.create_publisher(
-            Float32MultiArray,
+            Joystick,
             '/joystick/data',
             10
         )
 
         self.ultrasonic_pub = self.create_publisher(
-            Range,
+            UltrasonicArray,
             '/ultrasonic/data',
             10
         )
@@ -93,11 +94,9 @@ class ArduinoDataReceiverNode(Node):
     # =====================================================
     def handle_joystick(self, data):
         try:
-            msg = Float32MultiArray()
-            msg.data = [
-                float(data["x"]),
-                float(data["y"])
-            ]
+            msg = Joystick()
+            msg.x = float(data["x"])
+            msg.y = float(data["y"])
             self.joystick_pub.publish(msg)
         except KeyError:
             self.get_logger().warn("Joystick: données manquantes")
