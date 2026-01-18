@@ -49,7 +49,7 @@ class MasterNode(Node):
         # Données ultrasons (tableau de distances en mètres)
         self.create_subscription(
             UltrasonicArray,
-            '/ultrasonic_data',
+            '/ultrasonic/data',
             self.ultrasonic_callback,
             10
         )
@@ -109,7 +109,7 @@ class MasterNode(Node):
     #                  CALLBACKS ENTRÉES
     # =====================================================
 
-    def joystick_callback(self, msg: Float32MultiArray):
+    def joystick_callback(self, msg: Joystick):
         """
         Réception du joystick Arduino.
         C'est l'intention brute de l'utilisateur.
