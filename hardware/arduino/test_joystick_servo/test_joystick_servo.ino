@@ -81,7 +81,10 @@ void loop() {
     doc["type"] = "sensor_data";
     doc["joystick"]["x"] = normX;
     doc["joystick"]["y"] = normY;
-    doc["ultrasonic"] = { usLeftCm, usRightCm };
+    // CORRECTION : créer un tableau JSON
+    JsonArray arr = doc.createNestedArray("ultrasonic");
+    arr.add(usLeftCm);
+    arr.add(usRightCm);
 
     serializeJson(doc, Serial);
     Serial.println();
