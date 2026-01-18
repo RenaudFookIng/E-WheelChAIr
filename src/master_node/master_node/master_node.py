@@ -7,8 +7,9 @@ from ament_index_python.packages import get_package_share_directory
 # Messages personnalisés du projet
 from custom_msgs.msg import (
     EmergencyData, 
-    ObstacleDetection.
-    ControlCommand.
+    ObstacleDetection,
+    Joystick,
+    UltrasonicArray,
     ServoCommand)
 
 # (Non utilisé actuellement, mais importé)
@@ -39,7 +40,7 @@ class MasterNode(Node):
         # Joystick venant de arduino_data_receiver
         # msg.data = [x, y] avec x,y ∈ [-1 ; 1]
         self.create_subscription(
-            Float32MultiArray,
+            Joystick,
             '/joystick/data',
             self.joystick_callback,
             10
