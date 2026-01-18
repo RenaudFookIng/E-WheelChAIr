@@ -60,7 +60,6 @@ E-WheelChAIr/
 |   │   ├── CMakeLists.txt
 |   │   ├── resource
 |   │   ├── msg
-|   │   │   ├── ControlCommand.msg
 |   │   │   ├── DetectedObject.msg
 |   │   │   ├── DetectedObjectArray.msg
 |   │   │   ├── EmergencyData.msg
@@ -105,28 +104,13 @@ E-WheelChAIr/
 |   │   ├── package.xml
 |   │   ├── setup.cfg
 |   │   └── setup.py
-|   ├── arduino_data_receiver
-|   │   ├── arduino_data_receiver
-|   │   │   ├── __init__.py
-|   │   │   └── arduino_data_receiver_node.py
-|   │   ├── resource
-|   │   │   └── arduino_data_receiver
-|   │   ├── test
-|   │   │   ├── test_copyright.py
-|   │   │   ├── test_flake8.py
-|   │   │   └── test_pep257.py
+|   ├── arduino_bridge/
+|   │   ├── arduino_bridge
+|   │   │   ├── __init__.py
+|   │   │   └── arduino_bridge_node.py
 |   │   ├── package.xml
-|   │   ├── setup.cfg
-|   │   └── setup.py
-|   ├── servo_controller
-|   │   ├── config
-|   │   │   └── servo_config.yaml
 |   │   ├── resource
-|   │   │   └── servo_controller
-|   │   ├── servo_controller
-|   │   │   ├── __init__.py
-|   │   │   └── servo_controller_node.py
-|   │   ├── package.xml
+|   │   │   └── arduino_bridge
 |   │   ├── setup.cfg
 |   │   └── setup.py
 |   └── wyes_teleop

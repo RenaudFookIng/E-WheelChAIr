@@ -19,9 +19,9 @@ def generate_launch_description():
     # Node Arduino Data Receiver
     # =====================================================
     arduino_receiver_node = Node(
-        package='arduino_data_receiver',
-        executable='arduino_data_receiver_node',
-        name='arduino_data_receiver_node',
+        package='arduino_bridge',
+        executable='arduino_bridge_node',
+        name='arduino_bridge_node',
         output='screen',
         emulate_tty=True
     )
