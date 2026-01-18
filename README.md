@@ -59,6 +59,7 @@ E-WheelChAIr/
 |   ├── custom_msgs
 |   │   ├── CMakeLists.txt
 |   │   ├── msg
+|   │   │   ├── ControlCommand.msg
 |   │   │   ├── DetectedObject.msg
 |   │   │   ├── DetectedObjectArray.msg
 |   │   │   ├── EmergencyData.msg
