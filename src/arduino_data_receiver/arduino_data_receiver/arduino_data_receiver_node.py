@@ -71,7 +71,7 @@ class ArduinoDataReceiverNode(Node):
         """
         while rclpy.ok():
             try:
-                line = self.serial_port.readline().decode('utf-8').strip()
+                line = self.serial_port.readline().decode('utf-8', errors='ignore').strip()
                 if not line:
                     continue
 
