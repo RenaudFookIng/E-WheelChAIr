@@ -1,76 +1,74 @@
 #include <Servo.h>
+#include <ArduinoJson.h>  // Bibliothèque pour JSON (Installer via Library Manager)
 
-// Joystick
-const int pinVRx = A0;
-const int pinVRy = A1;
+// ==============================
+//         CONFIGURATION
+// ==============================
 
-// Ultrasons
-const int trigPin1 = 2;
-const int echoPin1 = 3;
-const int trigPin2 = 4;
-const int echoPin2 = 5;
+#define JOY_X A0   // Joystick X
+#define JOY_Y A1   // Joystick Y
 
-// Servos
+#define SERVO_X_PIN 9
+#define SERVO_Y_PIN 10
+
+#define SERVO_MIN 0
+#define SERVO_MAX 180
+
 Servo servoX;
 Servo servoY;
-const int servoPinX = 9;
-const int servoPinY = 10;
+
+// Temps entre chaque publication sur le port série (ms)
+const unsigned long SERIAL_INTERVAL = 50;  // 20 Hz
+
+unsigned long lastSerialTime = 0;
 
 void setup() {
   Serial.begin(115200);
-  servoX.attach(servoPinX);
-  servoY.attach(servoPinY);
 
-  // Ultrasons
-  pinMode(trigPin1, OUTPUT);
-  pinMode(echoPin1, INPUT);
-  pinMode(trigPin2, OUTPUT);
-  pinMode(echoPin2, INPUT);
+  servoX.attach(SERVO_X_PIN);
+  servoY.attach(SERVO_Y_PIN);
+
+  // Servos au neutre
+  servoX.write(90);
+  servoY.write(90);
 }
 
 void loop() {
-  // Lecture du joystick
-  int valeurX = analogRead(pinVRx);
-  int valeurY = analogRead(pinVRy);
+  // =========================
+  // LECTURE JOYSTICK
+  // =========================
+  int rawX = analogRead(JOY_X);  // 0-1023
+  int rawY = analogRead(JOY_Y);  // 0-1023
 
-  // Envoi des données du joystick
-  Serial.print("{\"type\":\"joystick\",\"x\":");
-  Serial.print(valeurX);
-  Serial.print(",\"y\":");
-  Serial.print(valeurY);
-  Serial.println("}");
+  // Normalisation -1.0 → 1.0
+  float normX = map(rawX, 0, 1023, -1000, 1000) / 1000.0;
+  float normY = map(rawY, 0, 1023, -1000, 1000) / 1000.0;
 
-  // Lecture et envoi des ultrasons
-  float distance1 = getDistance(trigPin1, echoPin1);
-  float distance2 = getDistance(trigPin2, echoPin2);
+  // =========================
+  // COMMANDES SERVOS
+  // =========================
+  int angleX = map(normX * 1000, -1000, 1000, SERVO_MIN, SERVO_MAX);
+  int angleY = map(normY * 1000, -1000, 1000, SERVO_MIN, SERVO_MAX);
 
-  Serial.print("{\"type\":\"ultrasonic\",\"sensors\":[");
-  Serial.print(distance1);
-  Serial.print(",");
-  Serial.print(distance2);
-  Serial.println("]}");
+  // Écriture servo
+  servoX.write(angleX);
+  servoY.write(angleY);
 
-  // Réception des commandes pour les servos
-  if (Serial.available() > 0) {
-    String command = Serial.readStringUntil('\n');
-    if (command.startsWith("{\"type\":\"servo\",\"angles\":[")) {
-      int firstComma = command.indexOf(',');
-      int secondComma = command.indexOf(',', firstComma + 1);
-      int angleX = command.substring(firstComma + 1, secondComma).toInt();
-      int angleY = command.substring(secondComma + 1, command.indexOf(']')).toInt();
-      servoX.write(angleX);
-      servoY.write(angleY);
-    }
+  // =========================
+  // ENVOI JSON SUR SÉRIE
+  // =========================
+  unsigned long now = millis();
+  if (now - lastSerialTime > SERIAL_INTERVAL) {
+    lastSerialTime = now;
+
+    StaticJsonDocument<200> doc;
+    doc["type"] = "joystick";
+    doc["x"] = normX;
+    doc["y"] = normY;
+
+    serializeJson(doc, Serial);
+    Serial.println();
   }
-  delay(50);
-}
 
-float getDistance(int trigPin, int echoPin) {
-  digitalWrite(trigPin, LOW);
-  delayMicroseconds(2);
-  digitalWrite(trigPin, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(trigPin, LOW);
-  float duration = pulseIn(echoPin, HIGH);
-  return duration * 0.034 / 2; // Distance en cm
+  delay(10);  // Petite pause pour stabilité
 }
