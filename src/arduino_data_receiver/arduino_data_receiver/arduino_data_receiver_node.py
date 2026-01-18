@@ -1,14 +1,27 @@
 #!/usr/bin/env python3
+
+"""
+Arduino Data Receiver Node
+==========================
+
+Ce nœud est un TRADUCTEUR entre :
+- le monde matériel (Arduino, USB, JSON)
+- le monde ROS (messages typés et propres)
+
+Il NE CONTIENT AUCUNE LOGIQUE DE DÉCISION.
+"""
+
 import rclpy
 from rclpy.node import Node
-
-from std_msgs.msg import Float32MultiArray
-from sensor_msgs.msg import Range
 
 import serial
 import json
 import threading
 
+# ===============================
+#        MESSAGES CUSTOM
+# ===============================
+from custom_msgs.msg import Joystick, UltrasonicArray
 
 class ArduinoDataReceiverNode(Node):
     def __init__(self):
@@ -27,6 +40,10 @@ class ArduinoDataReceiverNode(Node):
             10
         )
 
+        # =====================================================
+        #                 CONNEXION SÉRIE
+        # =====================================================
+
         # Serial port
         self.serial_port = serial.Serial(
             '/dev/ttyACM0',
@@ -42,8 +59,15 @@ class ArduinoDataReceiverNode(Node):
             daemon=True
         )
         self.serial_thread.start()
-
+    
+    # =====================================================
+    #              BOUCLE LECTURE SÉRIE
+    # =====================================================
     def read_serial_loop(self):
+        """
+        Lit en continu le port série Arduino.
+        Chaque ligne doit être un JSON valide.
+        """
         while rclpy.ok():
             try:
                 line = self.serial_port.readline().decode('utf-8').strip()
@@ -64,6 +88,9 @@ class ArduinoDataReceiverNode(Node):
             except Exception as e:
                 self.get_logger().error(f"Erreur série: {e}")
 
+    # =====================================================
+    #                 JOYSTICK
+    # =====================================================
     def handle_joystick(self, data):
         try:
             msg = Float32MultiArray()
@@ -75,16 +102,35 @@ class ArduinoDataReceiverNode(Node):
         except KeyError:
             self.get_logger().warn("Joystick: données manquantes")
 
+    # =====================================================
+    #                 ULTRASOUNDS
+    # =====================================================
     def handle_ultrasonic(self, data):
+        """
+        Convertit les capteurs ultrasons en UltrasonicArray.msg
+        """
         try:
-            for i, distance_cm in enumerate(data["sensors"]):
-                msg = Range()
-                msg.header.stamp = self.get_clock().now().to_msg()
-                msg.header.frame_id = f"ultrasonic_{i+1}"
-                msg.range = float(distance_cm) / 100.0
-                self.ultrasonic_pub.publish(msg)
+            msg = UltrasonicArray()
+            msg.header.stamp = self.get_clock().now().to_msg()
+
+            # Conversion cm → mètres
+            msg.distances = [
+                float(d) / 100.0 for d in data["sensors"]
+            ]
+
+            self.ultrasonic_pub.publish(msg)
+
         except KeyError:
             self.get_logger().warn("Ultrasonic: données manquantes")
+
+    # =====================================================
+    #                       CLEANUP
+    # =====================================================
+
+    def destroy_node(self):
+        if self.serial_port.is_open:
+            self.serial_port.close()
+        super().destroy_node()
 
 
 def main(args=None):
