@@ -2,10 +2,9 @@
 """
 Launch file for E-WheelChAIr
 ============================
-Lance les trois nodes essentiels pour le pilotage via joystick :
-- ArduinoDataReceiverNode : lecture joystick + capteurs Arduino
+Lance les 2 nodes essentiels pour le pilotage via joystick :
+- ArduinoBridgeNode : Noeud de communication entre Arduino et Raspberry
 - MasterNode : décision de commande et logique sécurité
-- ServoControllerNode : envoi des commandes aux servos
 """
 
 import os
@@ -18,7 +17,7 @@ def generate_launch_description():
     # =====================================================
     # Node Arduino Data Receiver
     # =====================================================
-    arduino_receiver_node = Node(
+    arduino_bridge_node = Node(
         package='arduino_bridge',
         executable='arduino_bridge_node',
         name='arduino_bridge_node',
@@ -37,22 +36,11 @@ def generate_launch_description():
         emulate_tty=True
     )
 
-    # =====================================================
-    # Node Servo Controller
-    # =====================================================
-    servo_controller_node = Node(
-        package='servo_controller',
-        executable='servo_controller_node',
-        name='servo_controller_node',
-        output='screen',
-        emulate_tty=True
-    )
 
     # =====================================================
     # Return LaunchDescription
     # =====================================================
     return LaunchDescription([
-        arduino_receiver_node,
-        master_node,
-        servo_controller_node
+        arduino_bridge_node,
+        master_node
     ])
