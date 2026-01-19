@@ -1,13 +1,20 @@
 #!/usr/bin/env python3
 """
-Arduino Bridge Node
-===================
-Pont bidirectionnel entre Arduino (USB/JSON) et ROS 2.
+Arduino Bridge Node (JSON)
+==========================
 
-- Arduino -> ROS : joystick, ultrasons, emergency
-- ROS -> Arduino : commandes servo finales (ServoCommand)
+Pont bidirectionnel entre Arduino (USB / JSON) et ROS 2.
 
-AUCUNE logique de décision ici.
+Arduino → ROS :
+- joystick
+- ultrasonic
+- emergency
+- status (debug)
+
+ROS → Arduino :
+- ServoCommand (commande finale uniquement)
+
+AUCUNE logique décisionnelle ici.
 """
 
 import rclpy
@@ -16,6 +23,7 @@ from rclpy.node import Node
 import serial
 import json
 import threading
+import time
 
 # ===============================
 #        MESSAGES CUSTOM
@@ -29,12 +37,14 @@ from custom_msgs.msg import (
 
 
 class ArduinoBridgeNode(Node):
+
+    # =====================================================
+    #                      INIT
+    # =====================================================
     def __init__(self):
         super().__init__('arduino_bridge_node')
 
-        # =====================================================
-        #                    PUBLISHERS
-        # =====================================================
+        # ---------------- PUBLISHERS ----------------
         self.joystick_pub = self.create_publisher(
             Joystick,
             '/joystick/data',
@@ -53,9 +63,7 @@ class ArduinoBridgeNode(Node):
             10
         )
 
-        # =====================================================
-        #                    SUBSCRIBERS
-        # =====================================================
+        # ---------------- SUBSCRIBERS ----------------
         self.create_subscription(
             ServoCommand,
             '/servo_commands',
@@ -63,9 +71,7 @@ class ArduinoBridgeNode(Node):
             10
         )
 
-        # =====================================================
-        #                 CONNEXION SÉRIE
-        # =====================================================
+        # ---------------- SERIAL ----------------
         self.serial_port = serial.Serial(
             port='/dev/ttyACM0',
             baudrate=115200,
@@ -82,7 +88,7 @@ class ArduinoBridgeNode(Node):
         self.serial_thread.start()
 
     # =====================================================
-    #           LECTURE USB → ROS
+    #            SERIAL → ROS (LECTURE)
     # =====================================================
     def read_serial_loop(self):
         buffer = ""
@@ -90,6 +96,7 @@ class ArduinoBridgeNode(Node):
         while rclpy.ok():
             try:
                 if self.serial_port.in_waiting == 0:
+                    time.sleep(0.002)  # évite CPU 100%
                     continue
 
                 chunk = self.serial_port.read(
@@ -104,11 +111,18 @@ class ArduinoBridgeNode(Node):
 
             except Exception as e:
                 self.get_logger().error(f"Erreur série: {e}")
+                time.sleep(0.1)
 
+    # =====================================================
+    #                JSON DISPATCHER
+    # =====================================================
     def handle_json_line(self, line: str):
+        if not line:
+            return
+
         try:
             data = json.loads(line)
-            msg_type = data.get("type")
+            msg_type = data.get("type", "")
 
             if msg_type == "joystick":
                 self.handle_joystick(data)
@@ -119,31 +133,50 @@ class ArduinoBridgeNode(Node):
             elif msg_type == "emergency":
                 self.handle_emergency(data)
 
+            elif msg_type == "status":
+                self.handle_status(data)
+
+            elif msg_type == "ready":
+                self.get_logger().info("Arduino prêt")
+
+            else:
+                self.get_logger().warn(f"Type JSON inconnu: {msg_type}")
+
         except json.JSONDecodeError:
             self.get_logger().warn(f"JSON invalide: {line}")
 
     # =====================================================
-    #                  HANDLERS ENTRANTS
+    #               HANDLERS ARDUINO → ROS
     # =====================================================
     def handle_joystick(self, data):
         msg = Joystick()
-        msg.x = float(data["x"])
-        msg.y = float(data["y"])
+        msg.x = float(data.get("x", 0.0))
+        msg.y = float(data.get("y", 0.0))
         self.joystick_pub.publish(msg)
 
     def handle_ultrasonic(self, data):
         msg = UltrasonicArray()
         msg.header.stamp = self.get_clock().now().to_msg()
-        msg.distances = [float(d) / 100.0 for d in data["distances"]]
+        msg.distances = [float(d) for d in data.get("distances", [])]
         self.ultrasonic_pub.publish(msg)
 
     def handle_emergency(self, data):
         msg = EmergencyData()
-        msg.stop = bool(data["stop"])
+        msg.stop = (data.get("status", "") == "stopped")
         self.emergency_pub.publish(msg)
 
+        if msg.stop:
+            self.get_logger().error("🚨 EMERGENCY STOP REÇU DE L'ARDUINO")
+
+    def handle_status(self, data):
+        self.get_logger().debug(
+            f"Servo status | X={data.get('currentX')} "
+            f"Y={data.get('currentY')} "
+            f"Amp={data.get('amplitude')}"
+        )
+
     # =====================================================
-    #           ROS → USB (COMMANDES SERVOS)
+    #               ROS → ARDUINO
     # =====================================================
     def servo_command_callback(self, msg: ServoCommand):
         """
@@ -153,9 +186,9 @@ class ArduinoBridgeNode(Node):
         try:
             payload = {
                 "type": "servo",
-                "x_angle": msg.x_angle,
-                "y_angle": msg.y_angle,
-                "emergency": msg.emergency_stop
+                "x_angle": int(msg.x_angle),
+                "y_angle": int(msg.y_angle),
+                "emergency": bool(msg.emergency_stop)
             }
 
             json_str = json.dumps(payload) + "\n"
@@ -173,6 +206,9 @@ class ArduinoBridgeNode(Node):
         super().destroy_node()
 
 
+# =====================================================
+#                      MAIN
+# =====================================================
 def main(args=None):
     rclpy.init(args=args)
     node = ArduinoBridgeNode()
