@@ -1,109 +1,90 @@
 /*****************************************************************
-  E-WheelChAIr Unified Arduino Controller
+  E-WheelChAIr Unified Arduino Controller (JSON VERSION)
   
   DESCRIPTION:
-  This Arduino sketch controls the complete hardware interface for the 
-  E-WheelChAIr project. It handles:
-  - PS2 Joystick input (user control)
-  - 2x MG996R Servo motors (wheelchair joystick manipulation)
-  - 4x HC-SR04 Ultrasonic sensors (obstacle detection)
-  - Serial communication with ROS2 (Raspberry Pi)
+  Arduino sketch handling the complete hardware interface for the
+  E-WheelChAIr project using JSON communication.
   
-  HARDWARE: Arduino Mega 2560 (required for sufficient I/O pins)
+  FEATURES:
+  - PS2 Joystick input
+  - 2x MG996R Servo motors
+  - 4x HC-SR04 Ultrasonic sensors
+  - JSON Serial communication with ROS2
+  - Safety timeout & emergency stop
   
-  SAFETY FEATURES:
-  - ±15° amplitude limit on servos
-  - Automatic timeout return to neutral
-  - Emergency stop function
-  - Distance clamping for ultrasonic sensors
+  HARDWARE:
+  Arduino Mega 2560
   
   AUTHOR: E-WheelChAIr Team
-  VERSION: 1.0
+  VERSION: 2.0 (JSON)
   DATE: 2024
  *****************************************************************/
 
-// Include the standard Arduino Servo library
+#include <Arduino.h>
 #include <Servo.h>
+#include <ArduinoJson.h>
 
 /*****************************************************************
-  PIN DEFINITIONS - Hardware Connection Mapping
+  PIN DEFINITIONS
  *****************************************************************/
 
 // ANALOG INPUTS
-#define JOYSTICK_X_PIN A0  // Joystick X-axis (Left/Right)
-#define JOYSTICK_Y_PIN A1  // Joystick Y-axis (Forward/Backward)
+#define JOYSTICK_X_PIN A0
+#define JOYSTICK_Y_PIN A1
 
-// DIGITAL OUTPUTS - Servos
-#define SERVO_X_PIN 10     // Servo for X-axis (Horizontal movement)
-#define SERVO_Y_PIN 9      // Servo for Y-axis (Vertical movement)
+// SERVOS
+#define SERVO_X_PIN 10
+#define SERVO_Y_PIN 9
 
 // ULTRASONIC SENSORS
-// Front Sensor (US1)
-#define US1_TRIG 5         // Trigger pin for front ultrasonic sensor
-#define US1_ECHO 6         // Echo pin for front ultrasonic sensor
-
-// Rear Sensor (US2)
-#define US2_TRIG 7         // Trigger pin for rear ultrasonic sensor
-#define US2_ECHO 4         // Echo pin for rear ultrasonic sensor
-
-// Left Sensor (US3)
-#define US3_TRIG 8         // Trigger pin for left ultrasonic sensor
-#define US3_ECHO 3         // Echo pin for left ultrasonic sensor
-
-// Right Sensor (US4)
-#define US4_TRIG 2         // Trigger pin for right ultrasonic sensor
-#define US4_ECHO 13        // Echo pin for right ultrasonic sensor
+#define US1_TRIG 5
+#define US1_ECHO 6
+#define US2_TRIG 7
+#define US2_ECHO 4
+#define US3_TRIG 8
+#define US3_ECHO 3
+#define US4_TRIG 2
+#define US4_ECHO 13
 
 /*****************************************************************
-  GLOBAL VARIABLES AND OBJECTS
+  GLOBAL OBJECTS & VARIABLES
  *****************************************************************/
 
-// Create servo objects
-Servo servoX;  // X-axis servo (Left/Right movement)
-Servo servoY;  // Y-axis servo (Forward/Backward movement)
+Servo servoX;
+Servo servoY;
 
 // SERVO CONFIGURATION
-// NOTE: Y-axis neutral is 85° (not 90°) to match wheelchair mechanics
-int neutralX = 85;    // Neutral position for X servo (degrees)
-int neutralY = 90;    // Neutral position for Y servo (degrees)
-int currentX = 85;    // Current X position (degrees)
-int currentY = 90;    // Current Y position (degrees)
-int amplitude = 15;   // Maximum deviation from neutral (±15°)
+int neutralX = 85;
+int neutralY = 90;
+int currentX = 85;
+int currentY = 90;
+int amplitude = 15;
 
-// SERIAL COMMUNICATION SETTINGS
-const long BAUD_RATE = 115200;  // Communication speed with ROS2
-unsigned long lastSerialTime = 0;  // Timestamp of last serial transmission
-const unsigned long SERIAL_INTERVAL = 50;  // 20Hz update rate (50ms)
+// SERIAL
+const long BAUD_RATE = 115200;
+unsigned long lastSerialTime = 0;
+const unsigned long SERIAL_INTERVAL = 50;
 
-// SAFETY FEATURES
-unsigned long lastCommandTime = 0;  // Timestamp of last received command
-const unsigned long TIMEOUT_MS = 1000;  // 1 second timeout for safety
+// SAFETY
+unsigned long lastCommandTime = 0;
+const unsigned long TIMEOUT_MS = 1000;
+
+// JSON
+StaticJsonDocument<512> jsonIn;
+StaticJsonDocument<512> jsonOut;
+String serialBuffer = "";
 
 /*****************************************************************
-  SETUP FUNCTION - Runs once at startup
+  SETUP
  *****************************************************************/
 void setup() {
-  // Initialize serial communication with ROS2
   Serial.begin(BAUD_RATE);
-  
-  // Wait for serial port to connect (important for USB)
-  while (!Serial) {
-    ; // Busy wait until serial is ready
-  }
-  
-  Serial.println("E-WheelChAIr Controller - Initializing...");
-  
-  // Initialize servo motors
-  servoX.attach(SERVO_X_PIN);  // Attach X servo to pin 10
-  servoY.attach(SERVO_Y_PIN);  // Attach Y servo to pin 9
-  
-  // Move servos to neutral position for safety
+  while (!Serial);
+
+  servoX.attach(SERVO_X_PIN);
+  servoY.attach(SERVO_Y_PIN);
   moveToNeutral();
-  Serial.println("Servos initialized and moved to neutral position");
-  
-  // Configure ultrasonic sensor pins
-  // Trigger pins are OUTPUT (send ultrasonic pulse)
-  // Echo pins are INPUT (receive reflected pulse)
+
   pinMode(US1_TRIG, OUTPUT);
   pinMode(US1_ECHO, INPUT);
   pinMode(US2_TRIG, OUTPUT);
@@ -112,208 +93,173 @@ void setup() {
   pinMode(US3_ECHO, INPUT);
   pinMode(US4_TRIG, OUTPUT);
   pinMode(US4_ECHO, INPUT);
-  
-  Serial.println("Ultrasonic sensors initialized");
-  Serial.println("System ready. Waiting for commands...");
+
+  jsonOut["type"] = "ready";
+  jsonOut["device"] = "E-WheelChAIr-Arduino";
+  serializeJson(jsonOut, Serial);
+  Serial.println();
 }
 
 /*****************************************************************
-  MAIN LOOP - Runs continuously
+  MAIN LOOP
  *****************************************************************/
 void loop() {
-  // 1. CHECK FOR INCOMING COMMANDS FROM ROS2
-  if (Serial.available() > 0) {
-    processSerialCommand();  // Process any received commands
-    lastCommandTime = millis();  // Reset safety timeout timer
-  }
-  
-  // 2. SAFETY TIMEOUT CHECK
-  // If no commands received for TIMEOUT_MS, return to neutral
+  processSerialInput();
+
   if (millis() - lastCommandTime > TIMEOUT_MS) {
-    if (currentX != neutralX || currentY != neutralY) {
-      moveToNeutral();  // Safety: return to neutral position
-      Serial.println("TIMEOUT: Returned to neutral position");
-    }
+    moveToNeutral();
   }
-  
-  // 3. PERIODIC SENSOR DATA TRANSMISSION
-  // Send joystick and ultrasonic data at 20Hz (every 50ms)
+
   if (millis() - lastSerialTime > SERIAL_INTERVAL) {
-    sendJoystickData();      // Send current joystick position
-    sendUltrasonicData();    // Send all ultrasonic distances
-    lastSerialTime = millis();  // Update last transmission time
+    sendJoystickData();
+    sendUltrasonicData();
+    lastSerialTime = millis();
   }
-  
-  // 4. SMALL DELAY TO PREVENT CPU OVERLOAD
-  delay(10);  // 10ms delay for system stability
+
+  delay(10);
 }
 
 /*****************************************************************
-  COMMAND PROCESSING - Handle incoming serial commands
+  SERIAL JSON INPUT
  *****************************************************************/
-void processSerialCommand() {
-  // Read complete command line
-  String command = Serial.readStringUntil('\n');
-  command.trim();  // Remove whitespace
-  
-  // COMMAND: SERVO,X,Y - Set servo positions
-  if (command.startsWith("SERVO,")) {
-    // Parse the command: "SERVO,X,Y"
-    int firstComma = command.indexOf(',');
-    int secondComma = command.indexOf(',', firstComma + 1);
-    
-    if (firstComma != -1 && secondComma != -1) {
-      // Extract X and Y angles from command
-      int xAngle = command.substring(firstComma + 1, secondComma).toInt();
-      int yAngle = command.substring(secondComma + 1).toInt();
-      
-      // SAFETY: Apply amplitude constraints
-      // X-axis: 85° ±15° = 70° to 100°
-      // Y-axis: 90° ±15° = 75° to 105°
-      xAngle = constrain(xAngle, neutralX - amplitude, neutralX + amplitude);
-      yAngle = constrain(yAngle, neutralY - amplitude, neutralY + amplitude);
-      
-      // Move servos to requested positions
-      servoX.write(xAngle);
-      servoY.write(yAngle);
-      
-      // Update current positions
-      currentX = xAngle;
-      currentY = yAngle;
-      
-      // Send confirmation back to ROS2
-      Serial.print("SERVO_OK,");
-      Serial.print(currentX);
-      Serial.print(",");
-      Serial.println(currentY);
+void processSerialInput() {
+  while (Serial.available()) {
+    char c = Serial.read();
+    if (c == '\n') {
+      DeserializationError error = deserializeJson(jsonIn, serialBuffer);
+      if (!error) {
+        handleJsonCommand(jsonIn);
+        lastCommandTime = millis();
+      }
+      serialBuffer = "";
+    } else {
+      serialBuffer += c;
     }
   }
-  
-  // COMMAND: NEUTRAL - Return servos to neutral position
-  else if (command.equals("NEUTRAL")) {
-    moveToNeutral();
-    Serial.println("NEUTRAL_OK");
-  }
-  
-  // COMMAND: STATUS - Request current system status
-  else if (command.equals("STATUS")) {
+}
+
+/*****************************************************************
+  JSON COMMAND HANDLER
+ *****************************************************************/
+void handleJsonCommand(JsonDocument &doc) {
+  const char* type = doc["type"] | "";
+
+  if (strcmp(type, "servo") == 0) {
+    bool emergency = doc["emergency"] | false;
+
+    if (emergency) {
+      emergencyStop();
+      return;
+    }
+
+    int xAngle = doc["x_angle"] | neutralX;
+    int yAngle = doc["y_angle"] | neutralY;
+
+    xAngle = constrain(xAngle, neutralX - amplitude, neutralX + amplitude);
+    yAngle = constrain(yAngle, neutralY - amplitude, neutralY + amplitude);
+
+    servoX.write(xAngle);
+    servoY.write(yAngle);
+    currentX = xAngle;
+    currentY = yAngle;
+
     sendStatus();
   }
-  
-  // UNKNOWN COMMAND
-  else {
-    Serial.print("ERROR: Unknown command: ");
-    Serial.println(command);
+
+  else if (strcmp(type, "neutral") == 0) {
+    moveToNeutral();
+    sendStatus();
   }
 }
 
 /*****************************************************************
   MOVEMENT FUNCTIONS
  *****************************************************************/
-
-// Move both servos to neutral position
 void moveToNeutral() {
-  servoX.write(neutralX);  // X-axis to neutral
-  servoY.write(neutralY);  // Y-axis to neutral
-  currentX = neutralX;    // Update current X position
-  currentY = neutralY;    // Update current Y position
+  servoX.write(neutralX);
+  servoY.write(neutralY);
+  currentX = neutralX;
+  currentY = neutralY;
 }
 
-// EMERGENCY STOP - Immediately return to neutral
 void emergencyStop() {
   moveToNeutral();
-  Serial.println("EMERGENCY_STOP: All servos returned to neutral");
+  jsonOut.clear();
+  jsonOut["type"] = "emergency";
+  jsonOut["status"] = "stopped";
+  serializeJson(jsonOut, Serial);
+  Serial.println();
 }
 
 /*****************************************************************
-  SENSOR DATA FUNCTIONS
+  SENSOR OUTPUT
  *****************************************************************/
-
-// Read and send joystick position data
 void sendJoystickData() {
-  // Read analog values from joystick (0-1023)
-  int xValue = analogRead(JOYSTICK_X_PIN);
-  int yValue = analogRead(JOYSTICK_Y_PIN);
-  
-  // Convert analog values to servo angles (0-180°)
-  int xAngle = map(xValue, 0, 1023, 0, 180);
-  int yAngle = map(yValue, 0, 1023, 0, 180);
-  
-  // Send data to ROS2: "JOYSTICK,X,Y"
-  Serial.print("JOYSTICK,");
-  Serial.print(xAngle);
-  Serial.print(",");
-  Serial.println(yAngle);
+  int xRaw = analogRead(JOYSTICK_X_PIN);
+  int yRaw = analogRead(JOYSTICK_Y_PIN);
+
+  float xNorm = (xRaw - 512) / 512.0;
+  float yNorm = (yRaw - 512) / 512.0;
+
+  jsonOut.clear();
+  jsonOut["type"] = "joystick";
+  jsonOut["x"] = xNorm;
+  jsonOut["y"] = yNorm;
+
+  serializeJson(jsonOut, Serial);
+  Serial.println();
 }
 
-// Read and send all ultrasonic sensor distances
 void sendUltrasonicData() {
-  // Array to store distances from all 4 sensors
-  float distances[4];
-  
-  // Read each sensor sequentially
-  distances[0] = readUltrasonicDistance(US1_TRIG, US1_ECHO);  // Front
-  distances[1] = readUltrasonicDistance(US2_TRIG, US2_ECHO);  // Rear
-  distances[2] = readUltrasonicDistance(US3_TRIG, US3_ECHO);  // Left
-  distances[3] = readUltrasonicDistance(US4_TRIG, US4_ECHO);  // Right
-  
-  // Send data to ROS2: "ULTRASONIC,d1,d2,d3,d4"
-  Serial.print("ULTRASONIC,");
-  for (int i = 0; i < 4; i++) {
-    Serial.print(distances[i], 2);  // 2 decimal places
-    if (i < 3) Serial.print(",");   // Comma separator (except last)
-  }
-  Serial.println();  // Newline to end command
+  jsonOut.clear();
+  jsonOut["type"] = "ultrasonic";
+
+  JsonArray arr = jsonOut.createNestedArray("distances");
+  arr.add(readUltrasonicDistance(US1_TRIG, US1_ECHO));
+  arr.add(readUltrasonicDistance(US2_TRIG, US2_ECHO));
+  arr.add(readUltrasonicDistance(US3_TRIG, US3_ECHO));
+  arr.add(readUltrasonicDistance(US4_TRIG, US4_ECHO));
+
+  serializeJson(jsonOut, Serial);
+  Serial.println();
 }
 
-// Read distance from a single ultrasonic sensor
+/*****************************************************************
+  ULTRASONIC SENSOR
+ *****************************************************************/
 float readUltrasonicDistance(int trigPin, int echoPin) {
-  // 1. Send 10μs pulse to trigger pin
   digitalWrite(trigPin, LOW);
   delayMicroseconds(2);
   digitalWrite(trigPin, HIGH);
   delayMicroseconds(10);
   digitalWrite(trigPin, LOW);
-  
-  // 2. Measure pulse duration on echo pin (timeout after 30ms = ~4m)
+
   long duration = pulseIn(echoPin, HIGH, 30000);
-  
-  // 3. Handle timeout (no obstacle detected)
-  if (duration == 0) {
-    return 4.0;  // Return max distance (4 meters)
-  }
-  
-  // 4. Calculate distance in centimeters
-  // Speed of sound = 340 m/s = 0.034 cm/μs
-  // Distance = (duration * speed) / 2 (round trip)
-  float distance = duration * 0.034 / 2;
-  
-  // 5. Apply reasonable constraints
-  if (distance < 2.0) distance = 2.0;      // Minimum: 2cm
-  if (distance > 400.0) distance = 400.0;  // Maximum: 400cm (4m)
-  
-  // 6. Convert to meters and return
+  if (duration == 0) return 4.0;
+
+  float distance = duration * 0.034 / 2.0;
+  distance = constrain(distance, 2.0, 400.0);
   return distance / 100.0;
 }
 
-// Send current system status to ROS2
+/*****************************************************************
+  STATUS OUTPUT
+ *****************************************************************/
 void sendStatus() {
-  // Format: "STATUS,currentX,currentY,neutralX,neutralY,amplitude"
-  Serial.print("STATUS,");
-  Serial.print(currentX);
-  Serial.print(",");
-  Serial.print(currentY);
-  Serial.print(",");
-  Serial.print(neutralX);
-  Serial.print(",");
-  Serial.print(neutralY);
-  Serial.print(",");
-  Serial.println(amplitude);
+  jsonOut.clear();
+  jsonOut["type"] = "status";
+  jsonOut["currentX"] = currentX;
+  jsonOut["currentY"] = currentY;
+  jsonOut["neutralX"] = neutralX;
+  jsonOut["neutralY"] = neutralY;
+  jsonOut["amplitude"] = amplitude;
+
+  serializeJson(jsonOut, Serial);
+  Serial.println();
 }
 
 /*****************************************************************
   END OF FILE
  *****************************************************************/
-// E-WheelChAIr - Making wheelchair control accessible through AI
-// Open source project - Apache License 2.0
-// https://github.com/your-repo/E-WheelChAIr
+// E-WheelChAIr – JSON-based Arduino Controller
+// Open Source – Apache License 2.0
