@@ -87,7 +87,7 @@ class MasterNode(Node):
         self.create_subscription(
             ObstacleDetection,
             '/obstacle_detection',
-            self.obstacle_callback,
+            self.front_obstacle_callback,
             10
         )
 
