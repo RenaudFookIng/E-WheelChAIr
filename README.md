@@ -56,47 +56,37 @@ E-WheelChAIr/
 │   └── utils
 |
 ├── src
-|   ├── custom_msgs
-|   │   ├── CMakeLists.txt
+|   ├── arduino_bridge/
+|   │   ├── arduino_bridge
+|   │   │   ├── __init__.py
+|   │   │   └── arduino_bridge_node.py
 |   │   ├── resource
+|   │   │   └── arduino_bridge
+|   │   ├── package.xml
+|   │   ├── setup.cfg
+|   │   └── setup.py
+|   ├── custom_msgs
 |   │   ├── msg
-|   │   │   ├── DetectedObject.msg
-|   │   │   ├── DetectedObjectArray.msg
 |   │   │   ├── EmergencyData.msg
 |   │   │   ├── Joystick.msg
 |   │   │   ├── ObstacleDetection.msg
 |   │   │   ├── ServoCommand.msg
 |   │   │   ├── UltrasonicArray.msg
+|   │   │   ├── VisionObstacle.msg
 |   │   │   └── WyesIntent.msg
+|   │   ├── CMakeLists.txt
+|   │   ├── resource
 |   │   └── package.xml
 |   ├── e_wheelchair_launch
 |   │   ├── e_wheelchair_launch
 |   |   │   ├── __init__.py
 |   |   │   └── launch
-|   |   │       ├── ewheelchair_all.launch.py      # Complete system launch
-|   |   │       ├── servo_controller.launch.py     # Servo control launch
-|   |   │       └── wide_camera.launch.py         # Camera processing launch
+|   |   │       ├── ewheelchair_all.launch.py 
+|   |   │       ├── ewheelchair_joystick_servo.launch.py 
+|   |   │       └── xxx.launch.py  
 |   │   ├── package.xml
 |   │   └── setup.py
-|   ├── wide_processing 
-|   │   ├── resource
-|   │   ├── test
-|   │   ├── wide_processing
-|   │   │   ├── __init__.py
-|   │   │   └── wide_processing_node.py
-|   │   ├── package.xml
-|   │   ├── setup.cfg
-|   │   └── setup.py
-|   ├── depth_processing
-|   │   ├── resource
-|   │   ├── test
-|   │   ├── depth_processing
-|   │   │   ├── __init__.py
-|   │   │   └── depth_processing_node.py
-|   │   ├── package.xml
-|   │   ├── setup.cfg
-|   │   └── setup.py
-|   ├── master_node  # MODIFIÉ: Gestion des servos au lieu des moteurs
+|   ├── master_node
 |   │   ├── config
 |   │   ├── master_node
 |   │   │   ├── __init__.py
@@ -104,28 +94,28 @@ E-WheelChAIr/
 |   │   ├── package.xml
 |   │   ├── setup.cfg
 |   │   └── setup.py
-|   ├── arduino_bridge/
-|   │   ├── arduino_bridge
+|   ├── pc_vision_bridge/
+|   │   ├── pc_vision_bridge
 |   │   │   ├── __init__.py
-|   │   │   └── arduino_bridge_node.py
-|   │   ├── package.xml
+|   │   │   └── pc_vision_bridge_node.py
 |   │   ├── resource
-|   │   │   └── arduino_bridge
+|   │   │   └── pc_vision_bridge
+|   │   ├── package.xml
 |   │   ├── setup.cfg
 |   │   └── setup.py
 |   └── wyes_teleop
-|       ├── setup.cfg
-|       ├── package.xml
-|       ├── setup.py
 |       ├── resource
 |       │   └── wyes_teleop
 |       ├── test
 |       │   ├── test_copyright.py
 |       │   ├── test_flake8.py
 |       │   └── test_pep257.py
-|       └── wyes_teleop
-|           ├── __init__.py
-|           └── wyes_teleop_node.py
+|       ├── wyes_teleop
+|       │   ├── __init__.py
+|       │   └── wyes_teleop_node.py
+|       ├── package.xml
+|       ├── setup.cfg
+|       └── setup.py
 |
 ├── LICENSE
 └── README.md
