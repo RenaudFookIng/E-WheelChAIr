@@ -14,8 +14,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/ObstacleDetection.msg"
   "msg/WyesIntent.msg"
   "msg/ServoCommand.msg"
-  "msg/DetectedObject.msg"
-  "msg/DetectedObjectArray.msg"
+  "msg/VisionObstacle.msg"
   DEPENDENCIES builtin_interfaces
 )
 

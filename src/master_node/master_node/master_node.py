@@ -8,9 +8,12 @@ from ament_index_python.packages import get_package_share_directory
 from custom_msgs.msg import (
     EmergencyData, 
     ObstacleDetection,
+    VisionObstacle,
     Joystick,
     UltrasonicArray,
-    ServoCommand)
+    ServoCommand
+)
+
 
 # (Non utilisé actuellement, mais importé)
 from geometry_msgs.msg import Twist
@@ -24,14 +27,32 @@ class MasterNode(Node):
     ===========
     Nœud central du fauteuil roulant.
     Rôles :
-    - Lire les intentions utilisateur (joystick Arduino)
-    - Recevoir les capteurs (ultrasons, vision, arrêt d'urgence)
-    - Décider si le mouvement est autorisé
-    - Envoyer les commandes finales au contrôleur de servos
+    LOGIQUE DES PRIORITÉS :
+    1. Emergency Stop → priorité absolue → bloque tous les mouvements
+    2. Joystick actif → source principale du mouvement
+    3. Front obstacle → modificateur pour l’avance
+    4. Rear obstacle (ultrasons) → modificateur pour la marche arrière
     """
 
     def __init__(self):
         super().__init__('master_node')
+
+        # =====================================================
+        #                  PARAMÈTRES CONFIGURABLES
+        # =====================================================
+        self.declare_parameter("front_obstacle_caution_distance", 0.30)
+        self.declare_parameter("front_obstacle_stop_distance", 0.15)
+        self.declare_parameter("rear_obstacle_stop_distance", 0.20)
+        self.declare_parameter("avoidance_gain", 0.5)
+
+        self.front_obstacle_caution_distance = self.get_parameter(
+            "front_obstacle_caution_distance").value
+        self.front_obstacle_stop_distance = self.get_parameter(
+            "front_obstacle_stop_distance").value
+        self.rear_obstacle_stop_distance = self.get_parameter(
+            "rear_obstacle_stop_distance").value
+        self.avoidance_gain = self.get_parameter(
+            "avoidance_gain").value
 
         # =====================================================
         #                    SUBSCRIBERS
@@ -54,21 +75,27 @@ class MasterNode(Node):
             10
         )
 
-        # Arrêt d’urgence
+        # Vision Semantique
         self.create_subscription(
-            EmergencyData,
-            '/emergency_data',
-            self.emergency_callback,
+            VisionObstacle,
+            '/vision/obstacle',
+            self.vision_obstacle_callback,
             10
         )
 
-        # Détection d’obstacles par vision
+        # Détection d’obstacles par Camera profondeur
         self.create_subscription(
             ObstacleDetection,
             '/obstacle_detection',
             self.obstacle_callback,
             10
         )
+
+        self.create_subscription(
+            EmergencyData,
+            '/emergency_data',
+            self.emergency_callback,
+            10)
 
         # =====================================================
         #                    PUBLISHERS
@@ -94,8 +121,9 @@ class MasterNode(Node):
         self.joystick_x = 0.0
         self.joystick_y = 0.0
 
-        # Distance minimale détectée (ultrasons ou vision)
-        self.obstacle_distance = 999.0
+        self.front_obstacle_distance = 999.0
+        self.rear_obstacle_distance = 999.0
+        self.vision_obstacle = None
 
         # Paramètres servo (logique centrale)
         self.servo_neutral_x = 90
@@ -108,7 +136,6 @@ class MasterNode(Node):
     # =====================================================
     #                  CALLBACKS ENTRÉES
     # =====================================================
-
     def joystick_callback(self, msg: Joystick):
         """
         Réception du joystick Arduino.
@@ -124,19 +151,20 @@ class MasterNode(Node):
         self.decide_and_publish()
 
     def ultrasonic_callback(self, msg: UltrasonicArray):
-        """
-        Réception des capteurs ultrasons.
-        On garde seulement la distance minimale.
-        """
+        """Ultrasons arrière → marche arrière"""
         if msg.distances:
-            self.obstacle_distance = min(msg.distances)
+            self.rear_obstacle_distance = min(msg.distances)
 
-    def obstacle_callback(self, msg: ObstacleDetection):
-        """
-        Détection obstacle par vision.
-        Écrase l’info ultrason si plus critique.
-        """
-        self.obstacle_distance = msg.relative_distance
+    def front_obstacle_callback(self, msg: ObstacleDetection):
+        """Depth camera frontale → avance"""
+        self.front_obstacle_distance = msg.relative_distance
+
+    def vision_obstacle_callback(self, msg: VisionObstacle):
+        if msg.detection_confidence < 0.5:
+            self.vision_obstacle = None
+        else:
+            self.vision_obstacle = msg
+            self.front_obstacle_distance = msg.forward_offset
 
     def emergency_callback(self, msg: EmergencyData):
         """
@@ -156,58 +184,54 @@ class MasterNode(Node):
         """
         CŒUR DU SYSTÈME
         Cette fonction applique TOUTES les règles :
-        1. arrêt d’urgence
-        2. évitement d’obstacle
-        3. fonctionnement normal
+        Priorités :
+        1️⃣ Arrêt d'urgence (max)
+        2️⃣ Obstacles avant (vision)
+        3️⃣ Obstacles arrière (ultrasons)
+        4️⃣ Commande joystick
         """
 
         # ===============================
-        # CAS 1 : ARRÊT D’URGENCE
+        # PRIORITÉ 1 : ARRÊT D’URGENCE
         # ===============================
         if self.emergency_stop:
-            x_angle = self.servo_neutral_x
-            y_angle = self.servo_neutral_y
-
             self.publish_servo_command(
-                x_angle, y_angle,
+                self.servo_neutral_x,
+                self.servo_neutral_y,
                 source="emergency"
             )
             return
 
         # ===============================
-        # CAS 2 : OBSTACLE TROP PROCHE
+        # PRIORITÉ 2 : OBSTACLE AVANT
         # ===============================
-        if self.obstacle_distance < 0.30:
-            # On bloque l’avance, mais on autorise la rotation
-            x_angle = self.map_normalized_to_servo(
-                self.joystick_x,
-                self.servo_neutral_x
-            )
-            y_angle = self.servo_neutral_y
+        corrected_x = self.joystick_x
+        y_command = self.joystick_y
 
-            self.publish_servo_command(
-                x_angle, y_angle,
-                source="obstacle_avoidance"
-            )
-            return
+        if self.joystick_y > 0 and self.front_obstacle_distance < self.front_obstacle_caution_distance:
+            # Correction de direction
+            if self.vision_obstacle:
+                # obstacle à droite → tourner à gauche
+                corrected_x -= self.avoidance_gain * self.vision_obstacle.lateral_offset
+
+            # Blocage complet si obstacle trop proche
+            if self.front_obstacle_distance < self.front_obstacle_stop_distance:
+                y_command = 0.0
 
         # ===============================
-        # CAS 3 : FONCTIONNEMENT NORMAL
+        # PRIORITÉ 3 : OBSTACLE ARRIÈRE
         # ===============================
-        x_angle = self.map_normalized_to_servo(
-            self.joystick_x,
-            self.servo_neutral_x
-        )
+        if self.joystick_y < 0 and self.rear_obstacle_distance < self.rear_obstacle_stop_distance:
+            y_command = 0.0
 
-        y_angle = self.map_normalized_to_servo(
-            self.joystick_y,
-            self.servo_neutral_y
-        )
+        # ===============================
+        # PRIORITÉ 4 : FONCTIONNEMENT NORMAL
+        # ===============================
+        x_angle = self.map_normalized_to_servo(corrected_x, self.servo_neutral_x)
+        y_angle = self.map_normalized_to_servo(y_command, self.servo_neutral_y)
 
-        self.publish_servo_command(
-            x_angle, y_angle,
-            source="joystick"
-        )
+        self.publish_servo_command(x_angle, y_angle, source="joystick_or_avoidance")
+
 
     # =====================================================
     #            OUTILS DE CONVERSION
