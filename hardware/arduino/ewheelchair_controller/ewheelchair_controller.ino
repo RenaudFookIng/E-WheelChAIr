@@ -60,10 +60,15 @@ int currentX = 85;
 int currentY = 90;
 int amplitude = 15;
 
-// SERIAL
 const long BAUD_RATE = 115200;
+
+// FREQUENCIES SERIAL
 unsigned long lastSerialTime = 0;
-const unsigned long SERIAL_INTERVAL = 50;
+const unsigned long SERIAL_INTERVAL = 100; // 10 Hz
+
+// FREQUENCIES SERVO
+unsigned long lastServoUpdate = 0;
+const unsigned long SERVO_INTERVAL = 50; // 20 Hz
 
 // SAFETY
 unsigned long lastCommandTime = 0;
@@ -85,14 +90,10 @@ void setup() {
   servoY.attach(SERVO_Y_PIN);
   moveToNeutral();
 
-  pinMode(US1_TRIG, OUTPUT);
-  pinMode(US1_ECHO, INPUT);
-  pinMode(US2_TRIG, OUTPUT);
-  pinMode(US2_ECHO, INPUT);
-  pinMode(US3_TRIG, OUTPUT);
-  pinMode(US3_ECHO, INPUT);
-  pinMode(US4_TRIG, OUTPUT);
-  pinMode(US4_ECHO, INPUT);
+  pinMode(US1_TRIG, OUTPUT); pinMode(US1_ECHO, INPUT);
+  pinMode(US2_TRIG, OUTPUT); pinMode(US2_ECHO, INPUT);
+  pinMode(US3_TRIG, OUTPUT); pinMode(US3_ECHO, INPUT);
+  pinMode(US4_TRIG, OUTPUT); pinMode(US4_ECHO, INPUT);
 
   jsonOut["type"] = "ready";
   jsonOut["device"] = "E-WheelChAIr-Arduino";
@@ -104,19 +105,21 @@ void setup() {
   MAIN LOOP
  *****************************************************************/
 void loop() {
+  // Priorité : lire les commandes série
   processSerialInput();
-
+  
+  // Timeout sécurité : revenir au neutre
   if (millis() - lastCommandTime > TIMEOUT_MS) {
     moveToNeutral();
   }
 
+  // Envoyer les données joystick + capteurs à fréquence contrôlée
   if (millis() - lastSerialTime > SERIAL_INTERVAL) {
-    //sendJoystickData();
-    //sendUltrasonicData();
+    sendJoystickData();
+    sendUltrasonicData();
     lastSerialTime = millis();
   }
-
-  delay(10);
+  delay(10); // petit délai pour libérer le CPU
 }
 
 /*****************************************************************
@@ -158,12 +161,15 @@ void handleJsonCommand(JsonDocument &doc) {
     xAngle = constrain(xAngle, neutralX - amplitude, neutralX + amplitude);
     yAngle = constrain(yAngle, neutralY - amplitude, neutralY + amplitude);
 
-    servoX.write(xAngle);
-    servoY.write(yAngle);
-    currentX = xAngle;
-    currentY = yAngle;
+    if (millis() - lastServoUpdate > SERVO_INTERVAL) {
+        servoX.write(xAngle);
+        servoY.write(yAngle);
+        currentX = xAngle;
+        currentY = yAngle;
+        lastServoUpdate = millis();
+    }
 
-    sendStatus();
+    sendStatus(); 
   }
 
   else if (strcmp(type, "neutral") == 0) {
@@ -228,10 +234,8 @@ void sendUltrasonicData() {
   ULTRASONIC SENSOR
  *****************************************************************/
 float readUltrasonicDistance(int trigPin, int echoPin) {
-  digitalWrite(trigPin, LOW);
-  delayMicroseconds(2);
-  digitalWrite(trigPin, HIGH);
-  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW); delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH); delayMicroseconds(10);
   digitalWrite(trigPin, LOW);
 
   long duration = pulseIn(echoPin, HIGH, 30000);
