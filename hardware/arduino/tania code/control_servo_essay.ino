@@ -9,14 +9,14 @@
 const int brocheVRx = A0;
 const int brocheVRy = A1;
 // ServoM
-//const int brocheServoAvantArriere = 9;
-//const int brocheServoGaucheDroite = 10;
+const int brocheServoAvantArriere = 9;
+const int brocheServoGaucheDroite = 10;
 // UltraSon
 const int trigPin_one = 30;  // Capteur ultrasons 1
 const int trigEcho_one = 31;  // Capteur ultrasons 1
 
-//const int trigPin_two = 32;  // Capteur ultrasons 2
-//const int trigEcho_two = 33;  // Capteur ultrasons 2
+const int trigPin_two = 32;  // Capteur ultrasons 2
+const int trigEcho_two = 33;  // Capteur ultrasons 2
 
 const int trigPin_thr = 34;  // Capteur ultrasons 2
 const int trigEcho_thr = 35;  // Capteur ultrasons 2
@@ -35,20 +35,20 @@ void setup() {
   pinMode(trigPin_one, OUTPUT); // Configuration du port du Trigger comme une SORTIE 
   pinMode(trigEcho_one, INPUT);
 
-  //pinMode(trigPin_two, OUTPUT); // Configuration du port du Trigger comme une SORTIE 
-  //pinMode(trigEcho_two, INPUT);
+  pinMode(trigPin_two, OUTPUT); // Configuration du port du Trigger comme une SORTIE 
+  pinMode(trigEcho_two, INPUT);
 
   pinMode(trigPin_thr, OUTPUT); // Configuration du port du Trigger comme une SORTIE 
   pinMode(trigEcho_thr, INPUT);
   Serial.begin(9600);
 
-  //servoAvantArriere.attach(brocheServoAvantArriere);
-  //servoGaucheDroite.attach(brocheServoGaucheDroite);
+  servoAvantArriere.attach(brocheServoAvantArriere);
+  servoGaucheDroite.attach(brocheServoGaucheDroite);
 
   // Initialisation à la position neutre
-  //servoAvantArriere.write(angleNeutreAvantArriere);
-  //servoGaucheDroite.write(angleNeutreGaucheDroite);
-  //Serial.println("Système prêt. Déplacez le joystick.");
+  servoAvantArriere.write(angleNeutreAvantArriere);
+  servoGaucheDroite.write(angleNeutreGaucheDroite);
+  Serial.println("Système prêt. Déplacez le joystick.");
 }
 
 void loop() {
@@ -56,14 +56,14 @@ void loop() {
   int d1 = readUltrasonic(trigPin_one, trigEcho_one);
   delay(60);
 
-  //int d2 = readUltrasonic(trigPin_two, trigEcho_two);
-  //delay(60);
+  int d2 = readUltrasonic(trigPin_two, trigEcho_two);
+  delay(60);
 
   int d3 = readUltrasonic(trigPin_thr, trigEcho_thr);
   delay(60);
 
   Serial.print("D1: "); Serial.print(d1);
-  //Serial.print(" | D2: "); Serial.print(d2);
+  Serial.print(" | D2: "); Serial.print(d2);
   Serial.print(" | D3: "); Serial.println(d3);
 
 
@@ -83,13 +83,12 @@ void loop() {
   angleX = constrain(angleX, angleNeutreGaucheDroite - amplitude, angleNeutreGaucheDroite + amplitude);
   angleY = constrain(angleY, angleNeutreAvantArriere - amplitude, angleNeutreAvantArriere + amplitude);
 
-  // ---------
   
   //------------------
 
   // Envoi des commandes aux servos
-  //servoGaucheDroite.write(angleX);
-  //servoAvantArriere.write(angleY);
+  servoGaucheDroite.write(angleX);
+  servoAvantArriere.write(angleY);
 
   // Affichage pour débogage
         //Serial.print("X: ");
