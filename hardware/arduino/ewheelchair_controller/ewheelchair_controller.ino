@@ -1,3 +1,19 @@
+/*****************************************************************
+  E-WheelChAIr Arduino Controller (ROS Bridge CSV Version)
+  
+  Description :
+  -------------
+  - Contrôle 2 servos (X = gauche/droite, Y = avant/arrière)
+  - Lit 3 capteurs ultrasons
+  - Reçoit commandes ROS via USB (CSV)
+  - Émet distances ultrasons et positions servos sur USB
+  - Fréquence fixe à 20 Hz
+  - Gestion d’urgence (emergency stop)
+  
+  Auteur : E-WheelChAIr Team
+  Date   : 2026
+*****************************************************************/
+
 #include <Servo.h>
 
 // ============================
@@ -9,21 +25,20 @@ Servo servoGaucheDroite;  // Axe X (gauche/droite)
 // ============================
 // Broches Arduino
 // ============================
-const int brocheVRx = A0;
-const int brocheVRy = A1;
+const int brocheVRx = A0;  // Joystick X
+const int brocheVRy = A1;  // Joystick Y
 
-// ServoM
-const int brocheServoAvantArriere = 9;
-const int brocheServoGaucheDroite = 10;
+const int brocheServoAvantArriere = 9;  // Servo Y
+const int brocheServoGaucheDroite = 10; // Servo X
 
-// UltraSon (3 capteurs)
-const int trigPin_one = 30;  // Capteur 1
+// Capteurs ultrasons (3 capteurs)
+const int trigPin_one = 30; 
 const int trigEcho_one = 31;
 
-const int trigPin_two = 32;  // Capteur 2
+const int trigPin_two = 32;
 const int trigEcho_two = 33;
 
-const int trigPin_thr = 34;  // Capteur 3
+const int trigPin_thr = 34;
 const int trigEcho_thr = 35;
 
 // ============================
@@ -34,13 +49,20 @@ const int angleNeutreGaucheDroite = 90;
 const int amplitude = 15;  // ±15° autour de la position neutre
 
 // ============================
-// Gestion de la fréquence
+// Variables commande ROS
+// ============================
+int cmdAngleX = angleNeutreGaucheDroite;
+int cmdAngleY = angleNeutreAvantArriere;
+bool emergencyStop = false;
+
+// ============================
+// Gestion fréquence 20 Hz
 // ============================
 unsigned long lastLoopTime = 0;
 const unsigned long LOOP_INTERVAL_MS = 50; // 20 Hz
 
 // ============================
-// Setup
+// Setup Arduino
 // ============================
 void setup() {
   Serial.begin(115200); // Flux série rapide pour 20Hz
@@ -65,6 +87,7 @@ void setup() {
 // Loop principal
 // ============================
 void loop() {
+  // Gestion de la fréquence 20Hz
   unsigned long currentTime = millis();
   if (currentTime - lastLoopTime < LOOP_INTERVAL_MS) return;
   lastLoopTime = currentTime;
@@ -83,25 +106,21 @@ void loop() {
   Serial.println(d3);
 
   // -----------------------------
-  // Lecture joystick
+  // Lecture commandes ROS (USB CSV)
   // -----------------------------
-  int valeurX = analogRead(brocheVRx);
-  int valeurY = analogRead(brocheVRy);
-
-  // Mapping joystick sur angles
-  int deltaX = map(valeurX, 0, 1023, -amplitude, amplitude);
-  int deltaY = map(valeurY, 0, 1023, -amplitude, amplitude);
-
-  int angleX = constrain(angleNeutreGaucheDroite + deltaX,
-                         angleNeutreGaucheDroite - amplitude,
-                         angleNeutreGaucheDroite + amplitude);
-  int angleY = constrain(angleNeutreAvantArriere + deltaY,
-                         angleNeutreAvantArriere - amplitude,
-                         angleNeutreAvantArriere + amplitude);
+  readSerialCommand();
 
   // -----------------------------
-  // Commande servos
+  // Appliquer commandes au servo
   // -----------------------------
+  int angleX = cmdAngleX;
+  int angleY = cmdAngleY;
+
+  if (emergencyStop) {
+    angleX = angleNeutreGaucheDroite;
+    angleY = angleNeutreAvantArriere;
+  }
+
   servoGaucheDroite.write(angleX);
   servoAvantArriere.write(angleY);
 
@@ -125,4 +144,38 @@ int readUltrasonic(int trigPin, int echoPin) {
   if (duree == 0) return -1; // Si pas de mesure
 
   return duree * 0.034 / 2; // Conversion en cm
+}
+
+// ============================
+// Fonction lecture commande ROS série
+// Format CSV attendu : S,angleX,angleY,emergency
+// ============================
+void readSerialCommand() {
+  while (Serial.available()) {
+    String line = Serial.readStringUntil('\n');
+    line.trim(); // Supprime espaces / retour chariot
+
+    if (line.length() == 0) continue;
+
+    if (line[0] == 'S') {
+      int firstComma = line.indexOf(',');
+      int secondComma = line.indexOf(',', firstComma + 1);
+      int thirdComma = line.indexOf(',', secondComma + 1);
+
+      if (firstComma > 0 && secondComma > firstComma) {
+        cmdAngleX = line.substring(firstComma + 1, secondComma).toInt();
+        if (thirdComma > secondComma) {
+          cmdAngleY = line.substring(secondComma + 1, thirdComma).toInt();
+          emergencyStop = line.substring(thirdComma + 1).toInt() != 0;
+        } else {
+          cmdAngleY = line.substring(secondComma + 1).toInt();
+          emergencyStop = false;
+        }
+
+        // Limite sécurité
+        cmdAngleX = constrain(cmdAngleX, angleNeutreGaucheDroite - amplitude, angleNeutreGaucheDroite + amplitude);
+        cmdAngleY = constrain(cmdAngleY, angleNeutreAvantArriere - amplitude, angleNeutreAvantArriere + amplitude);
+      }
+    }
+  }
 }
