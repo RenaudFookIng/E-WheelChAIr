@@ -53,12 +53,16 @@ class ArduinoBridgeNode(Node):
         )
 
         # ---------------- SERIAL ----------------
-        self.serial_port = serial.Serial(
-            port='/dev/ttyACM0',
-            baudrate=115200,
-            timeout=0.1
-        )
-        self.get_logger().info("Arduino Bridge connecté sur /dev/ttyACM0")
+        try :
+            self.serial_port = serial.Serial(
+                port='/dev/ttyACM0',
+                baudrate=115200,
+                timeout=0.1
+            )
+            self.get_logger().info("Arduino Bridge connecté sur /dev/ttyACM0")
+        except Exception as e:
+            self.get_logger().error(f"Impossible d'ouvrir le port série: {e}")
+            raise
 
         # Thread lecture série
         self.serial_thread = threading.Thread(
@@ -90,6 +94,7 @@ class ArduinoBridgeNode(Node):
                         line, buffer = buffer.split('\n', 1)
                         line = line.strip()
                         if line:
+                            #print(f"DEBUG RAW LINE: [{line}]")
                             self.handle_csv_line(line)
                 else:
                     time.sleep(0.002)
@@ -130,6 +135,10 @@ class ArduinoBridgeNode(Node):
             msg = UltrasonicArray()
             msg.distances = [d1, d2, d3]
             self.ultrasonic_pub.publish(msg)
+
+            # LOG pour debug
+            #self.get_logger().info(f"Ultrasons reçus: {d1:.1f}cm, {d2:.1f}cm, {d3:.1f}cm")
+
         except Exception as e:
             self.get_logger().error(f"Erreur parsing ultrasons: {e}")
 
@@ -143,11 +152,17 @@ class ArduinoBridgeNode(Node):
                 self.get_logger().warn(f"Joystick mal formé: {line}")
                 return
 
-            angleX, angleY = map(float, parts[1:])
+            angleX = float(parts[1].strip())
+            angleY = float(parts[2].strip())
+
             msg = Joystick()
-            msg.x = angleX
-            msg.y = angleY
+            msg.x = angleX #* 2.0 - 1.0
+            msg.y = angleY #* 2.0 - 1.0
             self.joystick_pub.publish(msg)
+
+            # LOG pour debug
+            #self.get_logger().info(f"Joystick reçu: x={msg.x:.3f}, y={msg.y:.3f}")
+
         except Exception as e:
             self.get_logger().error(f"Erreur parsing joystick: {e}")
 
@@ -163,8 +178,11 @@ class ArduinoBridgeNode(Node):
             # Format simple CSV pour Arduino: S,x_angle,y_angle,emergency
             emergency_int = 1 if msg.emergency_stop else 0
             csv_str = f"S,{int(msg.x_angle)},{int(msg.y_angle)},{emergency_int}\n"
-            self.get_logger().info(f"Envoi commande Servo → {csv_str.strip()}")
+            
             self.serial_port.write(csv_str.encode('utf-8'))
+            # LOG pour debug
+            self.get_logger().info(f"Envoi commande Servo → {csv_str.strip()}")
+
         except Exception as e:
             self.get_logger().error(f"Erreur envoi servo: {e}")
 

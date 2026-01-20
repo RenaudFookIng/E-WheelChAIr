@@ -71,13 +71,14 @@ class MasterNode(Node):
         # ===========================
         # Paramètres servos
         # ===========================
-        self.servo_neutral_x = servo_cfg.get('neutralX', 85)
-        self.servo_neutral_y = servo_cfg.get('neutralY', 90)
-        self.servo_min_x = servo_cfg.get('minX', 0)
-        self.servo_max_x = servo_cfg.get('maxX', 180)
-        self.servo_min_y = servo_cfg.get('minY', 0)
-        self.servo_max_y = servo_cfg.get('maxY', 180)
-        self.servo_amplitude = servo_cfg.get('amplitude', 15)
+        self.servo_neutral_x = servo_cfg['servo_x']['neutral']  # 85
+        self.servo_neutral_y = servo_cfg['servo_y']['neutral']  # 90
+        self.servo_min_x = servo_cfg['servo_x']['min']          # 70
+        self.servo_max_x = servo_cfg['servo_x']['max']          # 100
+        self.servo_min_y = servo_cfg['servo_y']['min']          # 75
+        self.servo_max_y = servo_cfg['servo_y']['max']          # 105
+        self.servo_amplitude = servo_cfg.get('amplitude', 15)  # 15
+
 
         # ===========================
         # Initialisation des états
@@ -275,35 +276,33 @@ class MasterNode(Node):
     # =====================================================
     def map_normalized_to_servo(self, value, neutral, axis='x'):
         """
-        Convertit une valeur normalisée [-1 ; 1] en angle servo respectant le neutre
-        et les limites physiques définies dans le YAML.
+        Convertit une valeur brute [0,1] Arduino → angle servo
+        selon l'amplitude configurée autour du neutre.
         
-        - value : float [-1, 1]
-        - neutral : angle neutre du servo
-        - axis : 'x' ou 'y' (pour récupérer les min/max YAML)
+        value   : float [0,1] depuis Arduino
+        neutral : angle neutre du servo
+        axis    : 'x' ou 'y' (pour debug/log)
         """
-        # Récupération des limites depuis YAML
-        if axis == 'x':
-            min_angle = self.servo_min_x
-            max_angle = self.servo_max_x
-        else:
-            min_angle = self.servo_min_y
-            max_angle = self.servo_max_y
+        amplitude = self.servo_amplitude
 
-        # Calcul de l'angle proportionnel autour du neutre
-        if value >= 0:
-            angle = neutral + value * (max_angle - neutral)
-        else:
-            angle = neutral + value * (neutral - min_angle)
+        # Conversion [0,1] -> [-1,1]
+        norm = value * 2.0 - 1.0
 
-        # Clamp final pour ne jamais dépasser les limites
+        # Calcul angle
+        angle = neutral + value * amplitude
+
+        # Clamp pour rester dans ±amplitude autour du neutre
+        min_angle = neutral - amplitude
+        max_angle = neutral + amplitude
         angle_clamped = int(max(min_angle, min(max_angle, angle)))
 
         self.get_logger().debug(
-            f"[MAP] Axis:{axis} Value:{value:.3f} → Angle:{angle_clamped} "
-            f"(Neutral:{neutral}, Min:{min_angle}, Max:{max_angle})"
+            f"[MAP] Axis:{axis} Value:{value:.3f} → Norm:{norm:.3f} → Angle:{angle_clamped} "
+            f"(Neutral:{neutral}, ±Amplitude:{amplitude})"
         )
+
         return angle_clamped
+
 
     # =====================================================
     #           PUBLICATION COMMANDE SERVO

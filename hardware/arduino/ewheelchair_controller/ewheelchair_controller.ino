@@ -108,9 +108,9 @@ void loop() {
   int valeurX = analogRead(brocheVRx);
   int valeurY = analogRead(brocheVRy);
 
-  // Envoi joystick brut vers ROS (0.0-1.0)
-  float normX = valeurX / 1023.0;
-  float normY = valeurY / 1023.0;
+  // Envoi joystick normalisé vers ROS (0.0-1.0)
+  float normX = valeurX;
+  float normY = valeurY;
   Serial.print("J,");
   Serial.print(normX, 6); Serial.print(",");
   Serial.println(normY, 6);
