@@ -1,12 +1,16 @@
 # Configuration principale pour le master node
 # Gère la fusion des données et le contrôle global
 
-# Paramètres de sécurité
+# Paramètres de sécurité m
 safety:
   emergency_stop_timeout: 0.5      # Délai avant arrêt d'urgence
   obstacle_distance_threshold: 0.3 # Distance minimale pour l'évitement d'obstacles (m)
   max_speed: 1.0                  # Vitesse maximale normalisée
-  
+  front_obstacle_stop_distance: 0.2
+  rear_obstacle_stop_distance: 0.2
+
+
+
 # Paramètres de fusion sensorielle
 sensor_fusion:
   lidar_weight: 0.6               # Poids du LiDAR dans la fusion
@@ -20,7 +24,7 @@ control:
   deadzone: 0.1                  # Zone morte pour éviter les micro-mouvements
   
 # Topics configuration
- topics:
+topics:
   joystick_input: "/joystick_data"
   servo_commands: "/servo_commands"
   ultrasonic_data: "/ultrasonic_data"
