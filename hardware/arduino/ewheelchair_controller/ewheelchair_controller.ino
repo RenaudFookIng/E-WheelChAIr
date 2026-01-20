@@ -6,7 +6,7 @@
   - Contrôle 2 servos (X = gauche/droite, Y = avant/arrière)
   - Lit 3 capteurs ultrasons
   - Reçoit commandes ROS via USB (CSV)
-  - Émet distances ultrasons et positions servos sur USB
+  - Émet distances ultrasons et positions joystick sur USB
   - Fréquence fixe à 20 Hz
   - Gestion d’urgence (emergency stop)
   
@@ -28,17 +28,17 @@ Servo servoGaucheDroite;  // Axe X (gauche/droite)
 const int brocheVRx = A0;  // Joystick X
 const int brocheVRy = A1;  // Joystick Y
 
-const int brocheServoAvantArriere = 9;  // Servo Y
-const int brocheServoGaucheDroite = 10; // Servo X
+const int brocheServoAvantArriere = 9;
+const int brocheServoGaucheDroite = 10;
 
-// Capteurs ultrasons (3 capteurs)
-const int trigPin_one = 30; 
+// Ultrasons (3 capteurs)
+const int trigPin_one = 30;  
 const int trigEcho_one = 31;
 
-const int trigPin_two = 32;
+const int trigPin_two = 32;  
 const int trigEcho_two = 33;
 
-const int trigPin_thr = 34;
+const int trigPin_thr = 34;  
 const int trigEcho_thr = 35;
 
 // ============================
@@ -46,26 +46,24 @@ const int trigEcho_thr = 35;
 // ============================
 const int angleNeutreAvantArriere = 85;
 const int angleNeutreGaucheDroite = 90;
-const int amplitude = 15;  // ±15° autour de la position neutre
 
 // ============================
-// Variables commande ROS
-// ============================
-int cmdAngleX = angleNeutreGaucheDroite;
-int cmdAngleY = angleNeutreAvantArriere;
-bool emergencyStop = false;
-
-// ============================
-// Gestion fréquence 20 Hz
+// Gestion de la fréquence
 // ============================
 unsigned long lastLoopTime = 0;
 const unsigned long LOOP_INTERVAL_MS = 50; // 20 Hz
 
 // ============================
-// Setup Arduino
+// Variables commandes servo
+// ============================
+int servoX_angle = angleNeutreGaucheDroite;
+int servoY_angle = angleNeutreAvantArriere;
+
+// ============================
+// Setup
 // ============================
 void setup() {
-  Serial.begin(115200); // Flux série rapide pour 20Hz
+  Serial.begin(115200); // Flux série rapide
 
   // Config capteurs ultrasons
   pinMode(trigPin_one, OUTPUT); pinMode(trigEcho_one, INPUT);
@@ -87,7 +85,6 @@ void setup() {
 // Loop principal
 // ============================
 void loop() {
-  // Gestion de la fréquence 20Hz
   unsigned long currentTime = millis();
   if (currentTime - lastLoopTime < LOOP_INTERVAL_MS) return;
   lastLoopTime = currentTime;
@@ -106,32 +103,30 @@ void loop() {
   Serial.println(d3);
 
   // -----------------------------
-  // Lecture commandes ROS (USB CSV)
+  // Lecture joystick
   // -----------------------------
-  readSerialCommand();
+  int valeurX = analogRead(brocheVRx);
+  int valeurY = analogRead(brocheVRy);
+
+  // Envoi joystick brut vers ROS (0.0-1.0)
+  float normX = valeurX / 1023.0;
+  float normY = valeurY / 1023.0;
+  Serial.print("J,");
+  Serial.print(normX, 6); Serial.print(",");
+  Serial.println(normY, 6);
 
   // -----------------------------
-  // Appliquer commandes au servo
+  // Application des commandes servo depuis ROS
   // -----------------------------
-  int angleX = cmdAngleX;
-  int angleY = cmdAngleY;
+  servoGaucheDroite.write(servoX_angle);
+  servoAvantArriere.write(servoY_angle);
 
-  if (emergencyStop) {
-    angleX = angleNeutreGaucheDroite;
-    angleY = angleNeutreAvantArriere;
-  }
-
-  servoGaucheDroite.write(angleX);
-  servoAvantArriere.write(angleY);
-
-  // Envoi angles servos sur série (CSV)
-  Serial.print("S,"); // Type S = Servo
-  Serial.print(angleX); Serial.print(",");
-  Serial.println(angleY);
+  // Traitement série entrante pour lire commandes ROS
+  handleIncomingSerial();
 }
 
 // ============================
-// Fonction lecture ultrason
+// Lecture ultrasons
 // ============================
 int readUltrasonic(int trigPin, int echoPin) {
   digitalWrite(trigPin, LOW);
@@ -143,38 +138,44 @@ int readUltrasonic(int trigPin, int echoPin) {
   long duree = pulseIn(echoPin, HIGH, 30000); // Timeout 30ms
   if (duree == 0) return -1; // Si pas de mesure
 
-  return duree * 0.034 / 2; // Conversion en cm
+  return duree * 0.034 / 2; // Conversion cm
 }
 
 // ============================
-// Fonction lecture commande ROS série
-// Format CSV attendu : S,angleX,angleY,emergency
+// Lecture commandes ROS
 // ============================
-void readSerialCommand() {
+void handleIncomingSerial() {
   while (Serial.available()) {
     String line = Serial.readStringUntil('\n');
-    line.trim(); // Supprime espaces / retour chariot
+    line.trim();
 
     if (line.length() == 0) continue;
 
-    if (line[0] == 'S') {
+    // Exemple CSV attendu: S,angleX,angleY,emergency
+    if (line.startsWith("S,")) {
       int firstComma = line.indexOf(',');
       int secondComma = line.indexOf(',', firstComma + 1);
       int thirdComma = line.indexOf(',', secondComma + 1);
 
-      if (firstComma > 0 && secondComma > firstComma) {
-        cmdAngleX = line.substring(firstComma + 1, secondComma).toInt();
-        if (thirdComma > secondComma) {
-          cmdAngleY = line.substring(secondComma + 1, thirdComma).toInt();
-          emergencyStop = line.substring(thirdComma + 1).toInt() != 0;
-        } else {
-          cmdAngleY = line.substring(secondComma + 1).toInt();
-          emergencyStop = false;
-        }
+      if (firstComma > 0 && secondComma > 0) {
+        String sx = line.substring(firstComma + 1, secondComma);
+        String sy;
+        if (thirdComma > 0) sy = line.substring(secondComma + 1, thirdComma);
+        else sy = line.substring(secondComma + 1);
 
-        // Limite sécurité
-        cmdAngleX = constrain(cmdAngleX, angleNeutreGaucheDroite - amplitude, angleNeutreGaucheDroite + amplitude);
-        cmdAngleY = constrain(cmdAngleY, angleNeutreAvantArriere - amplitude, angleNeutreAvantArriere + amplitude);
+        servoX_angle = sx.toInt();
+        servoY_angle = sy.toInt();
+      }
+
+      // Emergency optionnel
+      if (thirdComma > 0) {
+        String emergencyStr = line.substring(thirdComma + 1);
+        bool emergency = emergencyStr.toInt() > 0;
+        if (emergency) {
+          // En cas d'urgence, revenir à position neutre
+          servoX_angle = angleNeutreGaucheDroite;
+          servoY_angle = angleNeutreAvantArriere;
+        }
       }
     }
   }
