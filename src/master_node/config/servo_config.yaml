@@ -4,10 +4,14 @@ servo_controller:
   baudrate: 115200
   timeout: 1
 
-# Paramètres de sécurité pour les servos
-safety:
-  min_angle: 0
-  max_angle: 180
-  neutral_x: 90
-  neutral_y: 90
-  emergency_timeout: 0.5  # Temps avant retour à position neutre en cas d'urgence
+servo_x:
+  neutral: 85
+  min: 70
+  max: 100
+servo_y:
+  neutral: 90
+  min: 75
+  max: 105
+amplitude: 15
+
+emergency_timeout: 0.5  # Temps avant retour à position neutre en cas d'urgence

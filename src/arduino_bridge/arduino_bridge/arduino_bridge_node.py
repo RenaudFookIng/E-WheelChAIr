@@ -95,23 +95,26 @@ class ArduinoBridgeNode(Node):
 
         while rclpy.ok():
             try:
-                if self.serial_port.in_waiting == 0:
-                    time.sleep(0.002)  # évite CPU 100%
-                    continue
+                # Lire uniquement si des octets sont disponibles
+                n = self.serial_port.in_waiting
+                if n > 0:
+                    chunk = self.serial_port.read(n).decode('utf-8', errors='ignore')
+                    buffer += chunk
 
-                chunk = self.serial_port.read(
-                    self.serial_port.in_waiting
-                ).decode('utf-8', errors='ignore')
-
-                buffer += chunk
-
-                while '\n' in buffer:
-                    line, buffer = buffer.split('\n', 1)
-                    self.handle_json_line(line.strip())
+                    # Traiter toutes les lignes complètes
+                    while '\n' in buffer:
+                        line, buffer = buffer.split('\n', 1)
+                        line = line.strip()
+                        #self.get_logger().info(f"Ligne reçue: {line}")
+                        if line:  # éviter les lignes vides
+                            self.handle_json_line(line)
+                else:
+                    time.sleep(0.002)  # Attente active pour ne pas saturer le CPU
 
             except Exception as e:
                 self.get_logger().error(f"Erreur série: {e}")
-                time.sleep(0.1)
+                time.sleep(0.1)  # Petite pause pour éviter flood d'erreurs
+
 
     # =====================================================
     #                JSON DISPATCHER
@@ -156,7 +159,7 @@ class ArduinoBridgeNode(Node):
 
     def handle_ultrasonic(self, data):
         msg = UltrasonicArray()
-        msg.header.stamp = self.get_clock().now().to_msg()
+        #msg.header.stamp = self.get_clock().now().to_msg()
         msg.distances = [float(d) for d in data.get("distances", [])]
         self.ultrasonic_pub.publish(msg)
 
@@ -192,8 +195,9 @@ class ArduinoBridgeNode(Node):
             }
 
             json_str = json.dumps(payload) + "\n"
+            self.get_logger().info(f"Envoi JSON Servo → {json_str.strip()}")
             self.serial_port.write(json_str.encode('utf-8'))
-
+            
         except Exception as e:
             self.get_logger().error(f"Erreur envoi servo: {e}")
 

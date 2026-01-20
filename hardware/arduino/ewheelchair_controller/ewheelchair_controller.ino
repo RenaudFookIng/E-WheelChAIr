@@ -111,8 +111,8 @@ void loop() {
   }
 
   if (millis() - lastSerialTime > SERIAL_INTERVAL) {
-    sendJoystickData();
-    sendUltrasonicData();
+    //sendJoystickData();
+    //sendUltrasonicData();
     lastSerialTime = millis();
   }
 
