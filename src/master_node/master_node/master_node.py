@@ -289,7 +289,7 @@ class MasterNode(Node):
         norm = value * 2.0 - 1.0
 
         # Calcul angle
-        angle = neutral + value * amplitude
+        angle = neutral + norm * amplitude
 
         # Clamp pour rester dans ±amplitude autour du neutre
         min_angle = neutral - amplitude
