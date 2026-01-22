@@ -161,7 +161,7 @@ class ArduinoBridgeNode(Node):
             self.joystick_pub.publish(msg)
 
             # LOG pour debug
-            #self.get_logger().info(f"Joystick reçu: x={msg.x:.3f}, y={msg.y:.3f}")
+            self.get_logger().info(f"Joystick reçu: x={msg.x:.3f}, y={msg.y:.3f}")
 
         except Exception as e:
             self.get_logger().error(f"Erreur parsing joystick: {e}")
