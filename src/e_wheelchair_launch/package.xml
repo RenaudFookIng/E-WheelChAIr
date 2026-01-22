@@ -19,7 +19,7 @@
   <depend>teleop_joystick</depend>
   <depend>servo_controller</depend>
   <depend>master_node</depend>
-  <depend>lidar</depend>
+  <depend>wyes_teleop</depend>
   <depend>image_processing</depend>
   <depend>visualization</depend>
   

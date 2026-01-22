@@ -22,7 +22,8 @@ from custom_msgs.msg import (
     VisionObstacle,
     Joystick,
     UltrasonicArray,
-    ServoCommand
+    ServoCommand,
+    WyesIntent
 )
 
 # (Non utilisé actuellement, mais importé)
@@ -133,6 +134,15 @@ class MasterNode(Node):
             self.emergency_callback,
             10)
 
+        # Subscription WyesIntent
+        self.wyes_direction = "stop"
+        self.create_subscription(
+            WyesIntent,
+            '/wyes_intent',
+            self.wyes_intent_callback,
+            10
+        )
+
         # ===========================
         # Log info
         # ===========================
@@ -207,6 +217,17 @@ class MasterNode(Node):
             self.get_logger().warn(" EMERGENCY STOP ACTIVATED")
             self.decide_and_publish()
 
+    def wyes_intent_callback(self, msg: WyesIntent):
+        """
+        Récupère la direction depuis le téléop clavier Wyes.
+        Si joystick inactif, cette commande sera appliquée.
+        """
+        if msg.direction:
+            self.wyes_direction = msg.direction
+            self.get_logger().debug(f"[WYES] Direction reçue: {self.wyes_direction}")
+            self.decide_and_publish()  # republier dès que nouveau message
+
+
     # =====================================================
     #              LOGIQUE DE DÉCISION CENTRALE
     # =====================================================
@@ -220,6 +241,7 @@ class MasterNode(Node):
         2️⃣ Obstacles avant (vision)
         3️⃣ Obstacles arrière (ultrasons)
         4️⃣ Commande joystick normale
+        5️⃣ WyesIntent → si joystick inactif
         """
 
         # ===============================
@@ -238,7 +260,25 @@ class MasterNode(Node):
         corrected_x = self.joystick_x
         y_command = self.joystick_y
 
-        if self.joystick_y > 0 and self.front_obstacle_distance < self.front_obstacle_caution_distance:
+        # si joystick inactif, on prendra WyesIntent plus bas
+        joystick_active = abs(self.joystick_x) > 0.01 or abs(self.joystick_y) > 0.01
+
+        if joystick_active:
+            source = "joystick"
+        else:
+            # utilisation WyesIntent si joystick inactif
+            mapping = {
+                "forward": 1.0,
+                "backward": -1.0,
+                "left": -0.5,
+                "right": 0.5,
+                "stop": 0.0
+            }
+            corrected_x = mapping.get(self.wyes_direction, 0.0)
+            y_command = mapping.get(self.wyes_direction, 0.0)
+            source = "wyes"
+
+        if y_command > 0 and self.front_obstacle_distance < self.front_obstacle_caution_distance:
             if self.vision_obstacle:
                 corrected_x -= self.avoidance_gain * self.vision_obstacle.lateral_offset
                 self.get_logger().debug(
