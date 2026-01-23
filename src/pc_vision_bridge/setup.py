@@ -24,7 +24,7 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            'pc_vision_bridge = pc_vision_bridge.pc_vision_bridge_node:main',
+            'pc_vision_bridge_node = pc_vision_bridge.pc_vision_bridge_node:main',
         ],
     },
 )
