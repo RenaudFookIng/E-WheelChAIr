@@ -85,6 +85,7 @@ E-WheelChAIr/
 |   |   │       ├── ewheelchair_joystick_servo.launch.py 
 |   |   │       └── xxx.launch.py  
 |   │   ├── package.xml
+|   │   ├── setup.cfg
 |   │   └── setup.py
 |   ├── master_node
 |   │   ├── config
