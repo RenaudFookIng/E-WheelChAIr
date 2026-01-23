@@ -316,32 +316,24 @@ class MasterNode(Node):
     # =====================================================
     def map_normalized_to_servo(self, value, neutral, axis='x'):
         """
-        Convertit une valeur brute [0,1] Arduino → angle servo
-        selon l'amplitude configurée autour du neutre.
-        
-        value   : float [0,1] depuis Arduino
+        Convertit une valeur [-1,1] → angle servo
+        value : float [-1,1] 
         neutral : angle neutre du servo
-        axis    : 'x' ou 'y' (pour debug/log)
         """
         amplitude = self.servo_amplitude
 
-        # Conversion [0,1] -> [-1,1]
-        norm = value * 2.0 - 1.0
+        # Clamp pour sécurité
+        value_clamped = max(-1.0, min(1.0, value))
 
-        # Calcul angle
-        angle = neutral + norm * amplitude
+        angle = neutral + value_clamped * amplitude
 
-        # Clamp pour rester dans ±amplitude autour du neutre
+        # Clamp final pour limites servo
         min_angle = neutral - amplitude
         max_angle = neutral + amplitude
         angle_clamped = int(max(min_angle, min(max_angle, angle)))
 
-        self.get_logger().debug(
-            f"[MAP] Axis:{axis} Value:{value:.3f} → Norm:{norm:.3f} → Angle:{angle_clamped} "
-            f"(Neutral:{neutral}, ±Amplitude:{amplitude})"
-        )
-
         return angle_clamped
+
 
 
     # =====================================================

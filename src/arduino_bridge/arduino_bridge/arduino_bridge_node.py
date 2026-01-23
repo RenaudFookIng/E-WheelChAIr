@@ -156,8 +156,8 @@ class ArduinoBridgeNode(Node):
             angleY = float(parts[2].strip())
 
             msg = Joystick()
-            msg.x = angleX #* 2.0 - 1.0
-            msg.y = angleY #* 2.0 - 1.0
+            msg.x = angleX 
+            msg.y = angleY 
             self.joystick_pub.publish(msg)
 
             # LOG pour debug

@@ -29,27 +29,8 @@ E-WheelChAIr/
 │   │       └── thumbstick_all.iges
 │   │
 │   └── arduino
-│       ├── joystick
-│       │   ├── joystick
-│       │   ├── package.xml
-│       │   ├── setup.py
-│       │   └── test
-│       ├── servo_controller  # NOUVEAU: Contrôle des servos MZ996
-│       │   ├── servo_controller
-│       │   │   ├── __init__.py
-│       │   │   └── servo_controller_node.py
-│       │   ├── resource
-│       │   │   └── config.yaml
-│       │   ├── servo_controller.ino  # Sketch Arduino
-│       │   ├── package.xml
-│       │   ├── setup.py
-│       │   └── test
-│       └── ultrasonic
-│           ├── package.xml
-│           ├── resource
-│           ├── setup.py
-│           ├── test
-│           └── ultrasonic
+│       └── ewheelchair_controller
+│           └── ewheelchair_controller.ino
 |
 ├── resources
 │   ├── docs
@@ -85,6 +66,7 @@ E-WheelChAIr/
 |   |   │       ├── ewheelchair_joystick_servo.launch.py 
 |   |   │       └── xxx.launch.py  
 |   │   ├── package.xml
+|   │   ├── setup.cfg
 |   │   └── setup.py
 |   ├── master_node
 |   │   ├── config
