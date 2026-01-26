@@ -149,7 +149,7 @@ int readUltrasonic(int trigPin, int echoPin) {
   digitalWrite(trigPin, LOW);
 
   long duree = pulseIn(echoPin, HIGH, 30000); // Timeout 30ms
-  if (duree == 0) return -1; // Si pas de mesure
+  if (duree == 0) return 400; // Si pas de mesure
 
   return duree * 0.034 / 2; // Conversion cm
 }
