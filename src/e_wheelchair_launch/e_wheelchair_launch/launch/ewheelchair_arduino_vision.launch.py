@@ -36,6 +36,17 @@ def generate_launch_description():
         emulate_tty=True
     )
 
+    # =====================================================
+    # Node Master
+    # =====================================================
+    arduino_bridge_node = Node(
+        package='pc_vision_bridge',
+        executable='pc_vision_bridge_node',
+        name='pc_vision_bridge_node',
+        output='screen',
+        emulate_tty=True
+    )
+
 
     # =====================================================
     # Return LaunchDescription

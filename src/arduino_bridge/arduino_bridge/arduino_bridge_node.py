@@ -131,13 +131,18 @@ class ArduinoBridgeNode(Node):
                 self.get_logger().warn(f"Ultrasons mal formés: {line}")
                 return
 
-            d1, d2, d3 = map(float, parts[1:])
+            d1_cm, d2_cm, d3_cm = map(float, parts[1:])
+
+            # Conversion cm → m
+            d1 = d1_cm / 100.0
+            d2 = d2_cm / 100.0
+            d3 = d3_cm / 100.0
             msg = UltrasonicArray()
             msg.distances = [d1, d2, d3]
             self.ultrasonic_pub.publish(msg)
 
             # LOG pour debug
-            #self.get_logger().info(f"Ultrasons reçus: {d1:.1f}cm, {d2:.1f}cm, {d3:.1f}cm")
+            self.get_logger().info(f"Ultrasons reçus: {d1:.1f}m, {d2:.1f}m, {d3:.1f}m")
 
         except Exception as e:
             self.get_logger().error(f"Erreur parsing ultrasons: {e}")
@@ -161,7 +166,7 @@ class ArduinoBridgeNode(Node):
             self.joystick_pub.publish(msg)
 
             # LOG pour debug
-            self.get_logger().info(f"Joystick reçu: x={msg.x:.3f}, y={msg.y:.3f}")
+            #self.get_logger().info(f"Joystick reçu: x={msg.x:.3f}, y={msg.y:.3f}")
 
         except Exception as e:
             self.get_logger().error(f"Erreur parsing joystick: {e}")

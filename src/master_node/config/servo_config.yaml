@@ -9,7 +9,7 @@ servo_x:
   min: 70
   max: 100
 servo_y:
-  neutral: 90
+  neutral: 92
   min: 75
   max: 105
 amplitude: 15
