@@ -1,0 +1,9 @@
+ssh ewheelchair2@192.168.10.1
+
+
+cd ~/E-WheelChAIr
+source install/setup.bash
+ros2 run pc_vision_bridge pc_vision_bridge_node
+
+source ~/E-WheelChAIr/install/setup.bash
+ros2 topic echo /vision_obstacle

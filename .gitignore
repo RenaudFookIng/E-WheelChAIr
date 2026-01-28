@@ -48,3 +48,5 @@ __pycache__/
 *.bak
 *.orig
 .DS_Store
+hardware/Image_processing/Depth-Anything-V2/
+hardware/Image_processing/ultralytics/
