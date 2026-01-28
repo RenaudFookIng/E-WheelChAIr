@@ -44,20 +44,26 @@ const int trigEcho_thr = 35;
 // ============================
 // Paramètres servos
 // ============================
-const int angleNeutreAvantArriere = 85;
-const int angleNeutreGaucheDroite = 90;
+const int angleNeutreAvantArriere = 92;
+const int angleNeutreGaucheDroite = 87;
 
 // ============================
 // Gestion de la fréquence
 // ============================
 unsigned long lastLoopTime = 0;
-const unsigned long LOOP_INTERVAL_MS = 50; // 20 Hz
+const unsigned long LOOP_INTERVAL_MS = 50;
 
 // ============================
-// Variables commandes servo
+// Servo state
 // ============================
 int servoX_angle = angleNeutreGaucheDroite;
 int servoY_angle = angleNeutreAvantArriere;
+
+// ============================
+// WATCHDOG ROS
+// ============================
+unsigned long lastCommandTime = 0;
+const unsigned long COMMAND_TIMEOUT_MS = 500;
 
 // ============================
 // Setup
@@ -139,14 +145,28 @@ void loop() {
   Serial.print(normX, 6); Serial.print(",");
   Serial.println(normY, 6);
 
-  // -----------------------------
-  // Application des commandes servo depuis ROS
-  // -----------------------------
+  // ============================
+  // Lire commandes ROS AVANT servo
+  // ============================
+  handleIncomingSerial();
+
+  // ============================
+  // WATCHDOG : retour neutre si ROS muet
+  // ============================
+  if (millis() - lastCommandTime > COMMAND_TIMEOUT_MS) {
+  servoX_angle = angleNeutreGaucheDroite;
+  servoY_angle = angleNeutreAvantArriere;
+  }
+
+  // ============================
+  // Appliquer des commandes servo depuis ROS
+  // ============================
   servoGaucheDroite.write(servoX_angle);
   servoAvantArriere.write(servoY_angle);
-
-  // Traitement série entrante pour lire commandes ROS
-  handleIncomingSerial();
+  Serial.print("Servo X angle: ");
+  Serial.print(servoX_angle);
+  Serial.print(" | Servo Y angle: ");
+  Serial.println(servoY_angle);
 }
 
 // ============================
