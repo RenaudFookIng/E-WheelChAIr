@@ -105,12 +105,25 @@ void loop() {
   // -----------------------------
   // Lecture joystick
   // -----------------------------
+  // Valeurs minimales et maximales mesurées pour ton joystick
+  const int JOY_MIN_X = 200;
+  const int JOY_MAX_X = 750;
+  const int JOY_MIN_Y = 200;
+  const int JOY_MAX_Y = 750;
+
+  // Lecture joystick
   int valeurX = analogRead(brocheVRx);
   int valeurY = analogRead(brocheVRy);
 
-  // Envoi joystick normalisé vers ROS (0.0-1.0)
-  float normX = valeurX;
-  float normY = valeurY;
+  // Normalisation sur [-1, 1]
+  float normX = 2.0 * (valeurX - JOY_MIN_X) / (JOY_MAX_X - JOY_MIN_X) - 1.0;
+  float normY = 2.0 * (valeurY - JOY_MIN_Y) / (JOY_MAX_Y - JOY_MIN_Y) - 1.0;
+
+  // Limite au cas où le joystick sortirait légèrement de la plage
+  if (normX > 1.0) normX = 1.0;
+  if (normX < -1.0) normX = -1.0;
+  if (normY > 1.0) normY = 1.0;
+  if (normY < -1.0) normY = -1.0;
   Serial.print("J,");
   Serial.print(normX, 6); Serial.print(",");
   Serial.println(normY, 6);
@@ -136,7 +149,7 @@ int readUltrasonic(int trigPin, int echoPin) {
   digitalWrite(trigPin, LOW);
 
   long duree = pulseIn(echoPin, HIGH, 30000); // Timeout 30ms
-  if (duree == 0) return -1; // Si pas de mesure
+  if (duree == 0) return 400; // Si pas de mesure
 
   return duree * 0.034 / 2; // Conversion cm
 }

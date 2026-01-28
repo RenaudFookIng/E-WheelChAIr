@@ -4,6 +4,7 @@
   <description>Launch files for E-WheelChAIr</description>
 
   <maintainer email="renaud.janet@etu.sorbonne-universite.fr">Renaud JANET</maintainer>
+<<<<<<< HEAD
   <license>Apache-2.0</license>
 
   <buildtool_depend>ament_python</buildtool_depend>
@@ -11,6 +12,22 @@
   <exec_depend>launch</exec_depend>
   <exec_depend>launch_ros</exec_depend>
 
+=======
+  <license>Apache License 2.0</license>
+
+  <buildtool_depend>ament_python</buildtool_depend>
+  
+  <depend>launch</depend>
+  <depend>launch_ros</depend>
+  <depend>arduino_bridge</depend>
+  <depend>master_node</depend>
+  <depend>wyes_teleop</depend>
+  <depend>pc_vision_bridge</depend>
+  
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+  
+>>>>>>> origin/main
   <export>
     <build_type>ament_python</build_type>
   </export>

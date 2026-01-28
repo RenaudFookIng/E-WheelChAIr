@@ -4,10 +4,10 @@
 # Paramètres de sécurité m
 safety:
   emergency_stop_timeout: 0.5      # Délai avant arrêt d'urgence
-  obstacle_distance_threshold: 0.3 # Distance minimale pour l'évitement d'obstacles (m)
+  obstacle_distance_threshold: 1.0 # Distance minimale pour l'évitement d'obstacles (m)
   max_speed: 1.0                  # Vitesse maximale normalisée
-  front_obstacle_stop_distance: 0.2
-  rear_obstacle_stop_distance: 0.2
+  front_obstacle_stop_distance: 1.0
+  rear_obstacle_stop_distance: 0.5
 
 
 

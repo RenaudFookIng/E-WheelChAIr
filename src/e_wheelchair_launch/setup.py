@@ -9,8 +9,16 @@ setup(
     version='0.1.0',
     packages=[package_name],
     data_files=[
+<<<<<<< HEAD
         ('share/ament_index/resource_index/packages', ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
+=======
+        # index ament
+        ('share/ament_index/resource_index/packages', ['resource/' + package_name]),
+        # package.xml
+        ('share/' + package_name, ['package.xml']),
+        # install launch files
+>>>>>>> origin/main
         (os.path.join('share', package_name, 'launch'),
          glob(os.path.join(package_name, 'launch', '*.launch.py'))),
     ],
@@ -21,7 +29,10 @@ setup(
     description='Launch files for E-WheelChAIr project',
     license='Apache License 2.0',
     tests_require=['pytest'],
+<<<<<<< HEAD
     entry_points={
         'console_scripts': [],
     },
+=======
+>>>>>>> origin/main
 )
