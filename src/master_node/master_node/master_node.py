@@ -22,7 +22,8 @@ from custom_msgs.msg import (
     VisionObstacle,
     Joystick,
     UltrasonicArray,
-    ServoCommand
+    ServoCommand,
+    WyesIntent
 )
 
 # (Non utilisé actuellement, mais importé)
@@ -63,16 +64,16 @@ class MasterNode(Node):
         # ===========================
         safety = master_cfg.get('safety', {})
         self.emergency_stop_timeout = safety.get('emergency_stop_timeout', 0.5)
-        self.front_obstacle_caution_distance = safety.get('front_obstacle_caution_distance', 0.5)
-        self.front_obstacle_stop_distance = safety.get('front_obstacle_stop_distance', 0.2)
-        self.rear_obstacle_stop_distance = safety.get('rear_obstacle_stop_distance', 0.2)
+        self.front_obstacle_caution_distance = safety.get('front_obstacle_caution_distance', 2.0)
+        self.front_obstacle_stop_distance = safety.get('front_obstacle_stop_distance', 1.0)
+        self.rear_obstacle_stop_distance = safety.get('rear_obstacle_stop_distance', 0.5)
         self.max_speed = safety.get('max_speed', 1.0)
 
         # ===========================
         # Paramètres servos
         # ===========================
         self.servo_neutral_x = servo_cfg['servo_x']['neutral']  # 85
-        self.servo_neutral_y = servo_cfg['servo_y']['neutral']  # 90
+        self.servo_neutral_y = servo_cfg['servo_y']['neutral']  # 85
         self.servo_min_x = servo_cfg['servo_x']['min']          # 70
         self.servo_max_x = servo_cfg['servo_x']['max']          # 100
         self.servo_min_y = servo_cfg['servo_y']['min']          # 75
@@ -86,7 +87,7 @@ class MasterNode(Node):
         self.joystick_x = 0.0
         self.joystick_y = 0.0
         self.front_obstacle_distance = 1.0
-        self.rear_obstacle_distance = 1.0
+        self.rear_obstacle_distance = 0.5
         self.vision_obstacle = None
         self.emergency_stop = False
 
@@ -132,6 +133,15 @@ class MasterNode(Node):
             '/emergency_data',
             self.emergency_callback,
             10)
+
+        # Subscription WyesIntent
+        self.wyes_direction = "stop"
+        self.create_subscription(
+            WyesIntent,
+            '/wyes_intent',
+            self.wyes_intent_callback,
+            10
+        )
 
         # ===========================
         # Log info
@@ -182,9 +192,7 @@ class MasterNode(Node):
             # Exemple : prendre la distance minimale pour obstacle arrière
             self.rear_obstacle_distance = min(msg.distances)
             # --- Debug log ---
-            #self.get_logger().info(
-            #    f"Rear obstacle distance: {self.rear_obstacle_distance:.2f} m"
-            #)
+            self.get_logger().info(f"Rear obstacle distance: {self.rear_obstacle_distance:.2f} m")
 
     def front_obstacle_callback(self, msg: ObstacleDetection):
         """Depth camera frontale → avance"""
@@ -207,6 +215,17 @@ class MasterNode(Node):
             self.get_logger().warn(" EMERGENCY STOP ACTIVATED")
             self.decide_and_publish()
 
+    def wyes_intent_callback(self, msg: WyesIntent):
+        """
+        Récupère la direction depuis le téléop clavier Wyes.
+        Si joystick inactif, cette commande sera appliquée.
+        """
+        if msg.direction:
+            self.wyes_direction = msg.direction
+            self.get_logger().debug(f"[WYES] Direction reçue: {self.wyes_direction}")
+            self.decide_and_publish()  # republier dès que nouveau message
+
+
     # =====================================================
     #              LOGIQUE DE DÉCISION CENTRALE
     # =====================================================
@@ -220,6 +239,7 @@ class MasterNode(Node):
         2️⃣ Obstacles avant (vision)
         3️⃣ Obstacles arrière (ultrasons)
         4️⃣ Commande joystick normale
+        5️⃣ WyesIntent → si joystick inactif
         """
 
         # ===============================
@@ -238,7 +258,25 @@ class MasterNode(Node):
         corrected_x = self.joystick_x
         y_command = self.joystick_y
 
-        if self.joystick_y > 0 and self.front_obstacle_distance < self.front_obstacle_caution_distance:
+        # si joystick inactif, on prendra WyesIntent plus bas
+        joystick_active = abs(self.joystick_x) > 0.01 or abs(self.joystick_y) > 0.01
+
+        if joystick_active:
+            source = "joystick"
+        else:
+            # utilisation WyesIntent si joystick inactif
+            mapping = {
+                "forward": 1.0,
+                "backward": -1.0,
+                "left": -0.5,
+                "right": 0.5,
+                "stop": 0.0
+            }
+            corrected_x = mapping.get(self.wyes_direction, 0.0)
+            y_command = mapping.get(self.wyes_direction, 0.0)
+            source = "wyes"
+
+        if y_command > 0 and self.front_obstacle_distance < self.front_obstacle_caution_distance:
             if self.vision_obstacle:
                 corrected_x -= self.avoidance_gain * self.vision_obstacle.lateral_offset
                 self.get_logger().debug(
@@ -251,7 +289,7 @@ class MasterNode(Node):
         # ===============================
         # PRIORITÉ 3 : OBSTACLE ARRIÈRE
         # ===============================
-        if self.joystick_y < 0 and self.rear_obstacle_distance < self.rear_obstacle_stop_distance:
+        if self.joystick_y > 0 and self.rear_obstacle_distance < self.rear_obstacle_stop_distance:
             y_command = 0.0
             self.get_logger().info(f"[ARRIÈRE] Blocage marche arrière, obstacle à {self.rear_obstacle_distance:.2f} m")
 
@@ -274,35 +312,37 @@ class MasterNode(Node):
     # =====================================================
     # OUTILS DE CONVERSION NORMALISÉ → SERVO AVEC LIMITES
     # =====================================================
-    def map_normalized_to_servo(self, value, neutral, axis='x'):
+
+    def map_normalized_to_servo(self, value: float, neutral: int, axis: str = 'x') -> int:
         """
-        Convertit une valeur brute [0,1] Arduino → angle servo
-        selon l'amplitude configurée autour du neutre.
+        Convertit une valeur normalisée [-1,1] en angle servo.
         
-        value   : float [0,1] depuis Arduino
-        neutral : angle neutre du servo
-        axis    : 'x' ou 'y' (pour debug/log)
+        Paramètres :
+        -----------
+        value   : float [-1,1] venant du joystick ou WyesIntent
+        neutral : int, angle neutre du servo (Y: 90, X: 85)
+        axis    : str, 'x' ou 'y' pour informations de debug/log
+        
+        Retour :
+        -------
+        angle_clamped : int, angle final respectant limites servo
         """
+        # Clamp sécurité
+        value_clamped = max(-1.0, min(1.0, value))
+
+        # Appliquer le neutre et l'amplitude
         amplitude = self.servo_amplitude
+        angle = neutral + value_clamped * amplitude
 
-        # Conversion [0,1] -> [-1,1]
-        norm = value * 2.0 - 1.0
-
-        # Calcul angle
-        angle = neutral + norm * amplitude
-
-        # Clamp pour rester dans ±amplitude autour du neutre
+        # Clamp final pour s'assurer qu'on ne dépasse pas les limites physiques du servo
         min_angle = neutral - amplitude
         max_angle = neutral + amplitude
         angle_clamped = int(max(min_angle, min(max_angle, angle)))
 
-        self.get_logger().debug(
-            f"[MAP] Axis:{axis} Value:{value:.3f} → Norm:{norm:.3f} → Angle:{angle_clamped} "
-            f"(Neutral:{neutral}, ±Amplitude:{amplitude})"
-        )
+        # Debug
+        self.get_logger().debug(f"[MAP] Axis:{axis} Value:{value_clamped:.3f} → Angle:{angle_clamped}")
 
         return angle_clamped
-
 
     # =====================================================
     #           PUBLICATION COMMANDE SERVO
@@ -315,7 +355,7 @@ class MasterNode(Node):
         msg = ServoCommand()
 
         msg.x_normalized = self.joystick_x
-        msg.y_normalized = self.joystick_y
+        msg.y_normalized = -self.joystick_y
 
         msg.x_angle = x_angle
         msg.y_angle = y_angle
@@ -324,7 +364,6 @@ class MasterNode(Node):
         msg.stamp = self.get_clock().now().to_msg()
 
         self.servo_command_pub.publish(msg)
-
         self.get_logger().debug(
             f"[{source}] Servo command → X:{x_angle} Y:{y_angle}"
         )        

@@ -1,0 +1,9 @@
+(base) C:\Users\admin>conda activate depth_env
+
+(depth_env) C:\Users\admin>D:
+
+(depth_env) D:\>cd "D:\2 Master\Projet_Designing"
+
+(depth_env) D:\2 Master\Projet_Designing>python verify.py
+
+netsh interface ip set address "以太网 3" static 192.168.50.1 255.255.255.0
