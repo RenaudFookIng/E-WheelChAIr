@@ -105,25 +105,36 @@ void loop() {
   // -----------------------------
   // Lecture joystick
   // -----------------------------
-  // Valeurs minimales et maximales mesurées pour ton joystick
-  const int JOY_MIN_X = 200;
-  const int JOY_MAX_X = 750;
-  const int JOY_MIN_Y = 200;
-  const int JOY_MAX_Y = 750;
+  // ============================
+  // Paramètres du joystick (à ajuster une seule fois)
+  // ============================
+  const int JOY_NEUTRE_X = 510;  // Valeur mesurée au repos (ex: 510)
+  const int JOY_NEUTRE_Y = 515;  // Valeur mesurée au repos (ex: 515)
+  const int JOY_AMPLITUDE = 300; // Amplitude autour du neutre (ex: ±250)
 
   // Lecture joystick
   int valeurX = analogRead(brocheVRx);
   int valeurY = analogRead(brocheVRy);
 
-  // Normalisation sur [-1, 1]
-  float normX = 2.0 * (valeurX - JOY_MIN_X) / (JOY_MAX_X - JOY_MIN_X) - 1.0;
-  float normY = 2.0 * (valeurY - JOY_MIN_Y) / (JOY_MAX_Y - JOY_MIN_Y) - 1.0;
+  // Normalisation CENTRÉE SUR LE NEUTRE RÉEL
+  float normX = (valeurX - JOY_NEUTRE_X) / (float)JOY_AMPLITUDE;  // [-1.0, 1.0]
+  float normY = (valeurY - JOY_NEUTRE_Y) / (float)JOY_AMPLITUDE;  // [-1.0, 1.0]
+
+  // Contraintes (inchangées)
+  normX = constrain(normX, -1.0, 1.0);
+  normY = constrain(normY, -1.0, 1.0);
+
+  // ===== ZONE MORTE =====
+  const float DEADZONE = 0.01;  // Seuil pour ignorer les micro-mouvements
+  if (abs(normX) < DEADZONE) normX = 0.0;
+  if (abs(normY) < DEADZONE) normY = 0.0;
+  // ======================
 
   // Limite au cas où le joystick sortirait légèrement de la plage
-  if (normX > 1.0) normX = 1.0;
-  if (normX < -1.0) normX = -1.0;
-  if (normY > 1.0) normY = 1.0;
-  if (normY < -1.0) normY = -1.0;
+  //if (normX > 1.0) normX = 1.0;
+  //if (normX < -1.0) normX = -1.0;
+  //if (normY > 1.0) normY = 1.0;
+  //if (normY < -1.0) normY = -1.0;
   Serial.print("J,");
   Serial.print(normX, 6); Serial.print(",");
   Serial.println(normY, 6);
