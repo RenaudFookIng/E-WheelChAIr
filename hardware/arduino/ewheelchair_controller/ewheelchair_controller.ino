@@ -185,42 +185,68 @@ int readUltrasonic(int trigPin, int echoPin) {
   return duree * 0.034 / 2; // Conversion cm
 }
 
-// ============================
-// Lecture commandes ROS
-// ============================
-void handleIncomingSerial() {
-  while (Serial.available()) {
-    String line = Serial.readStringUntil('\n');
-    line.trim();
+  // ============================
+  // Lecture commandes ROS
+  // ============================
+  void handleIncomingSerial() {
+    while (Serial.available()) {
+      String line = Serial.readStringUntil('\n');
+      line.trim();
 
-    if (line.length() == 0) continue;
+      if (line.length() == 0) continue;
 
-    // Exemple CSV attendu: S,angleX,angleY,emergency
-    if (line.startsWith("S,")) {
+      // DEBUG
+      Serial.print("RX RAW: ");
+      Serial.println(line);
+
+      // Format attendu: S,x,y,emergency
+      if (!line.startsWith("S,")) return;
+
       int firstComma = line.indexOf(',');
       int secondComma = line.indexOf(',', firstComma + 1);
       int thirdComma = line.indexOf(',', secondComma + 1);
 
-      if (firstComma > 0 && secondComma > 0) {
-        String sx = line.substring(firstComma + 1, secondComma);
-        String sy;
-        if (thirdComma > 0) sy = line.substring(secondComma + 1, thirdComma);
-        else sy = line.substring(secondComma + 1);
+      if (firstComma < 0 || secondComma < 0) return;
 
-        servoX_angle = sx.toInt();
-        servoY_angle = sy.toInt();
+      String sx = line.substring(firstComma + 1, secondComma);
+      String sy = (thirdComma > 0) 
+                    ? line.substring(secondComma + 1, thirdComma)
+                    : line.substring(secondComma + 1);
+
+      sx.trim();
+      sy.trim();
+
+      int newX = sx.toInt();
+      int newY = sy.toInt();
+
+      Serial.print("Parsed X=");
+      Serial.print(newX);
+      Serial.print(" Y=");
+      Serial.println(newY);
+
+      // Accepter plage servo large
+      if (newX >= 0 && newX <= 180 && newY >= 0 && newY <= 180) {
+        servoX_angle = newX;
+        servoY_angle = newY;
+        lastCommandTime = millis(); // 🟢 WATCHDOG RESET
+        Serial.println("Servo CMD ACCEPTED");
+      } else {
+        Serial.println("Servo CMD REJECTED");
       }
 
-      // Emergency optionnel
+      // Emergency
       if (thirdComma > 0) {
         String emergencyStr = line.substring(thirdComma + 1);
+        emergencyStr.trim();
         bool emergency = emergencyStr.toInt() > 0;
+
         if (emergency) {
-          // En cas d'urgence, revenir à position neutre
           servoX_angle = angleNeutreGaucheDroite;
           servoY_angle = angleNeutreAvantArriere;
+          Serial.println("EMERGENCY STOP ACTIVE");
         }
       }
     }
   }
+
 }
