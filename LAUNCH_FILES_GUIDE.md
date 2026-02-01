@@ -33,7 +33,7 @@ ros2 launch e_wheelchair_launch ewheelchair_all.launch.py
 
 **Usage:**
 ```bash
-ros2 launch servo_controller servo_controller.launch.py \
+ros2 launch e_wheelchair_launch servo_controller.launch.py \
     arduino_servo_port:=/dev/ttyACM1
 ```
 
@@ -48,19 +48,34 @@ ros2 launch servo_controller servo_controller.launch.py \
 
 **Usage:**
 ```bash
-ros2 launch wide_processing wide_camera.launch.py
+ros2 launch e_wheelchair_launch wide_camera.launch.py
 ```
 
 **Nodes launched:**
 - Wide Processing Node
 
+### 4. PC Vision Bridge Launch
+
+**File:** `src/e_wheelchair_launch/e_wheelchair_launch/launch/pc_vision_bridge.launch.py`
+
+**Description:** Launches the PC vision bridge node.
+
+**Usage:**
+```bash
+ros2 launch e_wheelchair_launch pc_vision_bridge.launch.py
+```
+
+**Nodes launched:**
+- PC Vision Bridge Node
+
 ## Launch File Comparison
 
 | Launch File | Scope | Nodes | Best For |
 |-------------|-------|-------|----------|
-| `ewheelchair_all.launch.py` | Complete system | 6 nodes | Full system testing, integration
+| `ewheelchair_all.launch.py` | Complete system | 7 nodes | Full system testing, integration
 | `servo_controller.launch.py` | Servo control | 1 node | Direct servo testing
 | `wide_camera.launch.py` | Camera processing | 1 node | Visual processing
+| `pc_vision_bridge.launch.py` | Vision bridge | 1 node | Vision system integration
 
 ## When to Use Each Launch File
 
@@ -69,6 +84,7 @@ ros2 launch wide_processing wide_camera.launch.py
 - Testing system integration
 - Running full system demonstrations
 - Need master node for advanced control logic
+- Need vision system integration
 
 ### Use `servo_controller.launch.py` when:
 - Developing servo control features
@@ -81,6 +97,12 @@ ros2 launch wide_processing wide_camera.launch.py
 - Debugging visual algorithms
 - Developing computer vision features
 - Monitoring camera data
+
+### Use `pc_vision_bridge.launch.py` when:
+- Testing vision system integration
+- Debugging vision algorithms
+- Developing vision features
+- Monitoring vision data
 
 ## Command Line Arguments
 
@@ -96,6 +118,13 @@ ros2 launch wide_processing wide_camera.launch.py
 ```bash
 ros2 launch e_wheelchair_launch servo_controller.launch.py \
     arduino_servo_port:=/dev/ttyUSB1
+```
+
+### Example: Vision Bridge Configuration
+
+```bash
+ros2 launch e_wheelchair_launch pc_vision_bridge.launch.py \
+    vision_topic:=/custom_vision_data
 ```
 
 ## Integration Patterns
@@ -159,6 +188,9 @@ ros2 topic echo /camera_data
 
 # Wyes teleop intentions
 ros2 topic echo /wyes_intent
+
+# Vision data
+ros2 topic echo /vision_data
 ```
 
 ### View Node Information
@@ -166,8 +198,9 @@ ros2 topic echo /wyes_intent
 ```bash
 ros2 node info /wyes_teleop
 ros2 node info /servo_controller
-ros2 node info /arduino_data_receiver
+ros2 node info /arduino_bridge
 ros2 node info /wide_processing
+ros2 node info /pc_vision_bridge
 ```
 
 ## Troubleshooting
@@ -181,7 +214,7 @@ cd ~/E-WheelChAIr
 source install/setup.bash
 
 # Verify package is built
-colcon build --packages-select e_wheelchair_launch servo_controller wide_processing
+colcon build --packages-select e_wheelchair_launch servo_controller wide_processing pc_vision_bridge wyes_teleop
 ```
 
 ### Issue: Port already in use
@@ -209,6 +242,20 @@ pip3 install pyserial pyyaml
 colcon build
 ```
 
+### Issue: Vision bridge connection
+
+**Solution:**
+```bash
+# Verify vision bridge configuration
+cat src/pc_vision_bridge/config/vision_config.yaml
+
+# Check vision topic
+ros2 topic list | grep vision
+
+# Restart vision bridge
+ros2 launch e_wheelchair_launch pc_vision_bridge.launch.py
+```
+
 ## Best Practices
 
 ### 1. Start with Complete System
@@ -231,6 +278,10 @@ Before actual use, test in a controlled environment.
 
 Keep track of custom port mappings and parameters.
 
+### 6. Verify Vision Integration
+
+Check vision system connectivity before full deployment.
+
 ## Performance Considerations
 
 ### Resource Usage
@@ -238,8 +289,9 @@ Keep track of custom port mappings and parameters.
 | Launch File | CPU Usage | Memory Usage | Network Bandwidth |
 |-------------|-----------|--------------|-------------------|
 | `teleop_minimal` | Low | Low | Low |
-| `teleop_joystick` | Low-Medium | Medium | Medium |
+| `wyes_teleop` | Low-Medium | Medium | Medium |
 | `ewheelchair_all` | High | High | High |
+| `pc_vision_bridge` | Medium | Medium | High |
 
 ### Optimization Tips
 
@@ -247,6 +299,7 @@ Keep track of custom port mappings and parameters.
 2. **Disable visualization** when not needed
 3. **Monitor system resources** during operation
 4. **Adjust update rates** in configuration files as needed
+5. **Optimize vision processing** for better performance
 
 ## Safety Recommendations
 
@@ -257,6 +310,7 @@ Keep track of custom port mappings and parameters.
 3. ✅ Test emergency stop functionality
 4. ✅ Confirm servo neutral positions
 5. ✅ Monitor initial system behavior
+6. ✅ Verify vision system connectivity
 
 ### During Operation
 
@@ -265,6 +319,7 @@ Keep track of custom port mappings and parameters.
 3. 🛑 Be ready to use emergency stop
 4. 📊 Check resource usage periodically
 5. 🔧 Address any warnings immediately
+6. 🖥️ Monitor vision system performance
 
 ## Development Workflow
 
@@ -272,7 +327,7 @@ Keep track of custom port mappings and parameters.
 
 ```bash
 # Use servo_controller.launch.py for servo development
-ros2 launch servo_controller servo_controller.launch.py
+ros2 launch e_wheelchair_launch servo_controller.launch.py
 
 # Make code changes
 # Test servo movements directly
@@ -302,7 +357,8 @@ ros2 launch e_wheelchair_launch ewheelchair_all.launch.py
 
 - **Servo:** `src/servo_controller/config/servo_config.yaml`
 - **Master:** `src/master_node/config/master_config.yaml`
-- **Arduino:** `src/arduino_data_receiver/config/arduino_config.yaml`
+- **Arduino:** `src/arduino_bridge/config/arduino_config.yaml`
+- **Vision:** `src/pc_vision_bridge/config/vision_config.yaml`
 
 ### Version Control
 
@@ -310,6 +366,14 @@ ros2 launch e_wheelchair_launch ewheelchair_all.launch.py
 # Commit configuration changes
 git add src/*/config/*.yaml
 git commit -m "Update configuration for production"
+```
+
+### Vision Configuration
+
+```bash
+# Update vision configuration
+git add src/pc_vision_bridge/config/vision_config.yaml
+git commit -m "Update vision configuration"
 ```
 
 ## Future Enhancements
@@ -322,6 +386,7 @@ git commit -m "Update configuration for production"
 4. **Health monitoring launch file**
 5. **Remote control launch options**
 6. **Individual launch files for each component**
+7. **Enhanced vision system integration**
 
 ### Contribution Guidelines
 
@@ -329,6 +394,7 @@ git commit -m "Update configuration for production"
 2. Document new launch files thoroughly
 3. Test with different configurations
 4. Update this guide with new options
+5. Include vision system considerations
 
 ## Support
 
@@ -346,5 +412,6 @@ The E-WheelChAIr project provides flexible launch options to suit different need
 - **Complete system** for full functionality with all sensors and processing
 - **Servo controller** for direct servo testing and development
 - **Camera processing** for visual data analysis
+- **Vision bridge** for vision system integration
 
 Choose the appropriate launch file based on your current needs and system requirements.

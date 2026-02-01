@@ -117,7 +117,7 @@ newgrp dialout
 ### 1. Cloner le dépôt (si pas déjà fait)
 ```bash
 cd ~
-git clone https://github.com/votre-depot/E-WheelChAIr.git
+git clone https://github.com/RenaudFookIng/E-WheelChAIr.git
 cd E-WheelChAIr
 ```
 
@@ -139,7 +139,7 @@ ros2 pkg list | grep e_wheelchair
 
 # Vérifier les exécutables
 ls install/servo_controller/lib/servo_controller/
-ls install/teleop_joystick/lib/teleop_joystick/
+ls install/wyes_teleop/lib/wyes_teleop/
 ```
 
 ## ⚙️ Configuration
@@ -147,7 +147,7 @@ ls install/teleop_joystick/lib/teleop_joystick/
 ### 1. Configurer les ports série
 Éditer les fichiers de configuration :
 - `src/servo_controller/config/servo_config.yaml` (port: "/dev/ttyACM1")
-- `src/arduino_data_receiver/config/arduino_config.yaml` (port: "/dev/ttyACM0")
+- `src/arduino_bridge/config/arduino_config.yaml` (port: "/dev/ttyACM0")
 
 **Trouver les ports** :
 ```bash
@@ -156,7 +156,7 @@ ls /dev/ttyACM*
 
 ### 2. Télécharger le code Arduino
 1. Ouvrir `hardware/arduino/ewheelchair_controller/ewheelchair_controller.ino` dans l'IDE Arduino
-2. Sélectionner la carte appropriée (Arduino Uno/Mega)
+2. Sélectionner la carte appropriée (Arduino Mega)
 3. Sélectionner le port (/dev/ttyACM0 ou COMx)
 4. Télécharger (Upload)
 
@@ -175,7 +175,7 @@ ros2 node list
 # Doit afficher (selon le launch file utilisé) :
 # /master_node
 # /servo_controller
-# /arduino_data_receiver
+# /arduino_bridge
 # /wyes_teleop
 # /depth_processing
 # /wide_processing
@@ -194,6 +194,9 @@ ros2 topic echo /depth_data
 
 # Intentions de téléopération
 ros2 topic echo /wyes_intent
+
+# Données de vision
+ros2 topic echo /vision_data
 ```
 
 ## 🐛 Dépannage

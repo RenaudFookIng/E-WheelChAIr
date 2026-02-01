@@ -248,5 +248,3 @@ int readUltrasonic(int trigPin, int echoPin) {
       }
     }
   }
-
-}

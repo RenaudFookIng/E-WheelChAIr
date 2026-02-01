@@ -30,7 +30,7 @@ source install/setup.bash
 
 ### 4. Build specific packages (if needed)
 ```bash
-colcon build --symlink-install --packages-select teleop_joystick servo_controller
+colcon build --symlink-install --packages-select wyes_teleop servo_controller
 ```
 
 ## 🚀 Run Instructions
@@ -44,6 +44,11 @@ ros2 launch e_wheelchair_launch ewheelchair_all.launch.py
 ```bash
 ros2 launch e_wheelchair_launch servo_controller.launch.py \
     arduino_servo_port:=/dev/ttyACM1
+```
+
+### 3. Launch vision bridge
+```bash
+ros2 launch e_wheelchair_launch pc_vision_bridge.launch.py
 ```
 
 ### 3. Launch wide camera processing
@@ -63,7 +68,7 @@ ros2 pkg list | grep servo_controller
 
 2. Rebuild the package:
 ```bash
-colcon build --symlink-install --packages-select servo_controller wide_processing
+colcon build --symlink-install --packages-select servo_controller wide_processing pc_vision_bridge
 ```
 
 3. Source the setup file:
@@ -95,7 +100,7 @@ cat src/servo_controller/setup.py
 
 3. Rebuild the package:
 ```bash
-colcon build --symlink-install --packages-select servo_controller
+colcon build --symlink-install --packages-select servo_controller pc_vision_bridge wyes_teleop
 ```
 
 ## 📊 Package Structure
@@ -109,11 +114,14 @@ colcon build --symlink-install --packages-select servo_controller
 - `wide_processing_node.py`: Main node for wide camera processing
 - `launch/wide_camera.launch.py`: Launch file for wide camera processing
 
-### arduino_data_receiver
-- `arduino_data_receiver_node.py`: Main node for receiving Arduino sensor data
+### arduino_bridge
+- `arduino_bridge_node.py`: Main node for receiving Arduino sensor data
 
 ### wyes_teleop
 - `wyes_teleop_node.py`: Main node for keyboard-based teleoperation
+
+### pc_vision_bridge
+- `pc_vision_bridge_node.py`: Main node for vision system bridge
 
 ## 🔌 ROS2 Topics
 
@@ -123,11 +131,13 @@ colcon build --symlink-install --packages-select servo_controller
 - `/camera_data`: Camera processing data
 - `/wyes_intent`: Teleoperation intentions
 - `/depth_data`: Depth sensor data
+- `/vision_data`: Vision system data
 
 ### Subscribed Topics
 - `/servo_commands`: Servo command messages
 - `/arduino_data`: Arduino sensor data
 - `/wyes_intent`: Teleoperation intentions
+- `/vision_data`: Vision system data
 
 ## 📈 Performance Notes
 

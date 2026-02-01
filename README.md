@@ -16,7 +16,7 @@ E-WheelChAIr is an open-source project designed to enhance autonomy and accessib
 
 ## Project Structure
 
-**Note:** All ROS launch files are centralized in the `e_wheelchair_launch` package for easier management and management.
+**Note:** All ROS launch files are centralized in the `e_wheelchair_launch` package for easier management.
 
 ```
 E-WheelChAIr/
@@ -117,6 +117,7 @@ E-WheelChAIr/
 - colcon (build tool for ROS2).
 - FreeCAD 0.20+ (for 3D modeling).
 - Git LFS (for versioning large 3D files).
+- Python 3.8+ with pyserial and pyyaml packages.
 
 ---
 
@@ -125,12 +126,11 @@ E-WheelChAIr/
 ### 1. Clone the Repository
 ```bash
 git clone https://github.com/RenaudFookIng/E-WheelChAIr.git
-cd E-WheelChAIr_ws
+cd E-WheelChAIr
 ```
 
 ### 2. Build the ROS Workspace
 ```bash
-cd EWheelChAIr_ws
 colcon build --symlink-install
 source install/setup.bash
 ```
@@ -165,12 +165,13 @@ All ROS launch files have been centralized in the `e_wheelchair_launch` package 
 |-----------------------|----------------------------------------------|
 | `master_node`          | Main control node for servo-controlled joystick |
 | `servo_controller`     | Controls Miuzei MG996 servos via Arduino     |
-| `arduino_data_receiver` | Receives data from Arduino sensors       |
+| `arduino_bridge`       | Receives data from Arduino sensors          |
 | `depth_processing`     | Processes depth camera data                  |
 | `wide_processing`      | Processes wide-angle camera data             |
 | `wyes_teleop`          | Keyboard-based teleoperation interface        |
 | `custom_msgs`          | Custom ROS message definitions               |
 | `e_wheelchair_launch`  | Launch files for the complete system         |
+| `pc_vision_bridge`     | Bridge between PC vision system and ROS      |
 
 ---
 

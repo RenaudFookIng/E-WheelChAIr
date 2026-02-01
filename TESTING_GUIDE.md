@@ -6,6 +6,7 @@ Ce guide vous accompagne pas à pas pour tester l'intégration complète du syst
 - Joystick PS2 (lecture)
 - Servos MG996R (contrôle)
 - Capteurs ultrasons (à venir)
+- Interface vision (à venir)
 
 ## 📋 Prérequis
 
@@ -26,6 +27,7 @@ Ce guide vous accompagne pas à pas pour tester l'intégration complète du syst
 - IDE Arduino 2.x
 - Bibliothèques Arduino standard (Servo.h)
 - Dépendances Python (pyserial, pyyaml)
+- Dépendances vision (OpenCV, etc.)
 
 ## 🔧 Préparation
 
@@ -133,12 +135,14 @@ ros2 launch e_wheelchair_launch ewheelchair_all.launch.py
 # Monitorer les topics
 ros2 topic echo /joystick_data
 ros2 topic echo /servo_commands
+ros2 topic echo /vision_data
 ```
 
 **Résultats attendus** :
 1. `/joystick_data` : Messages continus avec x,y entre -1.0 et 1.0
 2. `/servo_commands` : Commandes servos avec angles correspondants
 3. Servos répondent en temps réel aux mouvements du joystick
+4. `/vision_data` : Messages de vision si activé
 
 ### Étape 5 : Test de Sécurité
 
@@ -175,6 +179,7 @@ ros2 topic pub /servo_commands custom_msgs/msg/ServoCommand "{x_normalized: 2.0,
 - Alimentation insuffisante (servos nécessitent 6V)
 - Branchements incorrects
 - Port USB non détecté
+- Conflit avec le système de vision
 
 **Solutions** :
 ```bash
@@ -185,6 +190,9 @@ ls /dev/ttyACM*
 sudo chmod a+rw /dev/ttyACM0
 
 # Tester avec un exemple Arduino simple
+
+# Vérifier les topics de vision
+ros2 topic list | grep vision
 ```
 
 ### Problème : Joystick non détecté
@@ -205,6 +213,7 @@ sudo chmod a+rw /dev/ttyACM0
 - Port série incorrect dans la config
 - Node ROS2 non lancé
 - Conflit de ports
+- Problème de configuration vision
 
 **Solutions** :
 ```bash
@@ -216,6 +225,9 @@ ros2 node list
 
 # Redémarrer le node
 ros2 run servo_controller servo_controller_node
+
+# Vérifier la configuration vision
+cat src/pc_vision_bridge/config/vision_config.yaml
 ```
 
 ## 📈 Calibration
@@ -238,11 +250,15 @@ ros2 run servo_controller servo_controller_node
 1. Positionner les servos manuellement
 2. Ajuster les vis de fixation
 3. Vérifier l'amplitude mécanique (±15°)
+4. Vérifier l'intégration avec le système de vision
 
 **Outils** :
 ```bash
 # Commande de calibration
 ros2 topic pub /servo_commands custom_msgs/msg/ServoCommand "{x_normalized: 0.5, y_normalized: 0.0}"
+
+# Vérifier les données de vision
+ros2 topic echo /vision_data
 ```
 
 ## ✅ Checklist avant Déploiement
@@ -255,12 +271,14 @@ ros2 topic pub /servo_commands custom_msgs/msg/ServoCommand "{x_normalized: 0.5,
 - [ ] Tests unitaires passés
 - [ ] Sécurité mécanique vérifiée
 - [ ] Interrupteur d'urgence accessible
+- [ ] Système de vision configuré
 
 ## 📚 Documentation Complémentaire
 
 - [Bibliothèque Servo Arduino](https://www.arduino.cc/en/Reference/Servo)
 - [ROS2 Troubleshooting](https://docs.ros.org/en/humble/Troubleshooting.html)
 - [Guide de Sécurité Électrique](https://learn.sparkfun.com/tutorials/electrical-safety)
+- [OpenCV Documentation](https://docs.opencv.org/)
 
 ---
 
