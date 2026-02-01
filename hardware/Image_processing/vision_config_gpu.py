@@ -1,3 +1,5 @@
+import os
+
 class VisionConfigGPU:
     DEVICE = "cuda"
 
@@ -6,7 +8,10 @@ class VisionConfigGPU:
     YOLO_PERIOD = 0.12
 
     DEPTH_INPUT = 256
-    DEPTH_WEIGHTS = "depth_anything_v2_vits.pth"
+    # CHEMIN COMPLET DU .PTH
+    SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+    DEPTH_WEIGHTS = os.path.join(SCRIPT_DIR, "Depth-Anything-V2", "depth_anything_v2_vits.pth")
+
     DEPTH_CFG = dict(encoder='vits', features=64, out_channels=[48,96,192,384])
 
     RASPBERRY_IP = "192.168.50.2"

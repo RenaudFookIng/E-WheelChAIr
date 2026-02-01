@@ -1,3 +1,5 @@
+import os
+
 class VisionConfigMac:
     DEVICE = "cpu"
     CPU_THREADS = 4
@@ -7,7 +9,17 @@ class VisionConfigMac:
     YOLO_PERIOD = 0.18
 
     DEPTH_INPUT = 256
-    DEPTH_WEIGHTS = "depth_anything_v2_vits.pth"
+
+    CROP_PERCENT = 0.10  # % des côtés à retirer pour éviter doublons
+    TARGET_FPS = 30
+    TARGET_HEIGHT = 480
+    FRAME_SKIP_YOLO = 10
+    FRAME_SKIP_DEPTH = 10
+
+    # CHEMIN COMPLET DU .PTH
+    SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+    DEPTH_WEIGHTS = os.path.join(SCRIPT_DIR, "Depth-Anything-V2", "depth_anything_v2_vits.pth")
+
     DEPTH_CFG = dict(encoder='vits', features=64, out_channels=[48,96,192,384])
 
     RASPBERRY_IP = "192.168.50.2"
