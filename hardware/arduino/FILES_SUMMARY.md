@@ -286,8 +286,8 @@ Fixes #issue_number
 - [PS2 Joystick Tutorial](https://www.instructables.com/How-to-Use-a-Joystick-With-Arduino/)
 
 ### ROS2
-- [ROS2 Documentation](https://docs.ros.org/en/humble/)
-- [Serial Communication in ROS2](https://docs.ros.org/en/humble/Tutorials/Beginner-CLI-Tools/Introducing-Turtlesim/Introducing-Turtlesim.html)
+- [ROS2 Documentation](https://docs.ros.org/en/jazzy/)
+- [Serial Communication in ROS2](https://docs.ros.org/en/jazzy/Tutorials/Beginner-CLI-Tools/Introducing-Turtlesim/Introducing-Turtlesim.html)
 
 ## 📊 File Relationships
 
