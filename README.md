@@ -172,6 +172,9 @@ All ROS launch files have been centralized in the `e_wheelchair_launch` package 
 | `wyes_teleop`          | Keyboard-based teleoperation interface        |
 
 ---
+Pour se connecter au Hotspot WiFi :
+- Nom du Hotspot : E-Wheelchair
+- Mot de passe : REDACTED_WIFI_PASSWORD
 
 Pour se connecter à la plateforme :
 Nom de la plateforme : ewheelchair
