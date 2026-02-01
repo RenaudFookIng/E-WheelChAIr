@@ -10,8 +10,7 @@ This guide explains the **E-WheelChAIr Arduino Controller** - the hardware inter
 - **Arduino Mega 2560** (required for sufficient I/O pins)
 - **PS2 Joystick** (analog thumbstick for user control)
 - **2x MG996R Servo Motors** (for wheelchair joystick manipulation)
-- **4x HC-SR04 Ultrasonic Sensors** (for obstacle detection)
-- **6V Power Supply** (for servos - NOT from Arduino!)
+- **3x HC-SR04 Ultrasonic Sensors** (for obstacle detection)
 
 ### Why Arduino Mega?
 - **More I/O pins** than Uno/Nano
@@ -35,43 +34,44 @@ D10 → Servo X (Horizontal - Left/Right)
 
 ### Digital I/O (Ultrasonic Sensors)
 ```
-Front Sensor (US1):
-  D5 → Trigger
-  D6 → Echo
+Rear Right Sensor (US1):
+  30 → Trigger
+  31 → Echo
 
-Rear Sensor (US2):
-  D7 → Trigger  
-  D4 → Echo
+Rear Central Sensor (US2):
+  32 → Trigger  
+  33 → Echo
 
-Left Sensor (US3):
-  D8 → Trigger
-  D3 → Echo
-
-Right Sensor (US4):
-  D2 → Trigger
-  D13 → Echo
+Rear Left Sensor (US3):
+  34 → Trigger
+  35 → Echo
 ```
 
 ### Power Connections
 ```
-5V  → Joystick + Ultrasonic sensors
+5V  → Joystick + Ultrasonic sensors + Servo
 GND → Common ground for ALL components
-6V  → Servo power (EXTERNAL supply, NOT from Arduino!)
 ```
 
 ## ⚙️ Servo Configuration (Most Important!)
 
 ### Neutral Positions
 - **Servo X (Horizontal)**: 85° (NOT 90°!)
-- **Servo Y (Vertical)**: 90°
+- **Servo Y (Vertical)**: 92° (NOT 90°!)
 
 ### Movement Range
 - **Amplitude**: ±15° from neutral
 - **Servo X**: 70° to 100° (85° ± 15°)
-- **Servo Y**: 75° to 105° (90° ± 15°)
+- **Servo Y**: 77° to 107° (92° ± 15°)
 
 ### Why 85° for X-axis?
 The X-axis neutral is **85° instead of 90°** because:
+- Matches the physical mechanics of the wheelchair joystick
+- Provides better centering for the wheelchair control
+- Optimized through testing and calibration
+
+### Why 92° for Y-axis?
+The X-axis neutral is **92° instead of 90°** because:
 - Matches the physical mechanics of the wheelchair joystick
 - Provides better centering for the wheelchair control
 - Optimized through testing and calibration
@@ -95,7 +95,7 @@ All commands end with newline (`\n`) character.
    SERVO,90,85
    ```
    - `X`: X-axis angle (70-100°)
-   - `Y`: Y-axis angle (75-105°)
+   - `Y`: Y-axis angle (77-107°)
    - Response: `SERVO_OK,X,Y`
 
 2. **NEUTRAL** - Return to neutral position
@@ -119,14 +119,13 @@ All commands end with newline (`\n`) character.
    - `X`: X-axis angle (0-180°)
    - `Y`: Y-axis angle (0-180°)
 
-2. **ULTRASONIC,d1,d2,d3,d4** - Sensor distances (20Hz)
+2. **ULTRASONIC,d1,d2,d3** - Sensor distances (20Hz)
    ```
    ULTRASONIC,0.50,1.20,0.85,0.60
    ```
-   - `d1`: Front distance (meters)
-   - `d2`: Rear distance (meters)
-   - `d3`: Left distance (meters)
-   - `d4`: Right distance (meters)
+   - `d1`: Rear Right distance (meters)
+   - `d2`: Rear Central distance (meters)
+   - `d3`: Rear Left distance (meters)
 
 3. **ERROR,message** - Error messages
    ```
@@ -167,8 +166,10 @@ emergencyStop();
 
 ```
 User Input → Joystick → Arduino → ROS2 → AI Processing → Arduino → Servos → Wheelchair
-                          ↑                                      ↓
-                   Ultrasonic Data ← Obstacle Detection
+                          ↑
+                   Ultrasonic Data
+                          ↑                    
+                   Obstacle Detection
 ```
 
 ### Update Rates
@@ -192,9 +193,9 @@ python3 test_arduino.py
 3. Check range: 0-180° for both axes
 
 **Servo Test:**
-1. Send: `SERVO,90,85` (neutral)
-2. Send: `SERVO,100,95` (+15°)
-3. Send: `SERVO,70,75` (-15°)
+1. Send: `SERVO,92,85` (neutral)
+2. Send: `SERVO,107,95` (+15°)
+3. Send: `SERVO,77,75` (-15°)
 4. Verify physical movement matches commands
 
 **Ultrasonic Test:**
@@ -213,11 +214,10 @@ python3 test_arduino.py
 
 - [ ] Arduino Mega connected via USB to Raspberry Pi
 - [ ] Joystick connected to A0, A1, +5V, GND
-- [ ] Servo X connected to D10, +6V (external), GND
-- [ ] Servo Y connected to D9, +6V (external), GND
+- [ ] Servo X connected to D10, +5V, GND
+- [ ] Servo Y connected to D9, +5V, GND
 - [ ] All ultrasonic sensors connected with correct Trig/Echo pins
 - [ ] All components share common GND
-- [ ] 6V power supply connected to servos (NOT Arduino!)
 - [ ] 5V power from Arduino to joystick and sensors
 
 ## ⚡ Power Requirements
@@ -227,7 +227,7 @@ python3 test_arduino.py
 - **Current**: ~50mA (without servos)
 
 ### Servo Motors (MG996R)
-- **Voltage**: 6V (external supply required!)
+- **Voltage**: 5V
 - **Current**: Up to 2A per servo under load
 - **Total**: 4A power supply recommended
 
@@ -246,7 +246,7 @@ python3 test_arduino.py
 - GND not common
 
 **Solutions:**
-1. Verify 6V power supply connection
+1. Verify 5V connection
 2. Check servo signal wires (D9, D10)
 3. Test with simple Arduino servo example
 4. Measure voltage at servo connectors
@@ -312,10 +312,10 @@ python3 test_arduino.py
 
 ## 📚 Reference Information
 
-### Servo Specifications (MG996R)
-- **Operating Voltage**: 4.8V - 7.2V (6V recommended)
-- **Torque**: 9.4kg·cm (4.8V), 11kg·cm (6V)
-- **Speed**: 0.17sec/60° (4.8V), 0.14sec/60° (6V)
+### Servo Specifications (MZ996R)
+- **Operating Voltage**: 4.8V - 7.2V
+- **Torque**: 9.4kg·cm (4.8V), 11kg·cm
+- **Speed**: 0.17sec/60° (4.8V), 0.14sec/60°
 - **Weight**: 55g
 - **Dimensions**: 40.7×19.7×42.9mm
 
@@ -382,14 +382,14 @@ echo "NEUTRAL" > /dev/ttyACM1
 echo "STATUS" > /dev/ttyACM1
 
 # Test servos
-echo "SERVO,90,85" > /dev/ttyACM1
+echo "SERVO,92,85" > /dev/ttyACM1
 ```
 
 ### Expected Responses
 ```
-SERVO_OK,90,85        # Servo command confirmation
+SERVO_OK,92,85        # Servo command confirmation
 NEUTRAL_OK            # Neutral position confirmation
-STATUS,85,90,85,90,15 # Current status
+STATUS,85,92,85,92,15 # Current status
 JOYSTICK,95,88        # Joystick position
 ULTRASONIC,0.5,1.2,0.8,0.6 # Sensor distances
 ```
