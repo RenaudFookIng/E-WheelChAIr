@@ -50,3 +50,4 @@ __pycache__/
 .DS_Store
 hardware/Image_processing/Depth-Anything-V2/
 hardware/Image_processing/ultralytics/
+hardware/Image_processing/old_python_scripts/
