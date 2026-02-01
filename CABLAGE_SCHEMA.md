@@ -64,74 +64,46 @@
 ```
 
 **IMPORTANT** :
-- Alimentation **6V externe** obligatoire (pas depuis Arduino)
 - GND **commun** entre alimentation et Arduino
 - Courant max : 2A par servo sous charge
 
 ### 3. Capteurs Ultrasons (HC-SR04)
 
 ```
-[Ultrason 1 - Avant]
+[Ultrason 1 - Arrière Droite]
    │
    ├── VCC   → +5V (Arduino)
-   ├── Trig  → D5 (Arduino)
-   ├── Echo  → D6 (Arduino)
+   ├── Trig  → 30 (Arduino)
+   ├── Echo  → 31 (Arduino)
    └── GND   → GND (Arduino)
 
-[Ultrason 2 - Arrière]
+[Ultrason 2 - Arrière Central]
    │
    ├── VCC   → +5V (Arduino)
-   ├── Trig  → D7 (Arduino)
-   ├── Echo  → D4 (Arduino)
+   ├── Trig  → 32 (Arduino)
+   ├── Echo  → 33 (Arduino)
    └── GND   → GND (Arduino)
 
-[Ultrason 3 - Gauche]
+[Ultrason 3 - Arrière Gauche]
    │
    ├── VCC   → +5V (Arduino)
-   ├── Trig  → D8 (Arduino)
-   ├── Echo  → D3 (Arduino)
+   ├── Trig  → 34 (Arduino)
+   ├── Echo  → 35 (Arduino)
    └── GND   → GND (Arduino)
 
-[Ultrason 4 - Droite]
-   │
-   ├── VCC   → +5V (Arduino)
-   ├── Trig  → D2 (Arduino)
-   ├── Echo  → D13 (Arduino)
-   └── GND   → GND (Arduino)
 ```
 
 **Positionnement recommandé** :
-- Avant : Capteur 1
-- Arrière : Capteur 2
-- Gauche : Capteur 3
-- Droite : Capteur 4
+- Arrière Droite : Capteur 1
+- Arriere Central : Capteur 2
+- Arriere Gauche : Capteur 3
 
 ### 4. Alimentation
 
 ```
-[Alimentation 6V pour Servos]
+[Alimentation 5V Raspberry Pi]
    │
-   ├── +6V  → Servos Rouge (x2)
-   ├── GND  → Servos Marron (x2)
-   └── GND  → Arduino GND
-
-[Alimentation 5V Arduino]
-   │
-   ├── USB  → Raspberry Pi
-   └── (Optionnel) Alim externe 7-12V
-```
-
-**Schéma électrique** :
-```
-[Alim 6V]
-   │
-   ├───┬───── Servo X Rouge
-   │   └───── Servo Y Rouge
-   │
-   └─── GND ─────┬───── Servo X Marron
-                 └───── Servo Y Marron
-                         │
-                         └─── Arduino GND
+   └── USB  →  Arduino Mega (Port série)
 ```
 
 ### 5. Raspberry Pi
@@ -155,14 +127,12 @@
 | Joystick Y         | A1             | Y                | Vert        |
 | Servo X (G/D)      | D10            | Signal           | Orange      |
 | Servo Y (A/A)      | D9             | Signal           | Orange      |
-| Ultrason 1 Trig    | D5             | Trig             | Marron      |
-| Ultrason 1 Echo    | D6             | Echo             | Bleu        |
-| Ultrason 2 Trig    | D7             | Trig             | Marron      |
-| Ultrason 2 Echo    | D4             | Echo             | Bleu        |
-| Ultrason 3 Trig    | D8             | Trig             | Marron      |
-| Ultrason 3 Echo    | D3             | Echo             | Bleu        |
-| Ultrason 4 Trig    | D2             | Trig             | Marron      |
-| Ultrason 4 Echo    | D13            | Echo             | Bleu        |
+| Ultrason 1 Trig    | 30             | Trig             | Marron      |
+| Ultrason 1 Echo    | 31             | Echo             | Bleu        |
+| Ultrason 2 Trig    | 32             | Trig             | Marron      |
+| Ultrason 2 Echo    | 33             | Echo             | Bleu        |
+| Ultrason 3 Trig    | 34             | Trig             | Marron      |
+| Ultrason 3 Echo    | 35             | Echo             | Bleu        |
 | Alim 5V            | 5V             | VCC (tous)       | Rouge       |
 | GND Commun         | GND            | GND (tous)       | Noir        |
 
@@ -196,7 +166,7 @@
 2. **Tester les ultrasons** :
    ```bash
    ros2 topic echo /ultrasonic_data
-   # Doit afficher 4 valeurs entre 0.02 et 4.0
+   # Doit afficher 3 valeurs entre 0.02 et 4.0
    ```
 
 3. **Vérifier le joystick** :
@@ -210,14 +180,12 @@
 ### Problème : Servos ne bougent pas
 
 **Causes** :
-- ❌ Alimentation servos non branchée
 - ❌ GND non commun
 - ❌ Broches servos inversées
 
 **Solution** :
-1. Vérifier tension alim servos (6V)
-2. Vérifier continuité GND
-3. Tester avec exemple Arduino simple
+1. Vérifier continuité GND
+2. Tester avec exemple Arduino simple
 
 ### Problème : Ultrasons toujours à 4.0m
 
@@ -246,7 +214,6 @@
 ## 🎯 Checklist Final
 
 - [ ] Branchements vérifiés (2x)
-- [ ] Alimentation servos séparée (6V)
 - [ ] GND commun à tous
 - [ ] Code Arduino téléversé
 - [ ] ROS2 compilé
