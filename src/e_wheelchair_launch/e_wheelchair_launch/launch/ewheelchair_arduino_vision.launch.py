@@ -37,9 +37,9 @@ def generate_launch_description():
     )
 
     # =====================================================
-    # Node Master
+    # PC Vision Bridge Node
     # =====================================================
-    arduino_bridge_node = Node(
+    pc_vision_bridge = Node(
         package='pc_vision_bridge',
         executable='pc_vision_bridge_node',
         name='pc_vision_bridge_node',
@@ -53,5 +53,6 @@ def generate_launch_description():
     # =====================================================
     return LaunchDescription([
         arduino_bridge_node,
+        pc_vision_bridge,
         master_node
     ])

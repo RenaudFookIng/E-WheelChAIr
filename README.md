@@ -108,16 +108,16 @@ E-WheelChAIr/
 ## Prerequisites
 
 ### Hardware
-- Electric wheelchair with servo-controlled joystick (using Miuzei MG996 servos).
+- Electric wheelchair with servo-controlled joystick (using Miuzei MZ996 servos).
 - Sensors: Intel Realsense (depth camera), HC-SR04 (ultrasonic), Arduino (I/O interface).
 - Joystick or alternative control input device.
 
 ### Software
-- ROS2 Humble (or Foxy).
+- ROS2 Jazzy.
 - colcon (build tool for ROS2).
-- FreeCAD 0.20+ (for 3D modeling).
+- OnShape (for 3D modeling).
 - Git LFS (for versioning large 3D files).
-- Python 3.8+ with pyserial and pyyaml packages.
+- Python 3.9+ with pyserial and pyyaml packages.
 
 ---
 
@@ -156,29 +156,27 @@ All ROS launch files have been centralized in the `e_wheelchair_launch` package 
 | Launch File | Description | Components Launched |
 |-------------|-------------|---------------------|
 | `ewheelchair_all.launch.py` | Complete system with all sensors and processing | 6 nodes |
-| `servo_controller.launch.py` | Direct servo control interface | 1 node |
-| `wide_camera.launch.py` | Wide-angle camera processing | 1 node |
+| `ewheelchair_joystick_servo.launch.py` | Control servo with joystick and Ultrasonic sensor | 2 node |
+| `ewheelchair_arduino_vision.launch.py` | Control servo with joystick and Ultrasonic sensor and Wide-angle camera processing | 3 node |
+| `ewheelchair_wyes_teleop.launch.py` | Control servo with joystick, Ultrasonic sensor and Wyes Glasses | 3 node |
 
 ## ROS Packages
 
 | Package               | Description                                  |
 |-----------------------|----------------------------------------------|
-| `master_node`          | Main control node for servo-controlled joystick |
-| `servo_controller`     | Controls Miuzei MG996 servos via Arduino     |
 | `arduino_bridge`       | Receives data from Arduino sensors          |
-| `depth_processing`     | Processes depth camera data                  |
-| `wide_processing`      | Processes wide-angle camera data             |
-| `wyes_teleop`          | Keyboard-based teleoperation interface        |
 | `custom_msgs`          | Custom ROS message definitions               |
 | `e_wheelchair_launch`  | Launch files for the complete system         |
+| `master_node`          | Main control node for servo-controlled joystick |
 | `pc_vision_bridge`     | Bridge between PC vision system and ROS      |
+| `wyes_teleop`          | Keyboard-based teleoperation interface        |
 
 ---
 
 Pour se connecter à la plateforme :
 Nom de la plateforme : ewheelchair
 ```bash
-ssh ewheelchair@192.168.4.1
+ssh ewheelchair2@192.168.4.1
 ```
 mdp : REDACTED_SSH_PASSWORD
 
@@ -195,17 +193,16 @@ mdp : REDACTED_SSH_PASSWORD
 ## Recent Changes
 
 ### Version 0.2.0 (Current)
-- **Major Architecture Change**: Replaced Sabertooth motor controller with Miuzei MG996 servo-based joystick control
-- **New Package**: `servo_controller` for Arduino-based servo management
+- **Major Architecture Change**: Replaced Sabertooth motor controller with Miuzei MZ996 servo-based joystick control
+- **New Package**: `arduino_bridge` for Arduino-based servo management
 - **Updated**: `master_node` now publishes joystick commands instead of motor commands
 - **Updated**: `visualization` package removed motor speed plotting
-- **Removed**: `sabertooth_controller` and `motor_speed_calculator` packages
 - **Improved**: Safety features with neutral position on emergency stop
 
 ### Version 0.1.0
 - Initial release with Sabertooth motor controller
 - Basic sensor integration (ultrasonic, camera)
-- ROS2 Humble compatibility
+- ROS2 Jazzy compatibility
 
 ## Collaboration
 - **University of Milan**: Partner for accessibility validation.
