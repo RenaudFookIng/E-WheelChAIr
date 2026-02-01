@@ -11,7 +11,7 @@ This directory contains the Arduino firmware for the E-WheelChAIr project.
 
 - **Arduino Mega 2560** (required for sufficient pins)
 - **Joystick PS2** - Analog joystick for user input
-- **2x MG996R Servos** - For wheelchair joystick manipulation
+- **2x MZ996R Servos** - For wheelchair joystick manipulation
 - **4x HC-SR04 Ultrasonic Sensors** - For obstacle detection
 - **6V Power Supply** - For servos (NOT from Arduino!)
 
@@ -24,14 +24,12 @@ This directory contains the Arduino firmware for the E-WheelChAIr project.
 ### Digital Outputs
 - **D9**: Servo Y (Vertical - Forward/Backward)
 - **D10**: Servo X (Horizontal - Left/Right)
-- **D2**: Ultrasonic 4 Trigger (Right sensor)
-- **D3**: Ultrasonic 3 Echo (Left sensor)
-- **D4**: Ultrasonic 2 Echo (Rear sensor)
-- **D5**: Ultrasonic 1 Trigger (Front sensor)
-- **D6**: Ultrasonic 1 Echo (Front sensor)
-- **D7**: Ultrasonic 2 Trigger (Rear sensor)
-- **D8**: Ultrasonic 3 Trigger (Left sensor)
-- **D13**: Ultrasonic 4 Echo (Right sensor)
+- **30**: Ultrasonic 1 Trigger (Rear Right sensor)
+- **31**: Ultrasonic 1 Echo (Rear Right sensor)
+- **32**: Ultrasonic 2 Trigger (Rear Central sensor)
+- **33**: Ultrasonic 2 Echo (Rear Central sensor)
+- **34**: Ultrasonic 3 Trigger (Rear Left sensor)
+- **35**: Ultrasonic 3 Echo (Rear Left sensor)
 
 ### Power
 - **5V**: Power for ultrasonic sensors and joystick
@@ -55,7 +53,7 @@ The sketch uses the standard `Servo.h` library which comes with Arduino IDE.
 ### 3. Upload the Code
 
 1. Open `ewheelchair_controller.ino` in Arduino IDE
-2. Select board: **Arduino Mega or Mega 2560**
+2. Select board: **Arduino Mega 2560**
 3. Select port: Check with `ls /dev/ttyACM*` on Linux or COM port on Windows
 4. Click **Upload** (→)
 
@@ -68,7 +66,7 @@ The Arduino communicates at **115200 baud** using the following protocol:
 #### Commands (ROS2 → Arduino)
 
 - **`SERVO,X,Y`**: Set servo positions
-  - `X`: X-axis angle (75-105°, neutral=90°)
+  - `X`: X-axis angle (77-107°, neutral=92°)
   - `Y`: Y-axis angle (70-100°, neutral=85°)
   - Example: `SERVO,90,85` (neutral position)
 
@@ -105,7 +103,7 @@ The Arduino communicates at **115200 baud** using the following protocol:
 Edit these values in the sketch if needed:
 
 ```cpp
-int neutralX = 90;    // Neutral position for X servo
+int neutralX = 92;    // Neutral position for X servo
 int neutralY = 85;    // Neutral position for Y servo
 int amplitude = 15;   // ±15° amplitude limit
 ```
@@ -127,7 +125,7 @@ python3 test_arduino.py
 ### Manual Testing
 
 1. **Joystick Test**: Move joystick and check serial output
-2. **Servo Test**: Send `SERVO,90,85` command
+2. **Servo Test**: Send `SERVO,92,85` command
 3. **Ultrasonic Test**: Place hand in front of sensors
 4. **Safety Test**: Disconnect serial and verify timeout
 
@@ -154,7 +152,7 @@ The ROS2 `servo_controller_node` sends commands and receives sensor data.
 ### Common Issues
 
 **Problem**: Servos don't move
-- Check 6V power supply connection
+- Check 8V power connection
 - Verify GND is common
 - Test with simple Arduino servo example
 
@@ -183,6 +181,7 @@ The ROS2 `servo_controller_node` sends commands and receives sensor data.
 ## 🎓 Notes
 
 - The Y-axis neutral position is **85°** (not 90°) to match wheelchair mechanics
+- The X-axis neutral position is **92°** (not 90°) to match wheelchair mechanics
 - Servo amplitude is **strictly limited to ±15°** for safety
 - All ultrasonic sensors are read sequentially to avoid interference
 - Serial communication uses newline (`\n`) as command terminator
