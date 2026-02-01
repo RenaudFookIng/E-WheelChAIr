@@ -177,7 +177,7 @@ Pour se connecter au Hotspot WiFi :
 - Mot de passe : REDACTED_WIFI_PASSWORD
 
 Pour se connecter à la plateforme :
-Nom de la plateforme : ewheelchair
+Nom de la plateforme : ewheelchair2
 ```bash
 ssh ewheelchair2@192.168.4.1
 ```
