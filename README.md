@@ -130,7 +130,7 @@ E-WheelChAIr/
 
 ---
 
-## Installation and Setup
+## Installation and Setup On your computer
 
 ### 1. Clone the Repository
 ```bash
@@ -147,6 +147,28 @@ source install/setup.bash
 ### 3. Launch the System
 ```bash
 ros2 launch e_wheelchair_launch ewheelchair_all.launch.py
+```
+## Installation and Setup On your Raspberry PI
+
+### 1. Cloner le dépôt en mode "sparse-checkout"
+```bash
+git clone --filter=blob:none --no-checkout https://github.com/RenaudFookIng/E-WheelChAIr.git
+cd E-WheelChAIr
+```
+### 2. Active le mode sparse-checkout et exclut le dossier 'hardware'
+```bash
+git sparse-checkout init --cone
+git sparse-checkout set --no-cone /* !/hardware/
+```
+### 3. Extrait les fichiers (sauf 'hardware')
+```bash
+git checkout main
+```
+
+## Build the ROS Workspace
+```bash
+colcon build --symlink-install
+source install/setup.bash
 ```
 
 ---
