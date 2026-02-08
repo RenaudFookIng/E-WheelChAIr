@@ -21,7 +21,6 @@ E-WheelChAIr is an open-source project designed to enhance autonomy and accessib
 <div align="center">
   <img src="front_view.jpeg" alt="Front View" width="45%" />
   <img src="right_view.jpeg" alt="Right View" width="45%" />
-  <br>
   <img src="rear_view.jpeg" alt="Rear View" width="45%" />
   <img src="left_view.jpeg" alt="Left View" width="45%" />
 </div>
