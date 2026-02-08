@@ -78,7 +78,7 @@ class VisionSystem:
     # ================= CAMERA =================
     def camera_thread(self):
         cap0 = cv2.VideoCapture(1) # Test avec deux caméras USB trouver le bon ID
-        cap1 = cv2.VideoCapture(2) # Test avec deux caméras USB trouver le bon ID
+        cap1 = cv2.VideoCapture(0) # Test avec deux caméras USB trouver le bon ID
 
         while True:
             r0,f0 = cap0.read()
@@ -104,14 +104,16 @@ class VisionSystem:
         last = 0
 
         while True:
-            if self.frame_q.empty():
+            try:
+                frame = self.frame_q.get(timeout=0.01)
+            except queue.Empty:
                 continue
 
             self.frame_count_yolo += 1
             if self.frame_count_yolo % self.cfg.FRAME_SKIP_YOLO != 0:  # Ne traiter qu'une frame sur 2X defini dans vision_config_mac.py
                 continue
 
-            frame = self.frame_q.queue[-1]
+            #frame = self.frame_q.queue[-1]
             last = time.time()
 
             # ------------------ Mesure temps YOLO ------------------
@@ -177,14 +179,15 @@ class VisionSystem:
         prev = None
 
         while True:
-            if self.frame_q.empty():
+            try:
+                frame = self.frame_q.get(timeout=0.01)
+            except queue.Empty:
                 continue
 
             self.frame_count_depth += 1
             if self.frame_count_depth % self.cfg.FRAME_SKIP_DEPTH != 0:  # Ne traiter qu'une frame sur valeur définie dans vision_config_mac.py
                 continue
-            
-            frame = self.frame_q.queue[-1]
+
             h,w,_ = frame.shape
 
             img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB) / 255.0
@@ -209,6 +212,21 @@ class VisionSystem:
 
             if not self.depth_q.full():
                 self.depth_q.put(d)
+
+    def zone_from_relative_depth(self, d_rel):
+        """
+        d_rel : float ∈ [0,1], 1 = très proche, 0 = très loin
+        Retourne un nom de zone et un code couleur
+        """
+        if d_rel > 0.75:
+            return "ROUGE", (0,0,255)       # danger
+        elif d_rel > 0.5:
+            return "ORANGE", (0,165,255)   # attention rapide
+        elif d_rel > 0.25:
+            return "JAUNE", (0,255,255)    # évitement normal
+        else:
+            return "VERT", (0,255,0)       # safe
+
 
     # ================= NETWORK =================
     def network_thread(self):
@@ -245,15 +263,16 @@ class VisionSystem:
         threading.Thread(target=self.network_thread, daemon=True).start()
 
         while True:
-            if self.frame_q.empty() or self.depth_q.empty() or self.yolo_q.empty():
+            # Lecture sécurisée des queues
+            try:
+                frame = self.frame_q.get(timeout=0.01)
+                depth = self.depth_q.get(timeout=0.01)
+                boxes = self.yolo_q.get(timeout=0.01)
+            except queue.Empty:
                 continue
 
-            frame = self.frame_q.get()
-            depth = self.depth_q.get()
-            boxes = self.yolo_q.get()
-
             H,W,_ = frame.shape
-            min_d = 99
+            min_d = 99 #-1
             msg = None
 
             # --- Traitement des boxes YOLO ---
@@ -264,35 +283,66 @@ class VisionSystem:
                     continue
                 
                 # Distance estimée avec depth
-                d = np.interp(depth[cy,cx],[0.1,0.4,0.9],[5,3,1])
-                zone = self.cfg.zone_from_distance(d)
+                #d = np.interp(depth[cy,cx],[0.1,0.4,0.9],[5,3,1])
+                #zone = self.cfg.zone_from_distance(d)
 
-                # Affichage sur la frame
-                cv2.rectangle(frame,(x1,y1),(x2,y2),self.cfg.ZONE_COLORS[zone],2)
-                cv2.putText(frame,f"{zone} {d:.2f}m",(x1,y1-5),
-                            cv2.FONT_HERSHEY_SIMPLEX,0.5,
-                            self.cfg.ZONE_COLORS[zone],2)
+                # Profondeur relative [0,1]
+                d_rel = depth[cy, cx]
+                # Déterminer zone + couleur
+                zone_name, color = self.zone_from_relative_depth(d_rel)
 
-                # Préparer message réseau pour l'objet le plus proche
-                if d < min_d:
-                    min_d = d
-                    angle = (cx-W/2)/(W/2)*(170/2)
-                    lat = d * math.tan(math.radians(angle))
-                    layer = 1 if d<1.5 else 2 if d<3 else 3
+                # Label YOLO lisible
+                yolo_label = self.yolo_model.names[int(b.cls[0])]
+                # Filtrage selon ta règle :
+                # - Afficher toujours si humain
+                # - Sinon afficher uniquement si zone jaune, orange ou rouge
+                if yolo_label != "person" and zone_name == "VERT":
+                    continue  # ignorer cet objet
 
-                    msg = (
-                        f"{int(b.cls[0])},{d:.2f},{lat:.2f},{angle:.1f},"
-                        f"{layer},0.85,{float(b.conf[0]):.2f},"
-                        f"{1 if cx<W/2 else 0},{1 if cx>=W/2 else 0}"
-                    )
+                label_text = f"{yolo_label} {d_rel:.2f} {zone_name}"
+
+
+                # Affichage (optionnel pour debug)
+                if self.cfg.SHOW_DISPLAY:
+                    cv2.rectangle(frame, (x1, y1), (x2, y2), color, 2)
+                    cv2.putText(frame, label_text, (x1, y1-5),
+                                cv2.FONT_HERSHEY_SIMPLEX, 0.6, color, 2)
+
+                    
+                # Calcul angle et latéral pour pilotage
+                angle = (cx - W/2) / (W/2) * (170/2)  # angle approximatif
+                lat = d_rel * math.tan(math.radians(angle))
+
+                # Layer pour le réseau : 1=ROUGE, 2=ORANGE, 3=JAUNE, 4=VERT
+                layer = 1 if zone_name == "ROUGE" else 2 if zone_name == "ORANGE" else 3 if zone_name == "JAUNE" else 4
+
+                # Message réseau pour l'objet le plus proche
+                if min_d < 0 or d_rel > min_d:  # Depth Anything : valeur proche = plus grande
+                    min_d = d_rel
+                    #angle = (cx-W/2)/(W/2)*(170/2)
+                    #lat = d_rel * math.tan(math.radians(angle))
+                    
+                    msg = (f"{int(b.cls[0])},"
+                        f"{d_rel:.3f},"
+                        f"{lat:.2f},"
+                        f"{angle:.1f},"
+                        f"{layer},"
+                        f"0.85,"
+                        f"{float(b.conf[0]):.2f},"
+                        f"{1 if cx<W/2 else 0},"
+                        f"{1 if cx>=W/2 else 0}")
+                                        
             # Envoyer message réseau
             if msg:
                 self.net_q.put(msg)
 
             # --- AFFICHAGE dans le main thread (Mac safe) ---
-            cv2.imshow(self.cfg.WINDOW_NAME, frame)
-            if cv2.waitKey(1) == 27:  # ESC pour quitter
-                break
+            # Affichage headless / debug
+            if self.cfg.SHOW_DISPLAY:
+                cv2.imshow(self.cfg.WINDOW_NAME, frame)
+                if cv2.waitKey(1) == 27:  # ESC pour quitter
+                    break
 
         # --- Nettoyage ---
-        cv2.destroyAllWindows()
+        if self.cfg.SHOW_DISPLAY:
+            cv2.destroyAllWindows()

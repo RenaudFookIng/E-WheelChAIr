@@ -26,6 +26,8 @@ class VisionConfigMac:
     RASPBERRY_PORT = 5000
 
     WINDOW_NAME = "Vision MAC"
+    
+    SHOW_DISPLAY = True #False pour eviter l'affichage
 
     ZONE_COLORS = {
         "SAFE":  (0,255,0),
