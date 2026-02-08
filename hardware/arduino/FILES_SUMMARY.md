@@ -24,7 +24,7 @@ hardware/arduino/
 **Key Features:**
 - Controls 2 servos with ±15° safety limits
 - Reads PS2 joystick input
-- Manages 4 ultrasonic sensors
+- Manages 3 ultrasonic sensors
 - Serial communication at 115200 baud
 - Safety timeout (1 second)
 - Emergency stop function

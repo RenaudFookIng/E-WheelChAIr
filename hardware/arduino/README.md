@@ -4,7 +4,7 @@ This directory contains the Arduino firmware for the E-WheelChAIr project.
 
 ## 📁 Files
 
-- `ewheelchair_controller.ino` - Main Arduino sketch for Arduino Mega 2560
+- `ewheelchair_controller/ewheelchair_controller.ino` - Main Arduino sketch for Arduino Mega 2560
 - `test_arduino.py` - Python test script for verifying Arduino functionality
 
 ## 🎯 Hardware Requirements
@@ -52,7 +52,7 @@ The sketch uses the standard `Servo.h` library which comes with Arduino IDE.
 
 ### 3. Upload the Code
 
-1. Open `ewheelchair_controller.ino` in Arduino IDE
+1. Open `ewheelchair_controller/ewheelchair_controller.ino` in Arduino IDE
 2. Select board: **Arduino Mega 2560**
 3. Select port: Check with `ls /dev/ttyACM*` on Linux or COM port on Windows
 4. Click **Upload** (→)
@@ -134,10 +134,10 @@ python3 test_arduino.py
 The Arduino connects to the ROS2 system via:
 
 ```
-Arduino Mega (USB) → Raspberry Pi (/dev/ttyACM1)
+Arduino Mega (USB) → Raspberry Pi (/dev/ttyACM0)
 ```
 
-The ROS2 `servo_controller_node` sends commands and receives sensor data.
+The ROS2 `arduino_bridge_node` sends commands and receives sensor data.
 
 ## ⚠️ Safety Instructions
 

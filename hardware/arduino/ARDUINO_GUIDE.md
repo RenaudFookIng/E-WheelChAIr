@@ -80,7 +80,7 @@ The X-axis neutral is **92° instead of 90°** because:
 
 ### Connection
 ```
-Arduino Mega (USB) → Raspberry Pi (/dev/ttyACM1)
+Arduino Mega (USB) → Raspberry Pi (/dev/ttyACM0)
 Baud Rate: 115200
 Data Format: ASCII text commands
 ```
@@ -92,7 +92,7 @@ All commands end with newline (`\n`) character.
 
 1. **SERVO,X,Y** - Set servo positions
    ```
-   SERVO,90,85
+   SERVO,85,92
    ```
    - `X`: X-axis angle (70-100°)
    - `Y`: Y-axis angle (77-107°)

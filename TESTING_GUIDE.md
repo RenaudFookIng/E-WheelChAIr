@@ -55,7 +55,7 @@ Ce guide vous accompagne pas à pas pour tester l'intégration complète du syst
 
 ### 2. Téléchargement du Code Arduino
 
-1. Ouvrir `hardware/arduino/servo_controller/servo_controller.ino` dans l'IDE Arduino
+1. Ouvrir `hardware/arduino/ewheelchair_controller/ewheelchair_controller.ino` dans l'IDE Arduino
 2. Sélectionner : `Outils > Carte > Arduino Mega or Mega 2560`
 3. Sélectionner le port USB (ex: `/dev/ttyACM0`)
 4. Télécharger (Upload) - ✅
@@ -76,16 +76,16 @@ source install/setup.bash
 
 **Méthode** :
 ```bash
-# Lancer le node servo_controller
-ros2 run servo_controller servo_controller_node
+# Lancer le node arduino_bridge
+ros2 run arduino_bridge arduino_bridge_node
 
 # Envoyer une commande manuelle
 ros2 topic pub /servo_commands custom_msgs/msg/ServoCommand "{x_normalized: 0.0, y_normalized: 0.0}"
 ```
 
 **Résultats attendus** :
-- Servos se positionnent à la position neutre (X=90°, Y=85°)
-- Message de confirmation dans le terminal : `SERVO_OK:X=90,Y=85°`
+- Servos se positionnent à la position neutre (X=85°, Y=92°)
+- Message de confirmation dans le terminal : `SERVO_OK:X=85,Y=92°`
 
 **Tester les amplitudes** :
 ```bash
@@ -163,7 +163,7 @@ ros2 topic pub /servo_commands custom_msgs/msg/ServoCommand "{x_normalized: 2.0,
 
 | Test | Résultat Attendu | ✅ Validé |
 |------|------------------|-----------|
-| Servos neutres | X=90°, Y=85° | ⬜ |
+| Servos neutres | X=85°, Y=92° | ⬜ |
 | Amplitude max | ±15° strict | ⬜ |
 | Lecture joystick | 75-105 range | ⬜ |
 | Communication USB | 115200 bauds | ⬜ |
@@ -218,13 +218,13 @@ ros2 topic list | grep vision
 **Solutions** :
 ```bash
 # Vérifier la configuration
-cat src/servo_controller/config/servo_config.yaml
+cat src/arduino_bridge/config/arduino_config.yaml
 
 # Lister les nodes actifs
 ros2 node list
 
 # Redémarrer le node
-ros2 run servo_controller servo_controller_node
+ros2 run arduino_bridge arduino_bridge_node
 
 # Vérifier la configuration vision
 cat src/pc_vision_bridge/config/vision_config.yaml
