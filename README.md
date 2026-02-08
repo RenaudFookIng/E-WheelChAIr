@@ -22,25 +22,45 @@ E-WheelChAIr is an open-source project designed to enhance autonomy and accessib
 E-WheelChAIr/
 ├── hardware
 │   ├── 3d_models
-│   │   ├── camera_ultrasound_module
-│   │   └── Joystick_mount
-│   │       ├── Joystick _for_wheelchair.iges
-│   │       ├── Joystick_wheelchair.step
-│   │       └── thumbstick_all.iges
+│   │   ├── BackRest_Fixation/
+│   │   │   ├── Fixation_BackRest.iges
+│   │   │   ├── Fixation_backrest_part1.stl
+│   │   │   └── Fixation_backrest_part2.stl
+│   │   ├── Camera_Module/
+│   │   │   ├── Camera_module.iges
+│   │   │   ├── Fixation_camera.stl
+│   │   │   ├── Fixation_camera_up.stl
+│   │   │   └── Support_camera.stl
+│   │   ├── ServoControl_Joystick/
+│   │   │   ├── BasePart.stl
+│   │   │   ├── FourchetteAxeX.stl
+│   │   │   ├── FourchetteAxeY.stl
+│   │   │   ├── Servo_controller_Joystick.iges
+│   │   │   ├── Support_servo_joystick.stl
+│   │   │   └── Visuel_Joystick_servomoteur_support.png
+│   │   └── Ultrasonic_Module/
 │   │
-│   ├── Image_processing
-│   │   ├── vision_config_mac.py
+│   ├── arduino/
+│   │   ├── ewheelchair_controller/
+│   │   │   ├── ewheelchair_controller.ino
+│   │   │   └── lecture_arduino.py
+│   │   ├── ARDUINO_GUIDE.md
+│   │   ├── FILES_SUMMARY.md
+│   │   ├── README.md
+│   │   └── test_arduino.py
+│   │
+│   ├── Image_processing/
+│   │   ├── cmd.txt
+│   │   ├── ROS.txt
 │   │   ├── vision_config_gpu.py
-│   │   ├── vision_system_mac.py
+│   │   ├── vision_config_mac.py
 │   │   ├── vision_system_gpu.py
 │   │   ├── vision_system_mac.py
-│   │   ├── ultralytics
-│   │   └── Depth-Anything-V2
+│   │   ├── yolo11n.pt
+│   │   └── yolov8n.pt
 │   │
-│   └── arduino
-│       └── ewheelchair_controller
-│           └── ewheelchair_controller.ino
-|
+│   └── Right_View.jpeg
+│
 ├── resources
 │   ├── docs
 │   └── utils
@@ -52,11 +72,15 @@ E-WheelChAIr/
 |   │   │   └── arduino_bridge_node.py
 |   │   ├── resource
 |   │   │   └── arduino_bridge
+|   │   ├── test
+|   │   │   ├── test_copyright.py
+|   │   │   ├── test_flake8.py
+|   │   │   └── test_pep257.py
 |   │   ├── package.xml
 |   │   ├── setup.cfg
 |   │   └── setup.py
-|   ├── custom_msgs
-|   │   ├── msg
+|   ├── custom_msgs/
+|   │   ├── msg/
 |   │   │   ├── EmergencyData.msg
 |   │   │   ├── Joystick.msg
 |   │   │   ├── ObstacleDetection.msg
@@ -65,23 +89,25 @@ E-WheelChAIr/
 |   │   │   ├── VisionObstacle.msg
 |   │   │   └── WyesIntent.msg
 |   │   ├── CMakeLists.txt
-|   │   ├── resource
-|   │   └── package.xml
-|   ├── e_wheelchair_launch
+|   │   ├── package.xml
+|   │   └── setup.py
+|   ├── e_wheelchair_launch/
 |   │   ├── e_wheelchair_launch
-|   |   │   ├── __init__.py
-|   |   │   └── launch
-|   |   │       ├── ewheelchair_all.launch.py 
-|   |   │       ├── ewheelchair_joystick_servo.launch.py 
-|   |   │       └── xxx.launch.py  
+|   │   │   ├── __init__.py
+|   │   │   └── launch/
+|   │   ├── resource/
+|   │   │   └── e_wheelchair_launch
 |   │   ├── package.xml
 |   │   ├── setup.cfg
 |   │   └── setup.py
-|   ├── master_node
-|   │   ├── config
-|   │   ├── master_node
-|   │   │   ├── __init__.py
-|   │   │   └── master_node.py
+|   ├── master_node/
+|   │   ├── config/
+|   │   │   ├── master_config.yaml
+|   │   │   └── servo_config.yaml
+|   │   ├── master_node/
+|   │   │   ├── __init__.py
+|   │   │   ├── master_node.py
+|   │   │   └── master_node_bis.py
 |   │   ├── package.xml
 |   │   ├── setup.cfg
 |   │   └── setup.py
@@ -91,10 +117,14 @@ E-WheelChAIr/
 |   │   │   └── pc_vision_bridge_node.py
 |   │   ├── resource
 |   │   │   └── pc_vision_bridge
+|   │   ├── test
+|   │   │   ├── test_copyright.py
+|   │   │   ├── test_flake8.py
+|   │   │   └── test_pep257.py
 |   │   ├── package.xml
 |   │   ├── setup.cfg
 |   │   └── setup.py
-|   └── wyes_teleop
+|   └── wyes_teleop/
 |       ├── resource
 |       │   └── wyes_teleop
 |       ├── test
@@ -108,8 +138,14 @@ E-WheelChAIr/
 |       ├── setup.cfg
 |       └── setup.py
 |
+├── .gitignore
+├── CABLAGE_SCHEMA.md
+├── E-WheelChAIr.mp4
 ├── LICENSE
-└── README.md
+├── parametrage_raspberry_hotspot.txt
+├── README.md
+├── TESTING_GUIDE.md
+└── yolov8n.pt
 ```
 
 ---
