@@ -14,6 +14,20 @@ E-WheelChAIr is an open-source project designed to enhance autonomy and accessib
 
 ---
 
+## 📸 Visual Overview
+
+### Wheelchair Views
+
+<div align="center">
+  <img src="front_view.jpeg" alt="Front View" width="45%" />
+  <img src="rear_view.jpeg" alt="Rear View" width="45%" />
+  <br>
+  <img src="left_view.jpeg" alt="Left View" width="45%" />
+  <img src="right_view.jpeg" alt="Right View" width="45%" />
+</div>
+
+---
+
 ## Project Structure
 
 **Note:** All ROS launch files are centralized in the `e_wheelchair_launch` package for easier management.
